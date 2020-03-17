@@ -6,12 +6,16 @@ import UIKit
 import CollectionViewTools
 import Framezilla
 
-public final class MediaLibraryAlbumListViewController: UIViewController {
+public final class MediaItemCollectionsController: UIViewController {
 
-    private let presenter: MediaLibraryAlbumListPresenter
+    private let presenter: MediaItemCollectionsPresenter
 
-    private lazy var collectionViewManager: CollectionViewManager = {
-        return CollectionViewManager(collectionView: collectionView)
+    private lazy var collectionViewManager: CollectionViewManager = .init(collectionView: collectionView)
+
+    private lazy var factory: MediaItemCollectionSectionsFactory = {
+        let factory = MediaItemCollectionSectionsFactory()
+        factory.output = presenter
+        return factory
     }()
     
     // MARK: - Subviews
@@ -20,7 +24,7 @@ public final class MediaLibraryAlbumListViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .main4
+        collectionView.backgroundColor = UIColor.main4
         collectionView.alwaysBounceVertical = true
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
@@ -34,15 +38,9 @@ public final class MediaLibraryAlbumListViewController: UIViewController {
         return view
     }()
 
-    private lazy var factory: MediaLibraryAlbumListCellItemFactory = {
-        let factory = MediaLibraryAlbumListCellItemFactory()
-        factory.output = presenter
-        return factory
-    }()
-
     // MARK: - Lifecycle
 
-    init(presenter: MediaLibraryAlbumListPresenter) {
+    init(presenter: MediaItemCollectionsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -53,7 +51,7 @@ public final class MediaLibraryAlbumListViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        title = "Albums"
+        title = L10n.MediaLibrary.albums
         view.clipsToBounds = true
         view.addSubview(collectionView)
         view.addSubview(permissionsPlaceholderView)
@@ -61,35 +59,26 @@ public final class MediaLibraryAlbumListViewController: UIViewController {
         presenter.viewReadyEventTriggered()
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         permissionsPlaceholderView.configureFrame { (maker: Maker) in
-            maker.top()
-            maker.left().right()
+            maker.top().left().right()
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        collectionView.configureFrame { maker in
-            maker.edges(insets: view.safeAreaInsets)
-        }
+        collectionView.frame = view.bounds
     }
 
     // MARK: -
     
     func showMediaLibraryDeniedPermissionsPlaceholder() {
         permissionsPlaceholderView.isHidden = false
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
     }
 
     func update(with mediaItemCollections: [MediaItemCollection]) {
         collectionView.contentOffset = .zero
-        collectionViewManager.sectionItems = factory.sectionItems(for: mediaItemCollections)
+        collectionViewManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
         collectionView.isUserInteractionEnabled = true
     }
 }

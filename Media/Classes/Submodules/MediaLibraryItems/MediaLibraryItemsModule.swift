@@ -4,7 +4,7 @@
 
 import UIKit
 
-public protocol MediaLibraryItemListModuleInput: AnyObject {
+public protocol MediaLibraryItemsModuleInput: AnyObject {
     var collection: MediaItemCollection? { get set }
 
     var useStrictItemFiltering: Bool { get set }
@@ -14,19 +14,17 @@ public protocol MediaLibraryItemListModuleInput: AnyObject {
     var fetchResult: MediaItemFetchResult? { get }
 }
 
-public protocol MediaLibraryItemListModuleOutput: AnyObject {
+public protocol MediaLibraryItemsModuleOutput: AnyObject {
     func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool)
-
-    func didChangeFocusDirection(direction: MediaLibraryItemListPresenter.FocusDirection)
 }
 
-public final class MediaLibraryItemListModule {
+public final class MediaLibraryItemsModule {
 
-    public var input: MediaLibraryItemListModuleInput {
+    public var input: MediaLibraryItemsModuleInput {
         return presenter
     }
 
-    public var output: MediaLibraryItemListModuleOutput? {
+    public var output: MediaLibraryItemsModuleOutput? {
         get {
             return presenter.output
         }
@@ -35,12 +33,12 @@ public final class MediaLibraryItemListModule {
         }
     }
 
-    public let viewController: MediaLibraryItemListViewController
-    private let presenter: MediaLibraryItemListPresenter
+    public let viewController: MediaLibraryItemsViewController
+    private let presenter: MediaLibraryItemsPresenter
 
     public init(maxItemsCount: Int = 1, collection: MediaItemCollection? = nil) {
-        presenter = MediaLibraryItemListPresenter(maxItemsCount: maxItemsCount, dependencies: Services)
-        viewController = MediaLibraryItemListViewController(presenter: presenter)
+        presenter = MediaLibraryItemsPresenter(maxItemsCount: maxItemsCount, dependencies: Services)
+        viewController = MediaLibraryItemsViewController(presenter: presenter)
         presenter.view = viewController
         input.collection = collection
     }

@@ -12,8 +12,8 @@ final class AppCoordinator: BaseCoordinator<UIViewController> {
     init() {
         let navigationController = UINavigationController()
 //        let module = MediaLibraryModule(maxItemsCount: 1)
-//        let module = MediaLibraryItemListModule(maxItemsCount: 110)
-//        let module = MediaLibraryAlbumListModule()
+//        let module = MediaLibraryItemsModule(maxItemsCount: 110)
+//        let module = MediaItemCollectionsModule()
 //        navigationController.viewControllers = [module.viewController]
         navigationController.viewControllers = [MainViewController()]
 //        module.viewController.navigationController?.navigationBar.isHidden = true

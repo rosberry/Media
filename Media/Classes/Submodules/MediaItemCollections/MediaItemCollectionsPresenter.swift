@@ -5,16 +5,17 @@
 import Ion
 import Photos
 
-typealias MediaLibraryAlbumListDependencies = HasMediaLibraryService
 
-final class MediaLibraryAlbumListPresenter {
+final class MediaItemCollectionsPresenter {
 
-    private let dependencies: MediaLibraryAlbumListDependencies
-    weak var view: MediaLibraryAlbumListViewController?
+    typealias Dependencies = HasMediaLibraryService
 
-    weak var output: MediaLibraryAlbumListModuleOutput?
+    private let dependencies: Dependencies
+    weak var view: MediaItemCollectionsController?
 
-    var collections: [MediaItemCollection]?
+    weak var output: MediaItemCollectionsModuleOutput?
+
+    var collections: [MediaItemCollection] = []
 
     private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
@@ -30,7 +31,7 @@ final class MediaLibraryAlbumListPresenter {
 
     // MARK: - Lifecycle
 
-    init(dependencies: MediaLibraryAlbumListDependencies) {
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
@@ -71,18 +72,18 @@ final class MediaLibraryAlbumListPresenter {
     }
 }
 
-// MARK: - MediaLibraryItemListCellItemFactoryOutput
+// MARK: - MediaItemCollectionSectionsFactoryOutput
 
-extension MediaLibraryAlbumListPresenter: MediaLibraryAlbumListCellItemFactoryOutput {
+extension MediaItemCollectionsPresenter: MediaItemCollectionSectionsFactoryOutput {
 
-    func didSelect(collection: MediaItemCollection) {
-        output?.didSelect(collection: collection)
+    func didSelect(_ collection: MediaItemCollection) {
+        output?.didSelect(collection)
     }
 }
 
-// MARK: - MediaLibraryAlbumListModuleInput
+// MARK: - MediaItemCollectionsModuleInput
 
-extension MediaLibraryAlbumListPresenter: MediaLibraryAlbumListModuleInput {
+extension MediaItemCollectionsPresenter: MediaItemCollectionsModuleInput {
 
     func updateAlbumList() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()

@@ -7,18 +7,12 @@ import Texstyle
 import CollectionViewTools
 import Framezilla
 
-public final class MediaLibraryItemListViewController: UIViewController {
+public final class MediaLibraryItemsViewController: UIViewController {
 
-    public var bottomInset: CGFloat = 0.0 {
-        didSet {
-            view.setNeedsLayout()
-        }
-    }
+    private let presenter: MediaLibraryItemsPresenter
 
-    private let presenter: MediaLibraryItemListPresenter
-
-    private lazy var factory: MediaLibraryItemListCellItemFactory = {
-        let factory = MediaLibraryItemListCellItemFactory()
+    private lazy var factory: MediaLibraryItemSectionsFactory = {
+        let factory = MediaLibraryItemSectionsFactory()
         factory.output = presenter
         return factory
     }()
@@ -49,7 +43,8 @@ public final class MediaLibraryItemListViewController: UIViewController {
     
     private lazy var placeholderLabel: UILabel = {
         let label = UILabel()
-        label.attributedText = Text(value: L10n.MediaLibrary.empty, style: .heading4b).attributed
+        label.textColor = UIColor.black
+        label.text = L10n.MediaLibrary.empty
         return label
     }()
 
@@ -66,7 +61,7 @@ public final class MediaLibraryItemListViewController: UIViewController {
     
     // MARK: - Lifecycle
 
-    init(presenter: MediaLibraryItemListPresenter) {
+    init(presenter: MediaLibraryItemsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -77,7 +72,7 @@ public final class MediaLibraryItemListViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        title = "List"
+        title = L10n.MediaLibrary.list
         view.addSubview(collectionView)
         placeholderView.addSubview(placeholderLabel)
         view.addSubview(placeholderView)
@@ -93,20 +88,16 @@ public final class MediaLibraryItemListViewController: UIViewController {
         permissionsPlaceholderView.configureFrame { (maker: Maker) in
             maker.top()
             maker.left().right()
-            maker.bottom(inset: bottomInset - view.safeAreaInsets.bottom)
+            maker.bottom(inset: view.safeAreaInsets.bottom)
         }
         
-        collectionView.configureFrame { maker in
-            maker.edges(insets: view.safeAreaInsets)
-        }
-        
-        collectionView.contentInset.bottom = bottomInset
-        collectionView.scrollIndicatorInsets.bottom = bottomInset
+        collectionView.frame = view.bounds
 
-        placeholderView.configureFrame { (maker: Maker) in
-            maker.left(inset: 16).right(inset: 16)
-            maker.top(inset: 16).bottom(inset: bottomInset + 16)
+        permissionsPlaceholderView.configureFrame { (maker: Maker) in
+            maker.top().left().right()
+            maker.bottom(inset: view.safeAreaInsets.bottom)
         }
+
         placeholderLabel.configureFrame { (maker: Maker) in
             maker.left().right()
             maker.centerY()
@@ -199,7 +190,7 @@ public final class MediaLibraryItemListViewController: UIViewController {
 
 // MARK: - UIScrollViewDelegate
 
-extension MediaLibraryItemListViewController: UIScrollViewDelegate {
+extension MediaLibraryItemsViewController: UIScrollViewDelegate {
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y == -scrollView.contentInset.top {
@@ -207,7 +198,7 @@ extension MediaLibraryItemListViewController: UIScrollViewDelegate {
         }
 
         let delta = scrollView.panGestureRecognizer.translation(in: scrollView).y
-        let direction: MediaLibraryItemListPresenter.FocusDirection = (delta > 0.0) ? .down : .up
+        let direction: MediaLibraryItemsPresenter.FocusDirection = (delta > 0.0) ? .down : .up
         presenter.scrollEventTriggered(direction: direction)
     }
 }

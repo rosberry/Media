@@ -23,6 +23,10 @@ internal enum L10n {
     internal static let favoriteItems = L10n.tr("Localizable", "mediaLibrary.favoriteItems")
     /// Library
     internal static let title = L10n.tr("Localizable", "mediaLibrary.title")
+    /// Albums
+    internal static let albums = L10n.tr("Localizable", "mediaLibrary.albums")
+    /// List
+    internal static let list = L10n.tr("Localizable", "mediaLibrary.list")
     /// Unknown
     internal static let unknown = L10n.tr("Localizable", "mediaLibrary.unknown")
     internal enum Filter {

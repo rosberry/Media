@@ -7,19 +7,19 @@ import UIKit
 import Photos
 import CollectionViewTools
 
-typealias MediaLibraryItemListDependencies = HasMediaLibraryService
+typealias MediaLibraryItemsDependencies = HasMediaLibraryService
 
-public final class MediaLibraryItemListPresenter {
+public final class MediaLibraryItemsPresenter {
 
     public enum FocusDirection {
         case up
         case down
     }
 
-    private let dependencies: MediaLibraryItemListDependencies
-    weak var view: MediaLibraryItemListViewController?
+    private let dependencies: MediaLibraryItemsDependencies
+    weak var view: MediaLibraryItemsViewController?
 
-    weak var output: MediaLibraryItemListModuleOutput?
+    weak var output: MediaLibraryItemsModuleOutput?
 
     public var collection: MediaItemCollection? {
         didSet {
@@ -62,8 +62,8 @@ public final class MediaLibraryItemListPresenter {
         return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
     
-    private lazy var factory: MediaLibraryItemListCellItemFactory = {
-        let factory = MediaLibraryItemListCellItemFactory()
+    private lazy var factory: MediaLibraryItemSectionsFactory = {
+        let factory = MediaLibraryItemSectionsFactory()
         factory.output = self
         return factory
     }()
@@ -77,7 +77,7 @@ public final class MediaLibraryItemListPresenter {
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, dependencies: MediaLibraryItemListDependencies) {
+    init(maxItemsCount: Int, dependencies: MediaLibraryItemsDependencies) {
         self.maxItemsCount = maxItemsCount
         self.dependencies = dependencies
     }
@@ -98,7 +98,6 @@ public final class MediaLibraryItemListPresenter {
         }
 
         focusDirection = direction
-        output?.didChangeFocusDirection(direction: direction)
     }
 
     // MARK: - Helpers
@@ -148,9 +147,9 @@ public final class MediaLibraryItemListPresenter {
             let mediaItem = MediaItem(asset: asset)
             let selectionIndex = self.selectedItems.firstIndex(of: mediaItem)
             let isSelectionInfoLabelHidden = self.maxItemsCount == 1
-            return self.factory.cellItem(for: mediaItem,
-                                         selectionIndex: selectionIndex,
-                                         isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            return self.factory.makeCellItem(mediaItem: mediaItem,
+                                             selectionIndex: selectionIndex,
+                                             isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
         }, sizeProvider: { (index: Int, collectionView: UICollectionView) -> CGSize in
             let numberOfItemsInRow: CGFloat = 4
             let width = (collectionView.bounds.width - insets.left - insets.right -
@@ -186,9 +185,9 @@ public final class MediaLibraryItemListPresenter {
     }
 }
 
-// MARK: - MediaLibraryItemListCellItemFactoryOutput
+// MARK: - MediaLibraryItemSectionsFactoryOutput
 
-extension MediaLibraryItemListPresenter: MediaLibraryItemListCellItemFactoryOutput {
+extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
 
     func didSelect(item: MediaItem) {
         var selectedItems = self.selectedItems
@@ -212,8 +211,8 @@ extension MediaLibraryItemListPresenter: MediaLibraryItemListCellItemFactoryOutp
     }
 }
 
-// MARK: - MediaLibraryItemListModuleInput
+// MARK: - MediaLibraryItemsModuleInput
 
-extension MediaLibraryItemListPresenter: MediaLibraryItemListModuleInput {
+extension MediaLibraryItemsPresenter: MediaLibraryItemsModuleInput {
     //
 }

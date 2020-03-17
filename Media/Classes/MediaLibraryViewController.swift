@@ -48,13 +48,12 @@ public final class MediaLibraryViewController: UIViewController {
         return button
     }()
 
-    private(set) lazy var confirmationButton: UIButton = {
+    private(set) lazy var doneButton: UIButton = {
         let button = UIButton()
         button.setImage(Asset.icDoneM.image, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        button.addTarget(self, action: #selector(confirmationButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
         button.sizeToFit()
-        button.isHidden = true
         return button
     }()
 
@@ -91,7 +90,7 @@ public final class MediaLibraryViewController: UIViewController {
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)
-        toolView.addSubview(confirmationButton)
+        toolView.addSubview(doneButton)
         view.addSubview(toolView)
 
         add(child: mediaLibraryItemListViewController)
@@ -121,7 +120,7 @@ public final class MediaLibraryViewController: UIViewController {
             maker.left(inset: 16).right(inset: 16)
         }
 
-        confirmationButton.configureFrame { (maker: Maker) in
+        doneButton.configureFrame { (maker: Maker) in
             maker.right(inset: 2.0)
             maker.centerY(to: albumSelectionButton.nui_centerY)
         }
@@ -166,7 +165,7 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
-    @objc public func confirmationButtonPressed() {
+    @objc public func doneButtonPressed() {
         presenter.confirmationEventTriggered()
     }
 
@@ -216,11 +215,9 @@ public final class MediaLibraryViewController: UIViewController {
 
     func showFilterSelector() {
         filterView.isHidden = false
-        view.setNeedsLayout()
     }
 
     func hideFilterSelector() {
         filterView.isHidden = true
-        view.setNeedsLayout()
     }
 }

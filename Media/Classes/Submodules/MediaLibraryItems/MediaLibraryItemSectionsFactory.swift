@@ -5,21 +5,21 @@
 import Foundation
 import CollectionViewTools
 
-protocol MediaLibraryItemListCellItemFactoryOutput: AnyObject {
+protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
     func didSelect(item: MediaItem)
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect)
     func didRequestPreviewStop(item: MediaItem)
 }
 
-final class MediaLibraryItemListCellItemFactory {
-    weak var output: MediaLibraryItemListCellItemFactoryOutput?
+final class MediaLibraryItemSectionsFactory {
+    weak var output: MediaLibraryItemSectionsFactoryOutput?
 
     // MARK: - Media Items
 
-    func cellItem(for mediaItem: MediaItem,
-                  selectionIndex: Int?,
-                  isSelectionInfoLabelHidden: Bool) -> CollectionViewCellItem {
+    func makeCellItem(mediaItem: MediaItem,
+                      selectionIndex: Int?,
+                      isSelectionInfoLabelHidden: Bool) -> CollectionViewCellItem {
         let cellModel = MediaLibraryBaseMediaItemCellModel(mediaItem: mediaItem, selectionIndex: selectionIndex)
 
         let cellItem: CollectionViewCellItem
@@ -41,12 +41,12 @@ final class MediaLibraryItemListCellItemFactory {
         }
 
         if let mediaCellItem = cellItem as? MediaLibraryBaseMediaItemCellItem {
-            mediaCellItem.previewStartHandler = { [weak self] (_, rect: CGRect) in
-                self?.output?.didRequestPreviewStart(item: mediaItem, from: rect)
+            mediaCellItem.previewStartHandler = { [weak output] (_, rect: CGRect) in
+                output?.didRequestPreviewStart(item: mediaItem, from: rect)
             }
 
-            mediaCellItem.previewStopHandler = { [weak self] _ in
-                self?.output?.didRequestPreviewStop(item: mediaItem)
+            mediaCellItem.previewStopHandler = { [weak output] _ in
+                output?.didRequestPreviewStop(item: mediaItem)
             }
         }
 
@@ -56,26 +56,20 @@ final class MediaLibraryItemListCellItemFactory {
     // MARK: - Placeholders
 
     func placeholderSectionItems(placeholderCount: Int) -> [CollectionViewSectionItem] {
-        return [sectionItem(for: placeholderCellItems(count: placeholderCount))]
+        [makeSectionItem(cellItems: makePlaceholderCellItems(count: placeholderCount))]
     }
 
-    private func placeholderCellItems(count: Int) -> [CollectionViewCellItem] {
-        guard count > 0 else {
-            return []
-        }
-
-        return (0..<count).lazy.map { (_) -> CollectionViewCellItem in
-            return MediaLibraryPlaceholderCellItem()
-        }
-    }
-
-    // MARK: - Sections
-
-    private func sectionItem(for cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
-        let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems, reusableViewItems: [])
-        sectionItem.minimumLineSpacing = 8.0
-        sectionItem.minimumInteritemSpacing = 8.0
+    private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
+        let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems)
+        sectionItem.minimumLineSpacing = 8
+        sectionItem.minimumInteritemSpacing = 8
         sectionItem.insets = .init(top: 8, left: 8, bottom: 8, right: 8)
         return sectionItem
+    }
+
+    private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
+        return (0..<count).map { _ in
+            MediaLibraryPlaceholderCellItem()
+        }
     }
 }

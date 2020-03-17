@@ -5,15 +5,15 @@
 import UIKit
 import CollectionViewTools
 
-class MediaLibraryAlbumListCellItem: CollectionViewCellItem {
-    typealias Cell = MediaLibraryAlbumListCell
+class MediaItemCollectionCellItem: CollectionViewCellItem {
+    typealias Cell = MediaItemCollectionCell
     typealias Dependencies = HasMediaLibraryService
 
-    private let viewModel: MediaLibraryAlbumListCellModel
+    private let viewModel: MediaItemCollectionCellModel
     private let dependencies: Dependencies
     var reuseType = ReuseType.class(Cell.self)
 
-    init(viewModel: MediaLibraryAlbumListCellModel, dependencies: Dependencies) {
+    init(viewModel: MediaItemCollectionCellModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
     }
@@ -23,7 +23,7 @@ class MediaLibraryAlbumListCellItem: CollectionViewCellItem {
             return .zero
         }
 
-        return CGSize(width: collectionView.bounds.width, height: 72.0)
+        return CGSize(width: collectionView.bounds.width, height: 72)
     }
 
     func configure(_ cell: UICollectionViewCell) {

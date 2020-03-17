@@ -3,15 +3,14 @@
 //
 
 import UIKit
-import Texstyle
 import Framezilla
 
-class MediaLibraryAlbumListCell: UICollectionViewCell {
+class MediaItemCollectionCell: UICollectionViewCell {
 
     override var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.25) {
-                self.contentView.backgroundColor = self.isHighlighted ? .main2 : .main4
+                self.contentView.backgroundColor = self.isHighlighted ? UIColor.main2 : UIColor.main4
             }
         }
     }
@@ -22,17 +21,19 @@ class MediaLibraryAlbumListCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .main3
+        imageView.backgroundColor = UIColor.main3
         return imageView
     }()
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.textColor = UIColor.black
         return label
     }()
 
     private lazy var itemCountLabel: UILabel = {
         let label = UILabel()
+        label.textColor = UIColor.black
         return label
     }()
 
@@ -45,12 +46,6 @@ class MediaLibraryAlbumListCell: UICollectionViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setup() {
-        contentView.addSubview(imageView)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(itemCountLabel)
     }
 
     override func layoutSubviews() {
@@ -82,11 +77,9 @@ class MediaLibraryAlbumListCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(true)
     }
 
-    // MARK: -
-
-    func update(with viewModel: MediaLibraryAlbumListCellModel) {
+    func update(with viewModel: MediaItemCollectionCellModel) {
         imageView.image = viewModel.thumbnail
-        titleLabel.attributedText = Text(value: viewModel.title ?? "", style: TextStyle.paragraph2.leftAligned()).attributed
+        titleLabel.text = viewModel.title
 
         var itemCountLabelString: String?
         switch viewModel.estimatedMediaItemsCount {
@@ -102,6 +95,14 @@ class MediaLibraryAlbumListCell: UICollectionViewCell {
         case .some(let count):
             itemCountLabelString = "\(count)"
         }
-        itemCountLabel.attributedText = Text(value: itemCountLabelString, style: TextStyle.paragraph4.leftAligned())?.attributed
+        itemCountLabel.text = itemCountLabelString
+    }
+
+    // MARK: - Private
+
+    private func setup() {
+        contentView.addSubview(imageView)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(itemCountLabel)
     }
 }

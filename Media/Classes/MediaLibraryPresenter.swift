@@ -33,14 +33,14 @@ final class MediaLibraryPresenter {
 
     // MARK: - Submodules
 
-    lazy var mediaLibraryAlbumListModule: MediaLibraryAlbumListModule = {
-        let module = MediaLibraryAlbumListModule()
+    lazy var mediaLibraryAlbumListModule: MediaItemCollectionsModule = {
+        let module = MediaItemCollectionsModule()
         module.output = self
         return module
     }()
 
-    lazy var mediaLibraryItemListModule: MediaLibraryItemListModule = {
-        let module = MediaLibraryItemListModule(maxItemsCount: self.maxItemsCount)
+    lazy var mediaLibraryItemListModule: MediaLibraryItemsModule = {
+        let module = MediaLibraryItemsModule(maxItemsCount: maxItemsCount)
         module.output = self
         return module
     }()
@@ -86,22 +86,22 @@ final class MediaLibraryPresenter {
     // MARK: - Helpers
 
     private func setupCollectionListCollector() {
-        mediaLibraryCollectionListCollector.subscribe { (collections: [MediaItemCollection]) in
-            self.mediaLibraryCollections = collections
-            guard self.activeCollection == nil else {
+        mediaLibraryCollectionListCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
+            self?.mediaLibraryCollections = collections
+            guard self?.activeCollection == nil else {
                 return
             }
-            self.activeCollection = collections.first
+            self?.activeCollection = collections.first
         }
     }
     
     private func setupPermissionsCollector() {
-        mediaLibraryPermissionsCollector.subscribe { (status: PHAuthorizationStatus) in
+        mediaLibraryPermissionsCollector.subscribe { [weak self] (status: PHAuthorizationStatus) in
             switch status {
             case .denied:
-                self.view?.isAuthorized = false
+                self?.view?.isAuthorized = false
             case .authorized:
-                self.view?.isAuthorized = true
+                self?.view?.isAuthorized = true
             default:
                 break
             }
@@ -124,9 +124,9 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
 	//
 }
 
-// MARK: - MediaLibraryItemListModuleOutput
+// MARK: - MediaLibraryItemsModuleOutput
 
-extension MediaLibraryPresenter: MediaLibraryItemListModuleOutput {
+extension MediaLibraryPresenter: MediaLibraryItemsModuleOutput {
 
     func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool) {
         if isMixedContentCollection {
@@ -136,16 +136,13 @@ extension MediaLibraryPresenter: MediaLibraryItemListModuleOutput {
             view?.hideFilterSelector()
         }
     }
-
-    func didChangeFocusDirection(direction: MediaLibraryItemListPresenter.FocusDirection) {
-    }
 }
 
-// MARK: - MediaLibraryAlbumListModuleOutput
+// MARK: - MediaItemCollectionsModuleOutput
 
-extension MediaLibraryPresenter: MediaLibraryAlbumListModuleOutput {
+extension MediaLibraryPresenter: MediaItemCollectionsModuleOutput {
 
-    func didSelect(collection: MediaItemCollection) {
+    func didSelect(_ collection: MediaItemCollection) {
         view?.hideAlbumPicker()
         activeCollection = collection
     }

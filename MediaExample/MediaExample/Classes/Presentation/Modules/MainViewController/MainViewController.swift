@@ -84,12 +84,12 @@ final class MainViewController: UIViewController {
     // MARK: - Private
 
     @objc func albumButtonPressed() {
-        let module = MediaLibraryAlbumListModule()
+        let module = MediaItemCollectionsModule()
         self.navigationController?.pushViewController(module.viewController, animated: true)
     }
 
     @objc func listButtonPressed() {
-        let module = MediaLibraryItemListModule(maxItemsCount: 2)
+        let module = MediaLibraryItemsModule(maxItemsCount: 2)
         self.navigationController?.pushViewController(module.viewController, animated: true)
     }
 
