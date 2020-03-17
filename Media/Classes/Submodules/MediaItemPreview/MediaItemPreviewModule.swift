@@ -26,8 +26,7 @@ final class MediaItemPreviewModule {
     private let presenter: MediaItemPreviewPresenter
 
     init() {
-        let dependencies = Services.sharedScope
-        presenter = MediaItemPreviewPresenter(dependencies: dependencies)
+        presenter = MediaItemPreviewPresenter(dependencies: Services)
         viewController = MediaItemPreviewViewController(presenter: presenter)
         presenter.view = viewController
     }

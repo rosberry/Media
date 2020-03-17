@@ -29,8 +29,7 @@ public final class MediaLibraryModule {
     private let presenter: MediaLibraryPresenter
 
     public init(maxItemsCount: Int) {
-        let dependencies = Services.sharedScope
-        presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount, dependencies: dependencies)
+        presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount, dependencies: Services)
         viewController = MediaLibraryViewController(presenter: presenter)
         presenter.view = viewController
     }

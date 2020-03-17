@@ -28,11 +28,11 @@ final class MediaLibraryItemListCellItemFactory {
             cellItem = MediaLibraryPlaceholderCellItem()
         case .photo, .livePhoto:
             cellItem = MediaLibraryPhotoMediaItemCellItem(viewModel: cellModel,
-                                                          dependencies: Services.sharedScope,
+                                                          dependencies: Services,
                                                           isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
         case .video, .sloMoVideo:
             cellItem = MediaLibraryVideoMediaItemCellItem(viewModel: cellModel,
-                                                          dependencies: Services.sharedScope,
+                                                          dependencies: Services,
                                                           isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
         }
 

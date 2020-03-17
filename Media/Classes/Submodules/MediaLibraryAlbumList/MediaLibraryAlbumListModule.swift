@@ -32,8 +32,7 @@ public final class MediaLibraryAlbumListModule {
     private let presenter: MediaLibraryAlbumListPresenter
 
     public init() {
-        let dependencies = Services.sharedScope
-        presenter = MediaLibraryAlbumListPresenter(dependencies: dependencies)
+        presenter = MediaLibraryAlbumListPresenter(dependencies: Services)
         viewController = MediaLibraryAlbumListViewController(presenter: presenter)
         presenter.view = viewController
     }

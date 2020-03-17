@@ -24,7 +24,7 @@ final class MediaLibraryAlbumListCellItemFactory {
     }
 
     func cellItem(for mediaItemCollection: MediaItemCollection) -> CollectionViewCellItem {
-        let cellItem = MediaLibraryAlbumListCellItem(viewModel: mediaItemCollection, dependencies: Services.sharedScope)
+        let cellItem = MediaLibraryAlbumListCellItem(viewModel: mediaItemCollection, dependencies: Services)
         cellItem.itemDidSelectHandler = { [weak self] in
             self?.output?.didSelect(collection: mediaItemCollection)
         }
