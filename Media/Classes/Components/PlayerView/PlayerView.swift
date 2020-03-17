@@ -9,30 +9,30 @@ final class PlayerView: UIView {
     
     var player: AVPlayer? {
         get {
-            return playerLayer.player
+            return playerLayer?.player
         }
         set {
-            playerLayer.player = newValue
+            playerLayer?.player = newValue
         }
     }
-    
-    // swiftlint:disable force_cast
-    var playerLayer: AVPlayerLayer {
-        return layer as! AVPlayerLayer
+
+    var playerLayer: AVPlayerLayer? {
+        return layer as? AVPlayerLayer
     }
-    // swiftlint:enable force_cast
     
     override static var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
     
     var isReadyForDisplay: Bool {
-        return playerLayer.isReadyForDisplay
+        playerLayer?.isReadyForDisplay ?? false
     }
+
+    // MARK: - Lifecycle
     
     init() {
         super.init(frame: .zero)
-        playerLayer.videoGravity = .resizeAspect
+        playerLayer?.videoGravity = .resizeAspect
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,6 +40,6 @@ final class PlayerView: UIView {
     }
     
     func waitForReadyState(on queue: DispatchQueue = .global(qos: .background), completion: @escaping () -> Void) {
-        playerLayer.waitForReadyState(on: queue, completion: completion)
+        playerLayer?.waitForReadyState(on: queue, completion: completion)
     }
 }

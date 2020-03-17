@@ -18,15 +18,6 @@ public final class MediaLibraryViewController: UIViewController {
             view.layoutIfNeeded()
         }
     }
-    
-    // MARK: - Subviews
-    
-    public var collectionView: UICollectionView {
-        if isAlbumPickerVisible {
-            return mediaLibraryAlbumListViewController.collectionView
-        }
-        return mediaLibraryItemListViewController.collectionView
-    }
 
     private var isAlbumPickerVisible: Bool = false {
         didSet {
@@ -36,9 +27,18 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
+    // MARK: - Subviews
+
+    public var collectionView: UICollectionView {
+        if isAlbumPickerVisible {
+            return mediaLibraryAlbumListViewController.collectionView
+        }
+        return mediaLibraryItemListViewController.collectionView
+    }
+
     private lazy var toolView: UIView = {
         let view = UIView()
-        view.backgroundColor = .main4
+        view.backgroundColor = UIColor.main4
         return view
     }()
 
@@ -52,7 +52,7 @@ public final class MediaLibraryViewController: UIViewController {
         let button = UIButton()
         button.setImage(Asset.icDoneM.image, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        button.addTarget(self, action: #selector(confiramtionButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(confirmationButtonPressed), for: .touchUpInside)
         button.sizeToFit()
         button.isHidden = true
         return button
@@ -83,15 +83,11 @@ public final class MediaLibraryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override public func viewDidLoad() {
         super.viewDidLoad()
 
         title = L10n.MediaLibrary.title.uppercased()
-        view.backgroundColor = .main4
+        view.backgroundColor = UIColor.main4
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)
@@ -102,10 +98,6 @@ public final class MediaLibraryViewController: UIViewController {
         add(child: mediaLibraryAlbumListViewController)
 
         presenter.viewReadyEventTriggered()
-    }
-
-    override public func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
     }
 
     override public func viewDidLayoutSubviews() {
@@ -174,7 +166,7 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
-    @objc public func confiramtionButtonPressed() {
+    @objc public func confirmationButtonPressed() {
         presenter.confirmationEventTriggered()
     }
 

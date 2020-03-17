@@ -129,12 +129,12 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
 extension MediaLibraryPresenter: MediaLibraryItemListModuleOutput {
 
     func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool) {
-//        if isMixedContentCollection {
-//            view?.showFilterSelector()
-//        }
-//        else {
-//            view?.hideFilterSelector()
-//        }
+        if isMixedContentCollection {
+            view?.showFilterSelector()
+        }
+        else {
+            view?.hideFilterSelector()
+        }
     }
 
     func didChangeFocusDirection(direction: MediaLibraryItemListPresenter.FocusDirection) {

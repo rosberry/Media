@@ -3,21 +3,12 @@
 //
 
 import UIKit
-import Texstyle
 
 final class DropdownButton: UIButton {
-    
-    private lazy var arrowLayer: CAShapeLayer = {
-        let layer = CAShapeLayer()
-        layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.main1.cgColor
-        layer.lineCap = .round
-        layer.lineJoin = .round
-        layer.lineWidth = 2.0
-        return layer
-    }()
-    
-    private let arrowLayerWidth: CGFloat = 24
+
+    private enum Constants {
+        static let arrowLayerWidth: CGFloat = 24
+    }
     
     override var isSelected: Bool {
         didSet {
@@ -32,18 +23,26 @@ final class DropdownButton: UIButton {
     
     var title: String? {
         set {
-            guard let title = newValue else {
-                arrowLayer.isHidden = true
-                setTitle(nil, for: .normal)
-                return
-            }
-            arrowLayer.isHidden = false
-            setAttributedTitle(title.text(with: TextStyle.title3.leftAligned()).attributed, for: .normal)
+            arrowLayer.isHidden = newValue == nil
+            setTitleColor(UIColor.black, for: .normal)
+            setTitle(newValue, for: .normal)
         }
         get {
-            return attributedTitle(for: .normal)?.string
+            return title(for: .normal)
         }
     }
+
+    // MARK: - Layer
+
+    private lazy var arrowLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.fillColor = UIColor.clear.cgColor
+        layer.strokeColor = UIColor.main1.cgColor
+        layer.lineCap = .round
+        layer.lineJoin = .round
+        layer.lineWidth = 2
+        return layer
+    }()
     
     // MARK: - Lifecycle
     
@@ -70,13 +69,13 @@ final class DropdownButton: UIButton {
         titleLabel.configureFrame(installerBlock: { maker in
             maker.left()
             maker.top().bottom()
-            maker.widthThatFits(maxWidth: bounds.width - arrowLayerWidth)
+            maker.widthThatFits(maxWidth: bounds.width - Constants.arrowLayerWidth)
         })
         
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        arrowLayer.bounds = CGRect(x: 0.0, y: 0.0, width: arrowLayerWidth, height: arrowLayerWidth)
+        arrowLayer.bounds = CGRect(x: 0, y: 0, width: Constants.arrowLayerWidth, height: Constants.arrowLayerWidth)
         arrowLayer.position = CGPoint(x: titleLabel.frame.maxX + arrowLayer.bounds.midX, y: bounds.midY)
         
         let arrowPath = UIBezierPath()
@@ -89,8 +88,8 @@ final class DropdownButton: UIButton {
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let labelConstrainedSize = CGSize(width: size.width - arrowLayerWidth, height: size.height)
+        let labelConstrainedSize = CGSize(width: size.width - Constants.arrowLayerWidth, height: size.height)
         let labelSize = titleLabel?.sizeThatFits(labelConstrainedSize) ?? labelConstrainedSize
-        return CGSize(width: labelSize.width + arrowLayerWidth, height: size.height)
+        return CGSize(width: labelSize.width + Constants.arrowLayerWidth, height: size.height)
     }
 }

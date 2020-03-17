@@ -15,15 +15,15 @@ final class SwitchItem {
     }
 }
 
-class SwitchItemButton: UIButton {
+final class SwitchItemButton: UIButton {
     
     let item: SwitchItem
     
     init(item: SwitchItem) {
         self.item = item
         super.init(frame: .zero)
-        
-        //        setAttributedTitle(.defaultButtonAttributedString(string: item.title), for: .normal)
+        setTitleColor(UIColor.black, for: .normal)
+        setTitle(item.title, for: .normal)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,16 +32,33 @@ class SwitchItemButton: UIButton {
 }
 
 final class SwitchView: UIView {
-    
+
+
+    var items: [SwitchItem] = [] {
+        didSet {
+            updateItemViews()
+        }
+    }
+
+    var selectedIndex: Int = 0 {
+        didSet {
+            setNeedsLayout()
+            layoutIfNeeded()
+        }
+    }
+
+    var inactiveItemAlpha: CGFloat = 1.0
+
     private var itemViews: [UIView] = []
-    
+
+    // MARK: - Layers
+
     private(set) lazy var backgroundLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.main2.cgColor
-        layer.lineWidth = 0.0
         return layer
     }()
-    
+
     private lazy var selectionLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
@@ -49,52 +66,17 @@ final class SwitchView: UIView {
         layer.lineWidth = 2.0
         return layer
     }()
-    
-    var inactiveItemAlpha: CGFloat = 1.0
-    
-    var items: [SwitchItem] = [] {
-        didSet {
-            updateItemViews()
-        }
-    }
-    
-    var selectedIndex: Int = 0 {
-        didSet {
-            setNeedsLayout()
-            layoutIfNeeded()
-        }
-    }
-    
-    private func updateItemViews() {
-        itemViews.forEach { (view: UIView) in
-            view.removeFromSuperview()
-        }
-        itemViews.removeAll()
-        
-        layer.addSublayer(backgroundLayer)
-        
-        for (index, item) in items.enumerated() {
-            let view = SwitchItemButton(item: item)
-            view.addTarget(self, action: #selector(itemPressed(_:)), for: .touchUpInside)
-            view.tag = index
-            
-            addSubview(view)
-            itemViews.append(view)
-        }
-        
-        layer.addSublayer(selectionLayer)
-        
-        setNeedsLayout()
-    }
+
+    // MARK: - Lifecycle
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         var offset: CGFloat = 0.0
-        let itemSize = CGSize(width: (bounds.width - 2.0 * offset) / CGFloat(items.count), height: bounds.height)
+        let itemSize = CGSize(width: bounds.width / CGFloat(items.count), height: bounds.height)
         
         backgroundLayer.frame = bounds
-        backgroundLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2.0).cgPath
+        backgroundLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2).cgPath
         
         for view in itemViews {
             view.frame = CGRect(x: offset, y: 0.0, width: itemSize.width, height: itemSize.height)
@@ -102,9 +84,9 @@ final class SwitchView: UIView {
             
             if view.tag == selectedIndex {
                 view.alpha = 1.0
-                selectionLayer.frame = view.frame.insetBy(dx: 2.0, dy: 2.0)
+                selectionLayer.frame = view.frame.insetBy(dx: 2, dy: 2)
                 selectionLayer.path = UIBezierPath(roundedRect: selectionLayer.bounds,
-                                                   cornerRadius: selectionLayer.bounds.height / 2.0).cgPath
+                                                   cornerRadius: selectionLayer.bounds.height / 2).cgPath
             }
             else {
                 view.alpha = inactiveItemAlpha
@@ -114,6 +96,30 @@ final class SwitchView: UIView {
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         return CGSize(width: size.width, height: 32.0)
+    }
+
+    // MARK: - Private
+
+    private func updateItemViews() {
+        itemViews.forEach { (view: UIView) in
+            view.removeFromSuperview()
+        }
+        itemViews.removeAll()
+
+        layer.addSublayer(backgroundLayer)
+
+        for (index, item) in items.enumerated() {
+            let view = SwitchItemButton(item: item)
+            view.addTarget(self, action: #selector(itemPressed), for: .touchUpInside)
+            view.tag = index
+
+            addSubview(view)
+            itemViews.append(view)
+        }
+
+        layer.addSublayer(selectionLayer)
+
+        setNeedsLayout()
     }
     
     // MARK: - Actions
