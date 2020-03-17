@@ -28,6 +28,8 @@ final class MediaItemCellItem<Cell: MediaItemCell>: CollectionViewCellItem {
     
     var isSelectionInfoLabelHidden: Bool
 
+    var numberOfItemsInRow: Int = 4
+
     init(viewModel: MediaItemCellModel,
          dependencies: Dependencies,
          isSelectionInfoLabelHidden: Bool) {
@@ -41,9 +43,8 @@ final class MediaItemCellItem<Cell: MediaItemCell>: CollectionViewCellItem {
             let sectionItem = sectionItem else {
             return .zero
         }
-        let numberOfItemsInRow: CGFloat = 4
         let width = (collectionView.bounds.width - sectionItem.insets.left - sectionItem.insets.right -
-            numberOfItemsInRow * (sectionItem.minimumInteritemSpacing)) / numberOfItemsInRow
+            CGFloat(numberOfItemsInRow) * (sectionItem.minimumInteritemSpacing)) / CGFloat(numberOfItemsInRow)
         return CGSize(width: width, height: width)
     }
 

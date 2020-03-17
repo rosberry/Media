@@ -6,21 +6,23 @@ import UIKit
 import CollectionViewTools
 
 class MediaLibraryPlaceholderCellItem: CollectionViewCellItem {
-    typealias Cell = MediaLibraryPlaceholderCell
+
+    typealias Cell = UICollectionViewCell
     var reuseType = ReuseType.class(Cell.self)
+
+    var numberOfItemsInRow: Int = 4
 
     func size() -> CGSize {
         guard let collectionView = collectionView,
             let sectionItem = sectionItem else {
                 return .zero
         }
-        let numberOfItemsInRow: CGFloat = 4
         let width = (collectionView.bounds.width - sectionItem.insets.left - sectionItem.insets.right -
-            numberOfItemsInRow * (sectionItem.minimumInteritemSpacing)) / numberOfItemsInRow
+            CGFloat(numberOfItemsInRow) * (sectionItem.minimumInteritemSpacing)) / CGFloat(numberOfItemsInRow)
         return CGSize(width: width, height: width)
     }
 
     func configure(_ cell: UICollectionViewCell) {
-        //
+        cell.contentView.backgroundColor = UIColor.main3
     }
 }

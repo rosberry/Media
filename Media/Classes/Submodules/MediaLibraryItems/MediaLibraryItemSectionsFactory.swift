@@ -16,7 +16,10 @@ protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
 }
 
 final class MediaLibraryItemSectionsFactory {
+
     weak var output: MediaLibraryItemSectionsFactoryOutput?
+
+    var numberOfItemsInRow: Int = 4
 
     // MARK: - Media Items
 
@@ -30,13 +33,17 @@ final class MediaLibraryItemSectionsFactory {
         case .unknown:
             cellItem = MediaLibraryPlaceholderCellItem()
         case .photo, .livePhoto:
-            cellItem = PhotoMediaItemCellItem(viewModel: cellModel,
+            let item = PhotoMediaItemCellItem(viewModel: cellModel,
                                               dependencies: Services,
                                               isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            item.numberOfItemsInRow = numberOfItemsInRow
+            cellItem = item
         case .video, .sloMoVideo:
-            cellItem = VideoMediaItemCellItem(viewModel: cellModel,
+            let item = VideoMediaItemCellItem(viewModel: cellModel,
                                               dependencies: Services,
                                               isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            item.numberOfItemsInRow = numberOfItemsInRow
+            cellItem = item
         }
 
         cellItem.itemDidSelectHandler = { [weak self] in
@@ -72,7 +79,9 @@ final class MediaLibraryItemSectionsFactory {
 
     private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
         return (0..<count).map { _ in
-            MediaLibraryPlaceholderCellItem()
+            let cellItem = MediaLibraryPlaceholderCellItem()
+            cellItem.numberOfItemsInRow = numberOfItemsInRow
+            return cellItem
         }
     }
 }

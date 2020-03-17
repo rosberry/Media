@@ -5,7 +5,10 @@
 import UIKit
 
 public protocol MediaLibraryItemsModuleInput: AnyObject {
+
     var collection: MediaItemCollection? { get set }
+
+    var numberOfItemsInRow: Int { get set }
 
     var useStrictItemFiltering: Bool { get set }
     var filter: MediaItemFilter { get set }

@@ -9,8 +9,8 @@ public final class MediaLibraryViewController: UIViewController {
     
     private let presenter: MediaLibraryPresenter
     
-    private lazy var mediaLibraryItemListViewController = presenter.mediaLibraryItemListModule.viewController
-    private lazy var mediaLibraryAlbumListViewController = presenter.mediaLibraryAlbumListModule.viewController
+    private lazy var mediaLibraryItemListViewController = presenter.mediaLibraryItemsModule.viewController
+    private lazy var mediaLibraryAlbumListViewController = presenter.mediaItemCollectionsModule.viewController
     
     public var isAuthorized: Bool = false {
         didSet {

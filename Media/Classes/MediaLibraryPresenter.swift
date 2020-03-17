@@ -33,13 +33,13 @@ final class MediaLibraryPresenter {
 
     // MARK: - Submodules
 
-    lazy var mediaLibraryAlbumListModule: MediaItemCollectionsModule = {
+    lazy var mediaItemCollectionsModule: MediaItemCollectionsModule = {
         let module = MediaItemCollectionsModule()
         module.output = self
         return module
     }()
 
-    lazy var mediaLibraryItemListModule: MediaLibraryItemsModule = {
+    lazy var mediaLibraryItemsModule: MediaLibraryItemsModule = {
         let module = MediaLibraryItemsModule(maxItemsCount: maxItemsCount)
         module.output = self
         return module
@@ -58,20 +58,20 @@ final class MediaLibraryPresenter {
     }
 
     func albumPickerUpdateEventTriggered() {
-        mediaLibraryAlbumListModule.input.updateAlbumList()
+        mediaItemCollectionsModule.input.updateAlbumList()
     }
 
     func filterVideosEventTriggered() {
-        mediaLibraryItemListModule.input.filter = .video
+        mediaLibraryItemsModule.input.filter = .video
     }
 
     func filterAllEventTriggered() {
-        mediaLibraryItemListModule.input.filter = .all
+        mediaLibraryItemsModule.input.filter = .all
     }
 
     func confirmationEventTriggered() {
-        var selectedItems = mediaLibraryItemListModule.input.selectedItems
-        if let fetchResult = mediaLibraryItemListModule.input.fetchResult?.fetchResult {
+        var selectedItems = mediaLibraryItemsModule.input.selectedItems
+        if let fetchResult = mediaLibraryItemsModule.input.fetchResult?.fetchResult {
             let mediaItems: [MediaItem] = (0..<fetchResult.count).map { index -> MediaItem in
                 let asset = fetchResult.object(at: index)
                 return MediaItem(asset: asset)
@@ -113,8 +113,8 @@ final class MediaLibraryPresenter {
             return
         }
 
-        view?.setup(with: collection, filter: mediaLibraryItemListModule.input.filter)
-        mediaLibraryItemListModule.input.collection = collection
+        view?.setup(with: collection, filter: mediaLibraryItemsModule.input.filter)
+        mediaLibraryItemsModule.input.collection = collection
     }
 }
 

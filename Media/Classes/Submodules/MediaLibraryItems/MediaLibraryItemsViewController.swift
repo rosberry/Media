@@ -13,6 +13,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
     private lazy var factory: MediaLibraryItemSectionsFactory = {
         let factory = MediaLibraryItemSectionsFactory()
         factory.output = presenter
+        factory.numberOfItemsInRow = numberOfItemsInRow
         return factory
     }()
     
@@ -23,6 +24,12 @@ public final class MediaLibraryItemsViewController: UIViewController {
     }()
     
     private lazy var mediaItemPreviewViewController = presenter.mediaItemPreviewModule.viewController
+
+    var numberOfItemsInRow: Int = 4 {
+        didSet {
+            factory.numberOfItemsInRow = numberOfItemsInRow
+        }
+    }
     
     // MARK: - Subviews
     

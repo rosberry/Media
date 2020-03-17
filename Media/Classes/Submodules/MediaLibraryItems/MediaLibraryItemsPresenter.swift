@@ -17,13 +17,23 @@ public final class MediaLibraryItemsPresenter {
     }
 
     private let dependencies: MediaLibraryItemsDependencies
-    weak var view: MediaLibraryItemsViewController?
+    weak var view: MediaLibraryItemsViewController? {
+        didSet {
+            view?.numberOfItemsInRow = numberOfItemsInRow
+        }
+    }
 
     weak var output: MediaLibraryItemsModuleOutput?
 
     public var collection: MediaItemCollection? {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
+        }
+    }
+
+    public var numberOfItemsInRow: Int = 4 {
+        didSet {
+            view?.numberOfItemsInRow = numberOfItemsInRow
         }
     }
 
