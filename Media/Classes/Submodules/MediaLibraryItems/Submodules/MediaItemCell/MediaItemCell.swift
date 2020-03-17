@@ -22,14 +22,14 @@ class MediaItemCell: UICollectionViewCell {
     
     // MARK: - Subviews
     
-    private lazy var imageView: UIImageView = {
+    private(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
 
-    private lazy var infoView: UIView = {
+    private(set) lazy var infoView: UIView = {
         let view = UIView()
         view.backgroundColor = .main1
         return view
@@ -47,20 +47,10 @@ class MediaItemCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var selectionView: UIView = {
-        let view = UIView()
-        view.layer.borderColor = UIColor.main1.cgColor
-        view.layer.borderWidth = 2.0
-        view.layer.masksToBounds = true
-        view.backgroundColor = .main2c
+    private(set) lazy var selectionView: SelectionView = {
+        let view = SelectionView()
         view.alpha = 0.0
         return view
-    }()
-
-    private(set) lazy var selectionInfoLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .main1
-        return label
     }()
 
     // MARK: - Lifecycle
@@ -80,7 +70,6 @@ class MediaItemCell: UICollectionViewCell {
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
-        selectionView.addSubview(selectionInfoLabel)
         contentView.addSubview(selectionView)
 
         infoView.addSubview(infoLabel)
@@ -97,10 +86,6 @@ class MediaItemCell: UICollectionViewCell {
         imageView.frame = contentView.bounds
         selectionView.frame = contentView.bounds
 
-        selectionInfoLabel.configureFrame { (maker: Maker) in
-            maker.right().top()
-            maker.width(28).height(28)
-        }
         infoView.configureFrame { (maker: Maker) in
             maker.height(16).bottom()
         }
@@ -143,12 +128,12 @@ class MediaItemCell: UICollectionViewCell {
         imageView.image = viewModel.item.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0
-            selectionInfoLabel.text = "\(selectionIndex + 1)"
+            selectionView.selectionInfoLabel.text = "\(selectionIndex + 1)"
             imageView.layer.cornerRadius = selectionView.layer.cornerRadius
         }
         else {
             selectionView.alpha = 0.0
-            selectionInfoLabel.text = nil
+            selectionView.selectionInfoLabel.text = nil
             imageView.layer.cornerRadius = 0.0
         }
         setNeedsLayout()

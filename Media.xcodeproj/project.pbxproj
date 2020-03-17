@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06A629F9242113130099B130 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A629F8242113130099B130 /* SelectionView.swift */; };
 		1373B00122DC235400F28EF0 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 1373AFFF22DC235400F28EF0 /* Media.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1373B06722DC237700F28EF0 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B00822DC237600F28EF0 /* Strings.swift */; };
 		1373B06822DC237700F28EF0 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B00922DC237600F28EF0 /* Assets.swift */; };
@@ -74,6 +75,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06A629F8242113130099B130 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		1373AFFC22DC235400F28EF0 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1373AFFF22DC235400F28EF0 /* Media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Media.h; sourceTree = "<group>"; };
 		1373B00022DC235400F28EF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				1373B04D22DC237600F28EF0 /* MediaItemCellModel.swift */,
 				1373B04E22DC237600F28EF0 /* MediaItemCellItem.swift */,
 				1373B04F22DC237600F28EF0 /* MediaItemCell.swift */,
+				06A629F8242113130099B130 /* SelectionView.swift */,
 			);
 			path = MediaItemCell;
 			sourceTree = "<group>";
@@ -558,6 +561,7 @@
 				1373B09D22DC237700F28EF0 /* MediaLibraryPhotoMediaItemCell.swift in Sources */,
 				1373B07F22DC237700F28EF0 /* CATransaction+Block.swift in Sources */,
 				1373B08222DC237700F28EF0 /* UIColor+Tools.swift in Sources */,
+				06A629F9242113130099B130 /* SelectionView.swift in Sources */,
 				1373B08522DC237700F28EF0 /* UIImage+Orientation.swift in Sources */,
 				1373B09122DC237700F28EF0 /* MediaItemCollectionSectionsFactory.swift in Sources */,
 				1373B08B22DC237700F28EF0 /* PermissionsPlaceholderView.swift in Sources */,

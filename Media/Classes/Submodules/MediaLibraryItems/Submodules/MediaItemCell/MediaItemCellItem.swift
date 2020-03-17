@@ -65,7 +65,7 @@ final class MediaItemCellItem<Cell: MediaItemCell>: CollectionViewCellItem {
 
             self.cell?.update(with: self.viewModel)
         }
-        cell.selectionInfoLabel.isHidden = isSelectionInfoLabelHidden
+        cell.selectionView.selectionInfoLabel.isHidden = isSelectionInfoLabelHidden
     }
 
     func willDisplay(cell: UICollectionViewCell) {
