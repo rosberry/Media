@@ -3,16 +3,15 @@
 //
 
 import UIKit
-import Texstyle
 
-final class MediaLibraryPhotoMediaItemCell: MediaLibraryBaseMediaItemCell {
+final class MediaLibraryPhotoMediaItemCell: MediaItemCell {
 
-    override func update(with viewModel: MediaLibraryBaseMediaItemCellModel) {
+    override func update(with viewModel: MediaItemCellModel) {
         super.update(with: viewModel)
 
         if viewModel.item.type.isLivePhoto {
             typeImageView.image = Asset.icLivePhotoXs.image
-            infoLabel.attributedText = Text(value: L10n.MediaLibrary.Item.live, style: .paragraph5).attributed
+            infoLabel.text = L10n.MediaLibrary.Item.live
         }
         else {
             typeImageView.image = nil

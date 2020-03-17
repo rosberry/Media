@@ -5,7 +5,7 @@
 import Foundation
 import UIKit.UIImage
 
-final class MediaLibraryBaseMediaItemCellModel {
+final class MediaItemCellModel {
 
     let item: MediaItem
     var selectionIndex: Int?

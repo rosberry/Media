@@ -3,15 +3,14 @@
 //
 
 import UIKit
-import Texstyle
 import Framezilla
 
-protocol MediaLibraryBaseMediaItemCellDelegate: AnyObject {
+protocol MediaItemCellDelegate: AnyObject {
     func didRequestPreviewStart(_ sender: UICollectionViewCell)
     func didRequsetPreviewStop(_ sender: UICollectionViewCell)
 }
 
-class MediaLibraryBaseMediaItemCell: UICollectionViewCell {
+class MediaItemCell: UICollectionViewCell {
 
     private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(viewPressed))
@@ -19,7 +18,7 @@ class MediaLibraryBaseMediaItemCell: UICollectionViewCell {
         return recognizer
     }()
     
-    weak var delegate: MediaLibraryBaseMediaItemCellDelegate?
+    weak var delegate: MediaItemCellDelegate?
     
     // MARK: - Subviews
     
@@ -140,11 +139,11 @@ class MediaLibraryBaseMediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: MediaLibraryBaseMediaItemCellModel) {
+    func update(with viewModel: MediaItemCellModel) {
         imageView.image = viewModel.item.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0
-            selectionInfoLabel.attributedText = Text(value: "\(selectionIndex + 1)", style: .title2a).attributed
+            selectionInfoLabel.text = "\(selectionIndex + 1)"
             imageView.layer.cornerRadius = selectionView.layer.cornerRadius
         }
         else {

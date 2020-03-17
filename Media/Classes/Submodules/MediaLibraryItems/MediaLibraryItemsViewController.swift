@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import Texstyle
 import CollectionViewTools
 import Framezilla
 
@@ -141,7 +140,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
             }
             for cellIndex in 0..<cellItemsDataSource.itemCount {
                 let cellItem = cellItemsDataSource.cellItem(at: cellIndex)
-                if let baseCellItem = cellItem as? MediaLibraryBaseMediaItemCellItem {
+                if let baseCellItem = cellItem as? MediaItemCellItem {
                     if let index = items.firstIndex(of: baseCellItem.viewModel.item) {
                         baseCellItem.viewModel.selectionIndex = index
                         items.remove(at: index)
@@ -162,7 +161,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
             }
             for cellIndex in 0..<cellItemsDataSource.itemCount {
                 let cellItem = cellItemsDataSource.cellItem(at: cellIndex)
-                if let baseCellItem = cellItem as? MediaLibraryBaseMediaItemCellItem {
+                if let baseCellItem = cellItem as? MediaItemCellItem {
                     baseCellItem.viewModel.selectionIndex = handler(baseCellItem.viewModel.item)
                 }
             }

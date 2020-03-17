@@ -18,6 +18,6 @@ class MediaLibraryPlaceholderCell: UICollectionViewCell {
     }
 
     private func setup() {
-        contentView.backgroundColor = .main3
+        contentView.backgroundColor = UIColor.main3
     }
 }

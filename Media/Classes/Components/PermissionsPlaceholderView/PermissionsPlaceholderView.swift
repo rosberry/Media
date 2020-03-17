@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import Texstyle
 import Framezilla
 
 final class PermissionsPlaceholderView: UIView {

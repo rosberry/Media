@@ -5,6 +5,9 @@
 import Foundation
 import CollectionViewTools
 
+typealias PhotoMediaItemCellItem = MediaItemCellItem<MediaLibraryPhotoMediaItemCell>
+typealias VideoMediaItemCellItem = MediaItemCellItem<MediaLibraryVideoMediaItemCell>
+
 protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
     func didSelect(item: MediaItem)
 
@@ -20,27 +23,27 @@ final class MediaLibraryItemSectionsFactory {
     func makeCellItem(mediaItem: MediaItem,
                       selectionIndex: Int?,
                       isSelectionInfoLabelHidden: Bool) -> CollectionViewCellItem {
-        let cellModel = MediaLibraryBaseMediaItemCellModel(mediaItem: mediaItem, selectionIndex: selectionIndex)
+        let cellModel = MediaItemCellModel(mediaItem: mediaItem, selectionIndex: selectionIndex)
 
         let cellItem: CollectionViewCellItem
         switch mediaItem.type {
         case .unknown:
             cellItem = MediaLibraryPlaceholderCellItem()
         case .photo, .livePhoto:
-            cellItem = MediaLibraryPhotoMediaItemCellItem(viewModel: cellModel,
-                                                          dependencies: Services,
-                                                          isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            cellItem = PhotoMediaItemCellItem(viewModel: cellModel,
+                                              dependencies: Services,
+                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
         case .video, .sloMoVideo:
-            cellItem = MediaLibraryVideoMediaItemCellItem(viewModel: cellModel,
-                                                          dependencies: Services,
-                                                          isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            cellItem = VideoMediaItemCellItem(viewModel: cellModel,
+                                              dependencies: Services,
+                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
         }
 
         cellItem.itemDidSelectHandler = { [weak self] in
             self?.output?.didSelect(item: mediaItem)
         }
 
-        if let mediaCellItem = cellItem as? MediaLibraryBaseMediaItemCellItem {
+        if let mediaCellItem = cellItem as? MediaItemCellItem {
             mediaCellItem.previewStartHandler = { [weak output] (_, rect: CGRect) in
                 output?.didRequestPreviewStart(item: mediaItem, from: rect)
             }

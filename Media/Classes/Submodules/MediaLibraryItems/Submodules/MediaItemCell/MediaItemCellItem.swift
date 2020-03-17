@@ -5,8 +5,8 @@
 import UIKit
 import CollectionViewTools
 
-class MediaLibraryBaseMediaItemCellItem: CollectionViewCellItem {
-    typealias Cell = MediaLibraryBaseMediaItemCell
+final class MediaItemCellItem<Cell: MediaItemCell>: CollectionViewCellItem {
+    
     typealias Dependencies = HasMediaLibraryService
 
     private var cell: Cell? {
@@ -16,16 +16,19 @@ class MediaLibraryBaseMediaItemCellItem: CollectionViewCellItem {
         }
     }
 
-    let viewModel: MediaLibraryBaseMediaItemCellModel
+    let viewModel: MediaItemCellModel
     private let dependencies: Dependencies
-    var reuseType = ReuseType.class(Cell.self)
+    
+    var reuseType: ReuseType {
+        .class(Cell.self)
+    }
 
-    var previewStartHandler: ((MediaLibraryBaseMediaItemCellModel, CGRect) -> Void)?
-    var previewStopHandler: ((MediaLibraryBaseMediaItemCellModel) -> Void)?
+    var previewStartHandler: ((MediaItemCellModel, CGRect) -> Void)?
+    var previewStopHandler: ((MediaItemCellModel) -> Void)?
     
     var isSelectionInfoLabelHidden: Bool
 
-    init(viewModel: MediaLibraryBaseMediaItemCellModel,
+    init(viewModel: MediaItemCellModel,
          dependencies: Dependencies,
          isSelectionInfoLabelHidden: Bool) {
         self.viewModel = viewModel
@@ -78,9 +81,9 @@ class MediaLibraryBaseMediaItemCellItem: CollectionViewCellItem {
     }
 }
 
-// MARK: - MediaLibraryBaseMediaItemCellDelegate
+// MARK: - MediaItemCellDelegate
 
-extension MediaLibraryBaseMediaItemCellItem: MediaLibraryBaseMediaItemCellDelegate {
+extension MediaItemCellItem: MediaItemCellDelegate {
 
     func didRequestPreviewStart(_ sender: UICollectionViewCell) {
         previewStartHandler?(viewModel, sender.frame)
