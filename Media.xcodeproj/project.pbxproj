@@ -70,8 +70,8 @@
 		1373B0A322DC237700F28EF0 /* MediaLibraryItemSectionsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05A22DC237600F28EF0 /* MediaLibraryItemSectionsFactory.swift */; };
 		1373B0A422DC237700F28EF0 /* MediaLibraryItemsModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05B22DC237600F28EF0 /* MediaLibraryItemsModule.swift */; };
 		1373B0A722DC237700F28EF0 /* MainServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06022DC237600F28EF0 /* MainServiceFactory.swift */; };
-		1373B0A822DC237700F28EF0 /* MediaLibraryServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06222DC237600F28EF0 /* MediaLibraryServiceProtocol.swift */; };
-		1373B0A922DC237700F28EF0 /* MediaLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06322DC237600F28EF0 /* MediaLibraryService.swift */; };
+		1373B0A822DC237700F28EF0 /* MediaLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06222DC237600F28EF0 /* MediaLibraryService.swift */; };
+		1373B0A922DC237700F28EF0 /* MediaLibraryServiceImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06322DC237600F28EF0 /* MediaLibraryServiceImp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,8 +140,8 @@
 		1373B05A22DC237600F28EF0 /* MediaLibraryItemSectionsFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryItemSectionsFactory.swift; sourceTree = "<group>"; };
 		1373B05B22DC237600F28EF0 /* MediaLibraryItemsModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryItemsModule.swift; sourceTree = "<group>"; };
 		1373B06022DC237600F28EF0 /* MainServiceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainServiceFactory.swift; sourceTree = "<group>"; };
-		1373B06222DC237600F28EF0 /* MediaLibraryServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryServiceProtocol.swift; sourceTree = "<group>"; };
-		1373B06322DC237600F28EF0 /* MediaLibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryService.swift; sourceTree = "<group>"; };
+		1373B06222DC237600F28EF0 /* MediaLibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryService.swift; sourceTree = "<group>"; };
+		1373B06322DC237600F28EF0 /* MediaLibraryServiceImp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryServiceImp.swift; sourceTree = "<group>"; };
 		1373B0AD22DC246000F28EF0 /* Framezilla.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Framezilla.framework; path = Carthage/Build/iOS/Framezilla.framework; sourceTree = "<group>"; };
 		1373B0AE22DC246000F28EF0 /* CollectionViewTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewTools.framework; path = Carthage/Build/iOS/CollectionViewTools.framework; sourceTree = "<group>"; };
 		1373B0AF22DC246000F28EF0 /* Ion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ion.framework; path = Carthage/Build/iOS/Ion.framework; sourceTree = "<group>"; };
@@ -435,8 +435,8 @@
 		1373B06122DC237600F28EF0 /* MediaLibraryService */ = {
 			isa = PBXGroup;
 			children = (
-				1373B06222DC237600F28EF0 /* MediaLibraryServiceProtocol.swift */,
-				1373B06322DC237600F28EF0 /* MediaLibraryService.swift */,
+				1373B06222DC237600F28EF0 /* MediaLibraryService.swift */,
+				1373B06322DC237600F28EF0 /* MediaLibraryServiceImp.swift */,
 			);
 			path = MediaLibraryService;
 			sourceTree = "<group>";
@@ -569,7 +569,7 @@
 				1373B09222DC237700F28EF0 /* MediaItemCollectionsController.swift in Sources */,
 				1373B09A22DC237700F28EF0 /* MediaItemCellItem.swift in Sources */,
 				1373B08022DC237700F28EF0 /* UIColor+Sugar.swift in Sources */,
-				1373B0A922DC237700F28EF0 /* MediaLibraryService.swift in Sources */,
+				1373B0A922DC237700F28EF0 /* MediaLibraryServiceImp.swift in Sources */,
 				1373B08422DC237700F28EF0 /* UIColor+Application.swift in Sources */,
 				1373B08722DC237700F28EF0 /* CGImage+PixelBuffer.swift in Sources */,
 				1373B09F22DC237700F28EF0 /* MediaLibraryPlaceholderCellItem.swift in Sources */,
@@ -589,7 +589,7 @@
 				1373B07E22DC237700F28EF0 /* UIViewController+Child.swift in Sources */,
 				1373B08A22DC237700F28EF0 /* PlayerView.swift in Sources */,
 				1373B07922DC237700F28EF0 /* MediaItemFilter.swift in Sources */,
-				1373B0A822DC237700F28EF0 /* MediaLibraryServiceProtocol.swift in Sources */,
+				1373B0A822DC237700F28EF0 /* MediaLibraryService.swift in Sources */,
 				1373B07A22DC237700F28EF0 /* MediaItemFetchResult.swift in Sources */,
 				1373B08822DC237700F28EF0 /* UIFont+Application.swift in Sources */,
 				1373B08F22DC237700F28EF0 /* MediaItemPreviewViewController.swift in Sources */,
