@@ -11,8 +11,7 @@ public protocol HasMediaLibraryService {
 
 public protocol MediaLibraryServiceProtocol: AnyObject {
 
-    typealias ImageCompletion = (UIImage?) -> Void
-    typealias AssetCompletion = (AVAsset?) -> Void
+    typealias Completion<T> = (T) -> Void
 
     // MARK: - Sources
 
@@ -33,11 +32,11 @@ public protocol MediaLibraryServiceProtocol: AnyObject {
 
     // MARK: - Thumbnails
 
-    func fetchThumbnail(for item: MediaItem, completion: @escaping ImageCompletion)
-    func fetchThumbnail(for collection: MediaItemCollection, completion: @escaping ImageCompletion)
+    func fetchThumbnail(for item: MediaItem, completion: @escaping Completion<UIImage?>)
+    func fetchThumbnail(for collection: MediaItemCollection, completion: @escaping Completion<UIImage?>)
 
     // MARK: - Data
 
-    func fetchImage(for item: MediaItem, completion: @escaping ImageCompletion)
-    func fetchVideoAsset(for item: MediaItem, completion: @escaping AssetCompletion)
+    func fetchImage(for item: MediaItem, completion: @escaping Completion<UIImage?>)
+    func fetchVideoAsset(for item: MediaItem, completion: @escaping Completion<AVAsset?>)
 }

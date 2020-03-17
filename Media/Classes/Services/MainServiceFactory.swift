@@ -4,8 +4,7 @@
 
 import Foundation
 
-typealias ServicesAlias = HasMediaLibraryService &
-                            HasUserConfigService
+typealias ServicesAlias = HasMediaLibraryService
 
 var Services: MainServicesFactory = { // swiftlint:disable:this variable_name
     return MainServicesFactory()
@@ -33,15 +32,7 @@ final class MainServicesFactory {
                 return parent.mediaLibraryService
             }
             
-            return MediaLibraryService(videoGenerationService: self.videoGenerationService)
-        }()
-        
-        lazy var videoGenerationService: VideoGenerationServiceProtocol = {
-            return VideoGenerationService()
-        }()
-        
-        lazy var userConfigService: UserConfigServiceProtocol = {
-            return UserConfigService()
+            return MediaLibraryService()
         }()
     }
     

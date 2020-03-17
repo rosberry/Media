@@ -7,8 +7,7 @@ import UIKit
 import Photos
 import CollectionViewTools
 
-typealias MediaLibraryItemListDependencies = HasMediaLibraryService &
-                                             HasUserConfigService
+typealias MediaLibraryItemListDependencies = HasMediaLibraryService
 
 public final class MediaLibraryItemListPresenter {
 
@@ -45,7 +44,6 @@ public final class MediaLibraryItemListPresenter {
     var mediaLibraryCollections: [MediaItemCollection] = []
     var activeCollection: MediaItemCollection? {
         didSet {
-            dependencies.userConfigService.mediaLibraryAlbum = activeCollection?.identifier
             collection = activeCollection
         }
     }
@@ -53,15 +51,15 @@ public final class MediaLibraryItemListPresenter {
     private var focusDirection: FocusDirection = .down
 
     private lazy var mediaLibraryItemListCollector: Collector<MediaItemFetchResult> = {
-        return .init(source: self.dependencies.mediaLibraryService.mediaItemListEventSource)
+        return .init(source: dependencies.mediaLibraryService.mediaItemListEventSource)
     }()
     
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: self.dependencies.mediaLibraryService.permissionStatusEventSource)
+        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
     
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
-        return .init(source: self.dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
+        return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
     
     private lazy var factory: MediaLibraryItemListCellItemFactory = {
@@ -80,11 +78,8 @@ public final class MediaLibraryItemListPresenter {
     // MARK: - Lifecycle
 
     init(maxItemsCount: Int, dependencies: MediaLibraryItemListDependencies) {
-        self.dependencies = dependencies
-        if let filter = dependencies.userConfigService.mediaLibraryFilter {
-            self.filter = filter
-        }
         self.maxItemsCount = maxItemsCount
+        self.dependencies = dependencies
     }
 
     func viewReadyEventTriggered() {

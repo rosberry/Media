@@ -8,30 +8,24 @@ import Photos
 public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
 
     private lazy var permissionStatusEmitter: Emitter<PHAuthorizationStatus> = .init()
-    lazy public var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> = .init(self.permissionStatusEmitter)
+    lazy public var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> = .init(permissionStatusEmitter)
 
     private lazy var mediaItemListEmitter: Emitter<MediaItemFetchResult> = .init()
-    lazy public var mediaItemListEventSource: AnyEventSource<MediaItemFetchResult> = .init(self.mediaItemListEmitter)
+    lazy public var mediaItemListEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemListEmitter)
 
     private lazy var collectionListEmitter: Emitter<[MediaItemCollection]> = .init()
-    lazy public var collectionListEventSource: AnyEventSource<[MediaItemCollection]> = .init(self.collectionListEmitter)
+    lazy public var collectionListEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionListEmitter)
 
     private lazy var mediaLibraryUpdateEmitter: Emitter<PHChange> = .init()
-    lazy public var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> = .init(self.mediaLibraryUpdateEmitter)
+    lazy public var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> = .init(mediaLibraryUpdateEmitter)
 
     private lazy var mediaItemFetchProgressEmitter: Emitter<Float> = .init()
-    lazy public var mediaItemFetchProgressEventSource: AnyEventSource<Float> = .init(self.mediaItemFetchProgressEmitter)
+    lazy public var mediaItemFetchProgressEventSource: AnyEventSource<Float> = .init(mediaItemFetchProgressEmitter)
 
     private lazy var manager: PHCachingImageManager = .init()
     private let thumbnailCache: NSCache<NSString, UIImage> = .init()
 
-    private let videoGenerationService: VideoGenerationServiceProtocol
     private var didRegisterForMediaLibraryUpdates: Bool = false
-
-    public init(videoGenerationService: VideoGenerationServiceProtocol) {
-        self.videoGenerationService = videoGenerationService
-        super.init()
-    }
 
     // MARK: - Permissions
 
@@ -121,7 +115,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
 
     // MARK: - Thumbnails
 
-    public func fetchThumbnail(for item: MediaItem, completion: @escaping ImageCompletion) {
+    public func fetchThumbnail(for item: MediaItem, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = item.thumbnail {
             completion(thumbnail)
             return
@@ -144,7 +138,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         }
     }
 
-    public func fetchThumbnail(for collection: MediaItemCollection, completion: @escaping ImageCompletion) {
+    public func fetchThumbnail(for collection: MediaItemCollection, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = collection.thumbnail {
             completion(thumbnail)
             return
@@ -185,7 +179,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
 
     // MARK: - Data
 
-    public func fetchImage(for item: MediaItem, completion: @escaping ImageCompletion) {
+    public func fetchImage(for item: MediaItem, completion: @escaping Completion<UIImage?>) {
         guard let asset = fetchAsset(for: item) else {
             completion(nil)
             return
@@ -214,7 +208,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         }
     }
 
-    public func fetchVideoAsset(for item: MediaItem, completion: @escaping AssetCompletion) {
+    public func fetchVideoAsset(for item: MediaItem, completion: @escaping Completion<AVAsset?>) {
         guard let asset = fetchAsset(for: item) else {
             completion(nil)
             return
@@ -261,7 +255,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
                     return completion(nil)
                 }
 
-                let url = self.videoGenerationService.prepareOutputURL(forAssetIdentifier: videoResource.assetLocalIdentifier)
+                let url = self.prepareOutputURL(forAssetIdentifier: videoResource.assetLocalIdentifier)
                 let requestOptions = PHAssetResourceRequestOptions()
                 requestOptions.isNetworkAccessAllowed = true
 
@@ -278,13 +272,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
             }
         }
         else {
-            fetchImage(for: item, completion: { (image: UIImage?) in
-                guard let image = image else {
-                    return completion(nil)
-                }
-
-                self.videoGenerationService.createAVAsset(for: image, identifier: item.identifier, completion: completion)
-            })
+            completion(nil)
         }
     }
     
@@ -296,6 +284,14 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
             return MediaItemCollection(identifier: "id", title: "null")
         }
         return MediaItemCollection(collection: allItemsCollection)
+    }
+
+    public func prepareOutputURL(forAssetIdentifier identifier: String) -> URL {
+        let url =  URL(fileURLWithPath: NSTemporaryDirectory())
+            .appendingPathComponent(identifier.replacingOccurrences(of: "/", with: "_"))
+            .appendingPathExtension("mov")
+        try? FileManager.default.removeItem(at: url)
+        return url
     }
 
     // MARK: - Helpers
@@ -318,7 +314,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         return PHAsset.fetchAssets(withLocalIdentifiers: [item.identifier], options: fetchOptions).firstObject
     }
 
-    private func fetchThumbnail(for asset: PHAsset, completion: @escaping ImageCompletion) {
+    private func fetchThumbnail(for asset: PHAsset, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = thumbnailCache.object(forKey: asset.localIdentifier as NSString) {
             return completion(thumbnail)
         }

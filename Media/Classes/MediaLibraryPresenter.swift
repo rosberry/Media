@@ -5,8 +5,7 @@
 import Ion
 import Photos
 
-typealias MediaLibraryDependencies = HasMediaLibraryService &
-                                        HasUserConfigService
+typealias MediaLibraryDependencies = HasMediaLibraryService
 
 final class MediaLibraryPresenter {
 
@@ -18,17 +17,16 @@ final class MediaLibraryPresenter {
     var mediaLibraryCollections: [MediaItemCollection] = []
     var activeCollection: MediaItemCollection? {
         didSet {
-            dependencies.userConfigService.mediaLibraryAlbum = activeCollection?.identifier
             updateMediaItemList()
         }
     }
 
     private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
-        return .init(source: self.dependencies.mediaLibraryService.collectionListEventSource)
+        return .init(source: dependencies.mediaLibraryService.collectionListEventSource)
     }()
     
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: self.dependencies.mediaLibraryService.permissionStatusEventSource)
+        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
 
     private let maxItemsCount: Int
@@ -64,12 +62,10 @@ final class MediaLibraryPresenter {
     }
 
     func filterVideosEventTriggered() {
-        dependencies.userConfigService.mediaLibraryFilter = .video
         mediaLibraryItemListModule.input.filter = .video
     }
 
     func filterAllEventTriggered() {
-        dependencies.userConfigService.mediaLibraryFilter = .all
         mediaLibraryItemListModule.input.filter = .all
     }
 
@@ -95,15 +91,7 @@ final class MediaLibraryPresenter {
             guard self.activeCollection == nil else {
                 return
             }
-
-            guard let identifier = self.dependencies.userConfigService.mediaLibraryAlbum else {
-                self.activeCollection = collections.first
-                return
-            }
-
-            self.activeCollection = collections.first(where: { (collection: MediaItemCollection) -> Bool in
-                return collection.identifier == identifier
-            }) ?? collections.first
+            self.activeCollection = collections.first
         }
     }
     

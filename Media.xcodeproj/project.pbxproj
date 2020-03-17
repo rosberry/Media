@@ -70,13 +70,9 @@
 		1373B0A222DC237700F28EF0 /* MediaLibraryItemListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05922DC237600F28EF0 /* MediaLibraryItemListPresenter.swift */; };
 		1373B0A322DC237700F28EF0 /* MediaLibraryItemListCellItemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05A22DC237600F28EF0 /* MediaLibraryItemListCellItemFactory.swift */; };
 		1373B0A422DC237700F28EF0 /* MediaLibraryItemListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05B22DC237600F28EF0 /* MediaLibraryItemListModule.swift */; };
-		1373B0A522DC237700F28EF0 /* UserConfigServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05E22DC237600F28EF0 /* UserConfigServiceProtocol.swift */; };
-		1373B0A622DC237700F28EF0 /* UserConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B05F22DC237600F28EF0 /* UserConfigService.swift */; };
 		1373B0A722DC237700F28EF0 /* MainServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06022DC237600F28EF0 /* MainServiceFactory.swift */; };
 		1373B0A822DC237700F28EF0 /* MediaLibraryServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06222DC237600F28EF0 /* MediaLibraryServiceProtocol.swift */; };
 		1373B0A922DC237700F28EF0 /* MediaLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06322DC237600F28EF0 /* MediaLibraryService.swift */; };
-		1373B0AA22DC237700F28EF0 /* VideoGenerationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06522DC237600F28EF0 /* VideoGenerationServiceProtocol.swift */; };
-		1373B0AB22DC237700F28EF0 /* VideoGenerationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06622DC237600F28EF0 /* VideoGenerationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -145,13 +141,9 @@
 		1373B05922DC237600F28EF0 /* MediaLibraryItemListPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryItemListPresenter.swift; sourceTree = "<group>"; };
 		1373B05A22DC237600F28EF0 /* MediaLibraryItemListCellItemFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryItemListCellItemFactory.swift; sourceTree = "<group>"; };
 		1373B05B22DC237600F28EF0 /* MediaLibraryItemListModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryItemListModule.swift; sourceTree = "<group>"; };
-		1373B05E22DC237600F28EF0 /* UserConfigServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigServiceProtocol.swift; sourceTree = "<group>"; };
-		1373B05F22DC237600F28EF0 /* UserConfigService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigService.swift; sourceTree = "<group>"; };
 		1373B06022DC237600F28EF0 /* MainServiceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainServiceFactory.swift; sourceTree = "<group>"; };
 		1373B06222DC237600F28EF0 /* MediaLibraryServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryServiceProtocol.swift; sourceTree = "<group>"; };
 		1373B06322DC237600F28EF0 /* MediaLibraryService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryService.swift; sourceTree = "<group>"; };
-		1373B06522DC237600F28EF0 /* VideoGenerationServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoGenerationServiceProtocol.swift; sourceTree = "<group>"; };
-		1373B06622DC237600F28EF0 /* VideoGenerationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoGenerationService.swift; sourceTree = "<group>"; };
 		1373B0AD22DC246000F28EF0 /* Framezilla.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Framezilla.framework; path = Carthage/Build/iOS/Framezilla.framework; sourceTree = "<group>"; };
 		1373B0AE22DC246000F28EF0 /* CollectionViewTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewTools.framework; path = Carthage/Build/iOS/CollectionViewTools.framework; sourceTree = "<group>"; };
 		1373B0AF22DC246000F28EF0 /* Ion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ion.framework; path = Carthage/Build/iOS/Ion.framework; sourceTree = "<group>"; };
@@ -437,21 +429,10 @@
 		1373B05C22DC237600F28EF0 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1373B05D22DC237600F28EF0 /* UserConfigService */,
 				1373B06022DC237600F28EF0 /* MainServiceFactory.swift */,
 				1373B06122DC237600F28EF0 /* MediaLibraryService */,
-				1373B06422DC237600F28EF0 /* VideoGenerationService */,
 			);
 			path = Services;
-			sourceTree = "<group>";
-		};
-		1373B05D22DC237600F28EF0 /* UserConfigService */ = {
-			isa = PBXGroup;
-			children = (
-				1373B05E22DC237600F28EF0 /* UserConfigServiceProtocol.swift */,
-				1373B05F22DC237600F28EF0 /* UserConfigService.swift */,
-			);
-			path = UserConfigService;
 			sourceTree = "<group>";
 		};
 		1373B06122DC237600F28EF0 /* MediaLibraryService */ = {
@@ -461,15 +442,6 @@
 				1373B06322DC237600F28EF0 /* MediaLibraryService.swift */,
 			);
 			path = MediaLibraryService;
-			sourceTree = "<group>";
-		};
-		1373B06422DC237600F28EF0 /* VideoGenerationService */ = {
-			isa = PBXGroup;
-			children = (
-				1373B06522DC237600F28EF0 /* VideoGenerationServiceProtocol.swift */,
-				1373B06622DC237600F28EF0 /* VideoGenerationService.swift */,
-			);
-			path = VideoGenerationService;
 			sourceTree = "<group>";
 		};
 		1373B0AC22DC246000F28EF0 /* Frameworks */ = {
@@ -591,13 +563,10 @@
 				1373B09D22DC237700F28EF0 /* MediaLibraryPhotoMediaItemCell.swift in Sources */,
 				1373B07F22DC237700F28EF0 /* CATransaction+Block.swift in Sources */,
 				1373B08222DC237700F28EF0 /* UIColor+Tools.swift in Sources */,
-				1373B0A622DC237700F28EF0 /* UserConfigService.swift in Sources */,
 				1373B08522DC237700F28EF0 /* UIImage+Orientation.swift in Sources */,
 				1373B09122DC237700F28EF0 /* MediaLibraryAlbumListCellItemFactory.swift in Sources */,
 				1373B08B22DC237700F28EF0 /* PermissionsPlaceholderView.swift in Sources */,
 				1373B09E22DC237700F28EF0 /* MediaLibraryPlaceholderCell.swift in Sources */,
-				1373B0A522DC237700F28EF0 /* UserConfigServiceProtocol.swift in Sources */,
-				1373B0AA22DC237700F28EF0 /* VideoGenerationServiceProtocol.swift in Sources */,
 				1373B09222DC237700F28EF0 /* MediaLibraryAlbumListViewController.swift in Sources */,
 				1373B09A22DC237700F28EF0 /* MediaLibraryBaseMediaItemCellItem.swift in Sources */,
 				1373B08022DC237700F28EF0 /* UIColor+Sugar.swift in Sources */,
@@ -609,7 +578,6 @@
 				1373B09C22DC237700F28EF0 /* MediaLibraryPhotoMediaItemCellItem.swift in Sources */,
 				1373B07C22DC237700F28EF0 /* MediaItemCollection.swift in Sources */,
 				1373B09622DC237700F28EF0 /* MediaLibraryAlbumListCell.swift in Sources */,
-				1373B0AB22DC237700F28EF0 /* VideoGenerationService.swift in Sources */,
 				1373B08D22DC237700F28EF0 /* DropdownButton.swift in Sources */,
 				1373B07622DC237700F28EF0 /* MediaLibraryViewController.swift in Sources */,
 				1373B07722DC237700F28EF0 /* MediaLibraryModule.swift in Sources */,

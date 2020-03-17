@@ -5,8 +5,7 @@
 import Ion
 import Photos
 
-typealias MediaLibraryAlbumListDependencies = HasMediaLibraryService &
-                                              HasUserConfigService
+typealias MediaLibraryAlbumListDependencies = HasMediaLibraryService
 
 final class MediaLibraryAlbumListPresenter {
 
@@ -18,15 +17,15 @@ final class MediaLibraryAlbumListPresenter {
     var collections: [MediaItemCollection]?
 
     private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
-        return .init(source: self.dependencies.mediaLibraryService.collectionListEventSource)
+        return .init(source: dependencies.mediaLibraryService.collectionListEventSource)
     }()
     
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: self.dependencies.mediaLibraryService.permissionStatusEventSource)
+        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
     
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
-        return .init(source: self.dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
+        return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
 
     // MARK: - Lifecycle
