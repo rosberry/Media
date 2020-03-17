@@ -98,20 +98,10 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         }
     }
 
-    private func fetchMediaItems(in collection: PHAssetCollection, mediaType: PHAssetMediaType?) -> PHFetchResult<PHAsset> {
-        let options = PHFetchOptions()
-
-        if let mediaType = mediaType {
-            options.predicate = NSPredicate(format: "mediaType = %d", mediaType.rawValue)
-        }
-
-        return PHAsset.fetchAssets(in: collection, options: options)
-    }
-
     // MARK: - Thumbnails
 
     public func fetchThumbnail(for item: MediaItem, size: CGSize, completion: @escaping Completion<UIImage?>) {
-        if let thumbnail = item.thumbnail {
+        if let thumbnail = item.thumbnail, thumbnail.size == size {
             completion(thumbnail)
             return
         }
@@ -134,7 +124,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
     }
 
     public func fetchThumbnail(for collection: MediaItemCollection, size: CGSize, completion: @escaping Completion<UIImage?>) {
-        if let thumbnail = collection.thumbnail {
+        if let thumbnail = collection.thumbnail, thumbnail.size == size {
             completion(thumbnail)
             return
         }
@@ -189,7 +179,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
             }
         }
 
-        manager.requestImageData(for: asset, options: requestOptions) { (imageData: Data?, _, _: UIImage.Orientation?, _) in
+        manager.requestImageData(for: asset, options: requestOptions) { (imageData: Data?, _, _, _) in
             guard let data = imageData else {
                 completion(nil)
                 return
@@ -281,8 +271,18 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         didRegisterForMediaLibraryUpdates = true
     }
 
+    private func fetchMediaItems(in collection: PHAssetCollection, mediaType: PHAssetMediaType?) -> PHFetchResult<PHAsset> {
+        let options = PHFetchOptions()
+
+        if let mediaType = mediaType {
+            options.predicate = NSPredicate(format: "mediaType = %d", mediaType.rawValue)
+        }
+
+        return PHAsset.fetchAssets(in: collection, options: options)
+    }
+
     private func prepareOutputURL(forAssetIdentifier identifier: String) -> URL {
-        let url =  URL(fileURLWithPath: NSTemporaryDirectory())
+        let url = URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent(identifier.replacingOccurrences(of: "/", with: "_"))
             .appendingPathExtension("mov")
         try? FileManager.default.removeItem(at: url)
