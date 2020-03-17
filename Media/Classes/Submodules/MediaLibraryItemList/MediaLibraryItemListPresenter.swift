@@ -109,7 +109,7 @@ public final class MediaLibraryItemListPresenter {
             case .denied:
                 self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
             case .authorized:
-                self.dependencies.mediaLibraryService.fetchMediaItemList(in: self.collection, filter: self.filter)
+                self.dependencies.mediaLibraryService.fetchMediaItems(in: self.collection, filter: self.filter)
             default:
                 break
             }
@@ -123,15 +123,14 @@ public final class MediaLibraryItemListPresenter {
             }
             self.fetchResult = result
             self.view?.update(with: self.dataSource(for: result.fetchResult), animated: true)
-            let isMixedContentCollection = result.containsMixedTypeContent
-            self.output?.didFinishLoading(collection: result.collection, isMixedContentCollection: isMixedContentCollection)
+            self.output?.didFinishLoading(collection: result.collection, isMixedContentCollection: result.filter == .all)
         }
     }
     
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
             if let filter = self?.filter {
-                self?.dependencies.mediaLibraryService.fetchMediaItemList(in: self?.collection, filter: filter)
+                self?.dependencies.mediaLibraryService.fetchMediaItems(in: self?.collection, filter: filter)
             }
         }
     }
@@ -177,7 +176,7 @@ public final class MediaLibraryItemListPresenter {
             view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection.estimatedMediaItemsCount ?? 64, 64))
         }
 
-        dependencies.mediaLibraryService.fetchMediaItemList(in: collection, filter: filter)
+        dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
     }
 
     func updateSelection() {

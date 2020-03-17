@@ -22,7 +22,7 @@ final class MediaLibraryPresenter {
     }
 
     private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
-        return .init(source: dependencies.mediaLibraryService.collectionListEventSource)
+        return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
     
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {

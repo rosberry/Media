@@ -8,7 +8,6 @@ public final class MediaItemFetchResult {
     public let collection: MediaItemCollection
     public let filter: MediaItemFilter
     public let fetchResult: PHFetchResult<PHAsset>
-    public var containsMixedTypeContent: Bool = false
 
     public init(collection: MediaItemCollection, filter: MediaItemFilter, fetchResult: PHFetchResult<PHAsset>) {
         self.collection = collection

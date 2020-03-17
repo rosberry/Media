@@ -13,8 +13,8 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
     private lazy var mediaItemListEmitter: Emitter<MediaItemFetchResult> = .init()
     lazy public var mediaItemListEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemListEmitter)
 
-    private lazy var collectionListEmitter: Emitter<[MediaItemCollection]> = .init()
-    lazy public var collectionListEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionListEmitter)
+    private lazy var collectionsEmitter: Emitter<[MediaItemCollection]> = .init()
+    lazy public var collectionsEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionsEmitter)
 
     private lazy var mediaLibraryUpdateEmitter: Emitter<PHChange> = .init()
     lazy public var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> = .init(mediaLibraryUpdateEmitter)
@@ -39,97 +39,92 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
 
     // MARK: - Lists
 
-    public func fetchMediaItemList(in collection: MediaItemCollection?, filter: MediaItemFilter = .all) {
+    public func fetchMediaItemCollections() {
+        DispatchQueue.global(qos: .background).async {
+            var collections = [MediaItemCollection]()
+
+            if let userLibraryCollection = self.fetchCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary).first {
+                collections.append(userLibraryCollection)
+            }
+
+            if let favoritesCollection = self.fetchCollections(with: .smartAlbum, subtype: .smartAlbumFavorites).first,
+                favoritesCollection.estimatedMediaItemsCount != 0 {
+                favoritesCollection.isFavorite = true
+                collections.append(favoritesCollection)
+            }
+
+            let allCollections = self.fetchCollections(with: .album, subtype: .any).filter { collection in
+                collection.estimatedMediaItemsCount != 0
+            }
+            collections.append(contentsOf: allCollections)
+
+            DispatchQueue.main.async {
+                self.registerForMediaLibraryUpdatesIfNeeded()
+                self.collectionsEmitter.replace(collections)
+            }
+        }
+    }
+
+    private func fetchCollections(with type: PHAssetCollectionType, subtype: PHAssetCollectionSubtype, options: PHFetchOptions? = nil) -> [MediaItemCollection] {
+        let result = PHAssetCollection.fetchAssetCollections(with: type,
+                                                             subtype: subtype,
+                                                             options: options)
+        var collections = [MediaItemCollection]()
+        result.enumerateObjects { collection, _, _ in
+            let collection = MediaItemCollection(collection: collection)
+            collections.append(collection)
+        }
+        return collections
+    }
+
+    public func fetchMediaItems(in collection: MediaItemCollection?, filter: MediaItemFilter = .all) {
         guard let collection = collection else {
-            fetchMediaItemList(in: fetchCameraRollItemCollection(), filter: filter)
+            let collection = fetchCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary).first
+            fetchMediaItems(in: collection, filter: filter)
             return
         }
         DispatchQueue.global(qos: .background).async {
-            let identifiers = [collection.identifier]
-            guard let assetCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: identifiers,
-                                                                                options: nil).firstObject else {
-                                                                                    return
+            guard let assetCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [collection.identifier], options: nil).firstObject else {
+                return
             }
+            let mediaType: PHAssetMediaType? = filter == .all ? nil : .video
+            let fetchResult = self.fetchMediaItems(in: assetCollection, mediaType: mediaType)
 
-            let options = PHFetchOptions()
-            let allResult = PHAsset.fetchAssets(in: assetCollection, options: options)
-
-            options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue)
-            let videoResult = PHAsset.fetchAssets(in: assetCollection, options: options)
-
-            let containsVideoItems = videoResult.count != 0
             DispatchQueue.main.async {
-                if self.didRegisterForMediaLibraryUpdates == false {
-                    PHPhotoLibrary.shared().register(self)
-                    self.didRegisterForMediaLibraryUpdates = true
-                }
-
-                let fetchResult = (containsVideoItems && (filter == .video)) ? videoResult : allResult
+                self.registerForMediaLibraryUpdatesIfNeeded()
                 let result = MediaItemFetchResult(collection: collection, filter: filter, fetchResult: fetchResult)
-                result.containsMixedTypeContent = containsVideoItems && (allResult.count != videoResult.count)
                 self.mediaItemListEmitter.replace(result)
             }
         }
     }
 
-    public func fetchMediaItemCollectionList() {
-        DispatchQueue.global(qos: .background).async {
-            var collections: [MediaItemCollection] = []
-            let allItemsCollectionResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
-                                                                                   subtype: .smartAlbumUserLibrary,
-                                                                                   options: nil)
-            if let allItemsCollection = allItemsCollectionResult.firstObject {
-                let collection = MediaItemCollection(collection: allItemsCollection)
-                collections.append(collection)
-            }
+    private func fetchMediaItems(in collection: PHAssetCollection, mediaType: PHAssetMediaType?) -> PHFetchResult<PHAsset> {
+        let options = PHFetchOptions()
 
-            let favoritesCollectionResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
-                                                                                    subtype: .smartAlbumFavorites,
-                                                                                    options: nil)
-            if let favoritesCollection = favoritesCollectionResult.firstObject,
-               PHAsset.fetchAssets(in: favoritesCollection, options: nil).firstObject != nil {
-                let collection = MediaItemCollection(collection: favoritesCollection)
-                collection.isFavorite = true
-                collections.append(collection)
-            }
-
-            let albumCollectionsResult = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
-            albumCollectionsResult.enumerateObjects { (album: PHAssetCollection, _, _) in
-                guard album.estimatedAssetCount != 0 else {
-                    return
-                }
-
-                let collection = MediaItemCollection(collection: album)
-                collections.append(collection)
-            }
-
-            DispatchQueue.main.async {
-                if self.didRegisterForMediaLibraryUpdates == false {
-                    PHPhotoLibrary.shared().register(self)
-                    self.didRegisterForMediaLibraryUpdates = true
-                }
-                self.collectionListEmitter.replace(collections)
-            }
+        if let mediaType = mediaType {
+            options.predicate = NSPredicate(format: "mediaType = %d", mediaType.rawValue)
         }
+
+        return PHAsset.fetchAssets(in: collection, options: options)
     }
 
     // MARK: - Thumbnails
 
-    public func fetchThumbnail(for item: MediaItem, completion: @escaping Completion<UIImage?>) {
+    public func fetchThumbnail(for item: MediaItem, size: CGSize, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = item.thumbnail {
             completion(thumbnail)
             return
         }
 
         DispatchQueue.global(qos: .background).async {
-            guard let asset = self.fetchAsset(for: item) else {
+            guard let asset = self.makeAsset(item: item) else {
                 DispatchQueue.main.async {
                     completion(nil)
                 }
                 return
             }
 
-            self.fetchThumbnail(for: asset) { (image: UIImage?) in
+            self.fetchThumbnail(for: asset, size: size) { (image: UIImage?) in
                 item.thumbnail = image
                 DispatchQueue.main.async {
                     completion(image)
@@ -138,7 +133,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         }
     }
 
-    public func fetchThumbnail(for collection: MediaItemCollection, completion: @escaping Completion<UIImage?>) {
+    public func fetchThumbnail(for collection: MediaItemCollection, size: CGSize, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = collection.thumbnail {
             completion(thumbnail)
             return
@@ -168,7 +163,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
                 return
             }
 
-            self.fetchThumbnail(for: asset) { (image: UIImage?) in
+            self.fetchThumbnail(for: asset, size: size) { (image: UIImage?) in
                 collection.thumbnail = image
                 DispatchQueue.main.async {
                     completion(image)
@@ -180,7 +175,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
     // MARK: - Data
 
     public func fetchImage(for item: MediaItem, completion: @escaping Completion<UIImage?>) {
-        guard let asset = fetchAsset(for: item) else {
+        guard let asset = makeAsset(item: item) else {
             completion(nil)
             return
         }
@@ -209,7 +204,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
     }
 
     public func fetchVideoAsset(for item: MediaItem, completion: @escaping Completion<AVAsset?>) {
-        guard let asset = fetchAsset(for: item) else {
+        guard let asset = makeAsset(item: item) else {
             completion(nil)
             return
         }
@@ -275,18 +270,18 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
             completion(nil)
         }
     }
-    
-    private func fetchCameraRollItemCollection() -> MediaItemCollection {
-        let allItemsCollectionResult = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
-                                                                               subtype: .smartAlbumUserLibrary,
-                                                                               options: nil)
-        guard let allItemsCollection = allItemsCollectionResult.firstObject else {
-            return MediaItemCollection(identifier: "id", title: "null")
+
+    // MARK: - Private
+
+    private func registerForMediaLibraryUpdatesIfNeeded() {
+        guard didRegisterForMediaLibraryUpdates == false else {
+            return
         }
-        return MediaItemCollection(collection: allItemsCollection)
+        PHPhotoLibrary.shared().register(self)
+        didRegisterForMediaLibraryUpdates = true
     }
 
-    public func prepareOutputURL(forAssetIdentifier identifier: String) -> URL {
+    private func prepareOutputURL(forAssetIdentifier identifier: String) -> URL {
         let url =  URL(fileURLWithPath: NSTemporaryDirectory())
             .appendingPathComponent(identifier.replacingOccurrences(of: "/", with: "_"))
             .appendingPathExtension("mov")
@@ -294,18 +289,7 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         return url
     }
 
-    // MARK: - Helpers
-
-    private func mediaItems(for assets: PHFetchResult<PHAsset>) -> [MediaItem] {
-        var items: [MediaItem] = []
-        assets.enumerateObjects(options: [.reverse]) { (asset: PHAsset, _, _) in
-            items.append(MediaItem(asset: asset))
-        }
-
-        return items
-    }
-
-    private func fetchAsset(for item: MediaItem) -> PHAsset? {
+    private func makeAsset(item: MediaItem) -> PHAsset? {
         if let asset = item.asset {
             return asset
         }
@@ -314,12 +298,12 @@ public final class MediaLibraryService: NSObject, MediaLibraryServiceProtocol {
         return PHAsset.fetchAssets(withLocalIdentifiers: [item.identifier], options: fetchOptions).firstObject
     }
 
-    private func fetchThumbnail(for asset: PHAsset, completion: @escaping Completion<UIImage?>) {
+    private func fetchThumbnail(for asset: PHAsset, size: CGSize, completion: @escaping Completion<UIImage?>) {
         if let thumbnail = thumbnailCache.object(forKey: asset.localIdentifier as NSString) {
-            return completion(thumbnail)
+            completion(thumbnail)
+            return
         }
 
-        let size = CGSize(width: 100.0, height: 100.0)
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.isNetworkAccessAllowed = true
