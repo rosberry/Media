@@ -26,7 +26,6 @@ public final class MediaItemCollectionsController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.main4
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
 

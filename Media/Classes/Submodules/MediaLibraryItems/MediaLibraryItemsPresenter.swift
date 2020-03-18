@@ -130,7 +130,7 @@ public final class MediaLibraryItemsPresenter {
             }
             self.fetchResult = result
             self.view?.update(with: self.dataSource(for: result.fetchResult), animated: true)
-            self.output?.didFinishLoading(collection: result.collection, isMixedContentCollection: result.filter == .all)
+            self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
         }
     }
 

@@ -7,6 +7,8 @@ import Media
 
 final class MainViewController: UIViewController {
 
+    private lazy var coordinator: MediaCoordinator = .init(navigationViewController: navigationController!)
+
     // MARK: - Subviews
 
     private lazy var mainButton: UIButton = {
@@ -90,7 +92,6 @@ final class MainViewController: UIViewController {
     }
 
     @objc func mainButtonPressed() {
-        let coordinator = MediaCoordinator(navigationViewController: navigationController!)
         coordinator.start()
     }
 }

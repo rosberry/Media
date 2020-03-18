@@ -20,7 +20,25 @@ public final class MediaCoordinator {
 
     // MARK: - Modules
 
-    lazy var module = MediaLibraryModule(maxItemsCount: 2)
+    lazy var mediaLibraryModule: MediaLibraryModule = {
+        let module = MediaLibraryModule(maxItemsCount: 2,
+                                        mediaItemCollectionsModule: mediaItemCollectionsModule,
+                                        mediaLibraryItemsModule: mediaLibraryItemsModule)
+        module.output = self
+        return module
+    }()
+
+    lazy var mediaItemCollectionsModule: MediaItemCollectionsModule = {
+        let module = MediaItemCollectionsModule()
+        module.output = self
+        return module
+    }()
+
+    lazy var mediaLibraryItemsModule: MediaLibraryItemsModule = {
+        let module = MediaLibraryItemsModule(maxItemsCount: 2)
+        module.output = self
+        return module
+    }()
 
     // MARK: - Lifecycle
 
@@ -30,6 +48,30 @@ public final class MediaCoordinator {
 
     public func start() {
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
-        navigationViewController.pushViewController(module.viewController, animated: true)
+        navigationViewController.pushViewController(mediaLibraryModule.viewController, animated: true)
+    }
+}
+
+// MARK: - MediaLibraryModuleOutput
+extension MediaCoordinator: MediaLibraryModuleOutput {
+
+    public func mediaLibraryModuleDidFinish(_ moduleInput: MediaLibraryModuleInput, with items: [MediaItem]) {
+        navigationViewController.popViewController(animated: true)
+    }
+}
+
+// MARK: - MediaItemCollectionsModuleOutput
+extension MediaCoordinator: MediaItemCollectionsModuleOutput {
+
+    public func didSelect(_ collection: MediaItemCollection) {
+        mediaLibraryModule.input.select(collection)
+    }
+}
+
+// MARK: - MediaLibraryItemsModuleOutput
+extension MediaCoordinator: MediaLibraryItemsModuleOutput {
+
+    public func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool) {
+
     }
 }

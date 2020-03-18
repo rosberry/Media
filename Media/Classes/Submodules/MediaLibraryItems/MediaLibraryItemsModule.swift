@@ -18,7 +18,7 @@ public protocol MediaLibraryItemsModuleInput: AnyObject {
 }
 
 public protocol MediaLibraryItemsModuleOutput: AnyObject {
-    func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool)
+    func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool)
 }
 
 public final class MediaLibraryItemsModule {

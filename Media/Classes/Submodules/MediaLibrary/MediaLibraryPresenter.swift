@@ -33,23 +33,19 @@ final class MediaLibraryPresenter {
 
     // MARK: - Submodules
 
-    lazy var mediaItemCollectionsModule: MediaItemCollectionsModule = {
-        let module = MediaItemCollectionsModule()
-        module.output = self
-        return module
-    }()
-
-    lazy var mediaLibraryItemsModule: MediaLibraryItemsModule = {
-        let module = MediaLibraryItemsModule(maxItemsCount: maxItemsCount)
-        module.output = self
-        return module
-    }()
+    let mediaItemCollectionsModule: MediaItemCollectionsModule
+    let mediaLibraryItemsModule: MediaLibraryItemsModule
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, dependencies: MediaLibraryDependencies) {
+    init(maxItemsCount: Int,
+         dependencies: MediaLibraryDependencies,
+         mediaItemCollectionsModule: MediaItemCollectionsModule,
+         mediaLibraryItemsModule: MediaLibraryItemsModule) {
         self.maxItemsCount = maxItemsCount
         self.dependencies = dependencies
+        self.mediaItemCollectionsModule = mediaItemCollectionsModule
+        self.mediaLibraryItemsModule = mediaLibraryItemsModule
     }
 
     func viewReadyEventTriggered() {
@@ -121,22 +117,8 @@ final class MediaLibraryPresenter {
 // MARK: - MediaLibraryModuleInput
 
 extension MediaLibraryPresenter: MediaLibraryModuleInput {
-	//
-}
 
-// MARK: - MediaLibraryItemsModuleOutput
-
-extension MediaLibraryPresenter: MediaLibraryItemsModuleOutput {
-
-    func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool) {
-    }
-}
-
-// MARK: - MediaItemCollectionsModuleOutput
-
-extension MediaLibraryPresenter: MediaItemCollectionsModuleOutput {
-
-    func didSelect(_ collection: MediaItemCollection) {
+    func select(_ collection: MediaItemCollection) {
         view?.hideAlbumPicker()
         activeCollection = collection
     }

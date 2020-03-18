@@ -3,6 +3,8 @@
 //
 
 public protocol MediaLibraryModuleInput: AnyObject {
+
+    func select(_ collection: MediaItemCollection)
 }
 
 public protocol MediaLibraryModuleOutput: AnyObject {
@@ -28,8 +30,13 @@ public final class MediaLibraryModule {
     public let viewController: MediaLibraryViewController
     private let presenter: MediaLibraryPresenter
 
-    public init(maxItemsCount: Int) {
-        presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount, dependencies: Services)
+    public init(maxItemsCount: Int,
+                mediaItemCollectionsModule: MediaItemCollectionsModule,
+                mediaLibraryItemsModule: MediaLibraryItemsModule) {
+        presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount,
+                                          dependencies: Services,
+                                          mediaItemCollectionsModule: mediaItemCollectionsModule,
+                                          mediaLibraryItemsModule: mediaLibraryItemsModule)
         viewController = MediaLibraryViewController(presenter: presenter)
         presenter.view = viewController
     }
