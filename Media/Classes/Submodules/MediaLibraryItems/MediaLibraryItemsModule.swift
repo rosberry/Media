@@ -41,8 +41,8 @@ public final class MediaLibraryItemsModule {
     public let viewController: MediaLibraryItemsViewController
     private let presenter: MediaLibraryItemsPresenter
 
-    public init(maxItemsCount: Int = 1, collection: MediaItemCollection? = nil) {
-        presenter = MediaLibraryItemsPresenter(maxItemsCount: maxItemsCount, dependencies: Services)
+    public init(maxItemsCount: Int, numberOfItemsInRow: Int, collection: MediaItemCollection? = nil) {
+        presenter = MediaLibraryItemsPresenter(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow, dependencies: Services)
         viewController = MediaLibraryItemsViewController(presenter: presenter)
         presenter.view = viewController
         input.collection = collection

@@ -17,23 +17,13 @@ public final class MediaLibraryItemsPresenter {
     }
 
     private let dependencies: MediaLibraryItemsDependencies
-    weak var view: MediaLibraryItemsViewController? {
-        didSet {
-            view?.numberOfItemsInRow = numberOfItemsInRow
-        }
-    }
+    weak var view: MediaLibraryItemsViewController?
 
     weak var output: MediaLibraryItemsModuleOutput?
 
     public var collection: MediaItemCollection? {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
-        }
-    }
-
-    public var numberOfItemsInRow: Int = 4 {
-        didSet {
-            view?.numberOfItemsInRow = numberOfItemsInRow
         }
     }
 
@@ -69,7 +59,7 @@ public final class MediaLibraryItemsPresenter {
     }()
 
     private lazy var factory: MediaLibraryItemSectionsFactory = {
-        let factory = MediaLibraryItemSectionsFactory()
+        let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: numberOfItemsInRow)
         factory.output = self
         return factory
     }()
@@ -80,11 +70,13 @@ public final class MediaLibraryItemsPresenter {
     }()
 
     private let maxItemsCount: Int
+    public var numberOfItemsInRow: Int
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, dependencies: MediaLibraryItemsDependencies) {
+    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: MediaLibraryItemsDependencies) {
         self.maxItemsCount = maxItemsCount
+        self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
     }
 

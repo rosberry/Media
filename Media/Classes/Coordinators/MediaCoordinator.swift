@@ -24,10 +24,13 @@ public final class MediaCoordinator {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
 
+    public var maxItemsCount: Int = 2
+    public var numberOfItemsInRow: Int = 4
+
     // MARK: - Modules
 
     lazy var mediaLibraryModule: MediaLibraryModule = {
-        let module = MediaLibraryModule(maxItemsCount: 2,
+        let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
                                         mediaItemCollectionsModule: mediaItemCollectionsModule,
                                         mediaLibraryItemsModule: mediaLibraryItemsModule)
         module.output = self
@@ -41,7 +44,7 @@ public final class MediaCoordinator {
     }()
 
     lazy var mediaLibraryItemsModule: MediaLibraryItemsModule = {
-        let module = MediaLibraryItemsModule(maxItemsCount: 2)
+        let module = MediaLibraryItemsModule(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow)
         module.output = self
         return module
     }()
@@ -57,7 +60,8 @@ public final class MediaCoordinator {
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
         switch context {
             case .library:
-                navigationViewController.pushViewController(mediaLibraryModule.viewController, animated: true)
+                let module = makeMediaLibraryModule()
+                navigationViewController.pushViewController(module.viewController, animated: true)
             case .albums:
                 navigationViewController.pushViewController(mediaItemCollectionsModule.viewController, animated: true)
             case .items:
@@ -73,6 +77,14 @@ public final class MediaCoordinator {
             self?.mediaItemCollectionsModule.input.update(isAuthorized: status == .authorized)
             self?.mediaLibraryItemsModule.input.update(isAuthorized: status == .authorized)
         }
+    }
+
+    private func makeMediaLibraryModule() -> MediaLibraryModule {
+        let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
+                                        mediaItemCollectionsModule: mediaItemCollectionsModule,
+                                        mediaLibraryItemsModule: mediaLibraryItemsModule)
+        module.output = self
+        return module
     }
 }
 

@@ -16,7 +16,11 @@ final class MediaLibraryItemSectionsFactory {
 
     weak var output: MediaLibraryItemSectionsFactoryOutput?
 
-    var numberOfItemsInRow: Int = 4
+    let numberOfItemsInRow: Int
+
+    init(numberOfItemsInRow: Int) {
+        self.numberOfItemsInRow = numberOfItemsInRow
+    }
 
     // MARK: - Media Items
 
@@ -30,17 +34,15 @@ final class MediaLibraryItemSectionsFactory {
             case .unknown:
                 cellItem = PlaceholderCellItem()
             case .photo, .livePhoto:
-                let item = PhotoMediaItemCellItem(viewModel: cellModel,
+                cellItem = PhotoMediaItemCellItem(viewModel: cellModel,
                                                   dependencies: Services,
-                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-                item.numberOfItemsInRow = numberOfItemsInRow
-                cellItem = item
+                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden,
+                                                  numberOfItemsInRow: numberOfItemsInRow)
             case .video, .sloMoVideo:
-                let item = VideoMediaItemCellItem(viewModel: cellModel,
+                cellItem = VideoMediaItemCellItem(viewModel: cellModel,
                                                   dependencies: Services,
-                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-                item.numberOfItemsInRow = numberOfItemsInRow
-                cellItem = item
+                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden,
+                                                  numberOfItemsInRow: numberOfItemsInRow)
         }
 
         cellItem.itemDidSelectHandler = { [weak self] in

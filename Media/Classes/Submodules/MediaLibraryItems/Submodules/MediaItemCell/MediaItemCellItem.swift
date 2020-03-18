@@ -29,14 +29,16 @@ class MediaItemCellItem: CollectionViewCellItem {
 
     var isSelectionInfoLabelHidden: Bool
 
-    var numberOfItemsInRow: Int = 4
+    let numberOfItemsInRow: Int
 
     init(viewModel: MediaItemCellModel,
          dependencies: Dependencies,
-         isSelectionInfoLabelHidden: Bool) {
+         isSelectionInfoLabelHidden: Bool,
+         numberOfItemsInRow: Int) {
         self.viewModel = viewModel
         self.dependencies = dependencies
         self.isSelectionInfoLabelHidden = isSelectionInfoLabelHidden
+        self.numberOfItemsInRow = numberOfItemsInRow
     }
 
     func size() -> CGSize {
