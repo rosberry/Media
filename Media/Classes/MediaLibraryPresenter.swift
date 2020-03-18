@@ -21,7 +21,7 @@ final class MediaLibraryPresenter {
         }
     }
 
-    private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
+    private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
     
@@ -53,7 +53,7 @@ final class MediaLibraryPresenter {
     }
 
     func viewReadyEventTriggered() {
-        setupCollectionListCollector()
+        setupCollectionsCollector()
         setupPermissionsCollector()
     }
 
@@ -85,8 +85,8 @@ final class MediaLibraryPresenter {
 
     // MARK: - Helpers
 
-    private func setupCollectionListCollector() {
-        mediaLibraryCollectionListCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
+    private func setupCollectionsCollector() {
+        mediaLibraryCollectionsCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
             self?.mediaLibraryCollections = collections
             guard self?.activeCollection == nil else {
                 return
@@ -129,12 +129,6 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
 extension MediaLibraryPresenter: MediaLibraryItemsModuleOutput {
 
     func didFinishLoading(collection: MediaItemCollection, isMixedContentCollection: Bool) {
-        if isMixedContentCollection {
-            view?.showFilterSelector()
-        }
-        else {
-            view?.hideFilterSelector()
-        }
     }
 }
 

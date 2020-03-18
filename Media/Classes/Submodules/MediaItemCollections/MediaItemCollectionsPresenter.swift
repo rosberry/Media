@@ -17,7 +17,7 @@ final class MediaItemCollectionsPresenter {
 
     var collections: [MediaItemCollection] = []
 
-    private lazy var mediaLibraryCollectionListCollector: Collector<[MediaItemCollection]> = {
+    private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
     
@@ -36,7 +36,7 @@ final class MediaItemCollectionsPresenter {
     }
 
     func viewReadyEventTriggered() {
-        setupCollectionListCollector()
+        setupCollectionsCollector()
         setupPermissionsCollector()
         setupMediaLibraryUpdateEventCollector()
         
@@ -45,8 +45,8 @@ final class MediaItemCollectionsPresenter {
     
     // MARK: - Helpers
 
-    private func setupCollectionListCollector() {
-        mediaLibraryCollectionListCollector.subscribe { (collections: [MediaItemCollection]) in
+    private func setupCollectionsCollector() {
+        mediaLibraryCollectionsCollector.subscribe { (collections: [MediaItemCollection]) in
             self.collections = collections
             self.view?.update(with: collections)
         }

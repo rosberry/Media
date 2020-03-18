@@ -10,8 +10,8 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
     private lazy var permissionStatusEmitter: Emitter<PHAuthorizationStatus> = .init()
     lazy public var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> = .init(permissionStatusEmitter)
 
-    private lazy var mediaItemListEmitter: Emitter<MediaItemFetchResult> = .init()
-    lazy public var mediaItemListEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemListEmitter)
+    private lazy var mediaItemsEmitter: Emitter<MediaItemFetchResult> = .init()
+    lazy public var mediaItemsEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemsEmitter)
 
     private lazy var collectionsEmitter: Emitter<[MediaItemCollection]> = .init()
     lazy public var collectionsEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionsEmitter)
@@ -93,7 +93,7 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
             DispatchQueue.main.async {
                 self.registerForMediaLibraryUpdatesIfNeeded()
                 let result = MediaItemFetchResult(collection: collection, filter: filter, fetchResult: fetchResult)
-                self.mediaItemListEmitter.replace(result)
+                self.mediaItemsEmitter.replace(result)
             }
         }
     }

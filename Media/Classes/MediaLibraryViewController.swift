@@ -59,7 +59,6 @@ public final class MediaLibraryViewController: UIViewController {
 
     private lazy var filterView: SwitchView = {
         let view = SwitchView()
-        view.isHidden = true
         view.items = [
             SwitchItem(title: L10n.MediaLibrary.Filter.videos.uppercased(), handler: { [weak self] in
                 self?.presenter.filterVideosEventTriggered()

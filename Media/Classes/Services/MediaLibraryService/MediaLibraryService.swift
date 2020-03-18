@@ -16,7 +16,7 @@ public protocol MediaLibraryService: AnyObject {
     // MARK: - Sources
 
     var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> { get }
-    var mediaItemListEventSource: AnyEventSource<MediaItemFetchResult> { get }
+    var mediaItemsEventSource: AnyEventSource<MediaItemFetchResult> { get }
     var collectionsEventSource: AnyEventSource<[MediaItemCollection]> { get }
     var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> { get }
     var mediaItemFetchProgressEventSource: AnyEventSource<Float> { get }

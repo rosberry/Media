@@ -60,8 +60,8 @@ public final class MediaLibraryItemsPresenter {
 
     private var focusDirection: FocusDirection = .down
 
-    private lazy var mediaLibraryItemListCollector: Collector<MediaItemFetchResult> = {
-        return .init(source: dependencies.mediaLibraryService.mediaItemListEventSource)
+    private lazy var mediaLibraryItemsCollector: Collector<MediaItemFetchResult> = {
+        return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
     
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
@@ -96,7 +96,7 @@ public final class MediaLibraryItemsPresenter {
         filter = .all
         
         setupPermissionsCollector()
-        setupMediaItemListCollector()
+        setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
         
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
@@ -125,8 +125,8 @@ public final class MediaLibraryItemsPresenter {
         }
     }
 
-    private func setupMediaItemListCollector() {
-        mediaLibraryItemListCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
+    private func setupMediaItemsCollector() {
+        mediaLibraryItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
             guard let self = self else {
                 return
             }
