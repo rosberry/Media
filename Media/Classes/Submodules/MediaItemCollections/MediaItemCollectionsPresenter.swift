@@ -20,10 +20,6 @@ final class MediaItemCollectionsPresenter {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
-    private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
-    }()
-
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
         return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
@@ -36,7 +32,6 @@ final class MediaItemCollectionsPresenter {
 
     func viewReadyEventTriggered() {
         setupCollectionsCollector()
-        setupPermissionsCollector()
         setupMediaLibraryUpdateEventCollector()
     }
 
@@ -46,19 +41,6 @@ final class MediaItemCollectionsPresenter {
         mediaLibraryCollectionsCollector.subscribe { (collections: [MediaItemCollection]) in
             self.collections = collections
             self.view?.update(with: collections)
-        }
-    }
-
-    private func setupPermissionsCollector() {
-        mediaLibraryPermissionsCollector.subscribe { (status: PHAuthorizationStatus) in
-            switch status {
-                case .denied:
-                    self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
-                case .authorized:
-                    self.updateAlbumList()
-                default:
-                    break
-            }
         }
     }
 
@@ -81,6 +63,15 @@ extension MediaItemCollectionsPresenter: MediaItemCollectionSectionsFactoryOutpu
 // MARK: - MediaItemCollectionsModuleInput
 
 extension MediaItemCollectionsPresenter: MediaItemCollectionsModuleInput {
+
+    func update(isAuthorized: Bool) {
+        if isAuthorized {
+            updateAlbumList()
+        }
+        else {
+            view?.showMediaLibraryDeniedPermissionsPlaceholder()
+        }
+    }
 
     func updateAlbumList() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()

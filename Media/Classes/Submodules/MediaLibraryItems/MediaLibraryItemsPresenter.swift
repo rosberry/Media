@@ -64,10 +64,6 @@ public final class MediaLibraryItemsPresenter {
         return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
 
-    private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
-    }()
-
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
         return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
@@ -95,7 +91,6 @@ public final class MediaLibraryItemsPresenter {
     func viewReadyEventTriggered() {
         filter = .all
 
-        setupPermissionsCollector()
         setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
     }
@@ -109,19 +104,6 @@ public final class MediaLibraryItemsPresenter {
     }
 
     // MARK: - Helpers
-
-    private func setupPermissionsCollector() {
-        mediaLibraryPermissionsCollector.subscribe { (status: PHAuthorizationStatus) in
-            switch status {
-                case .denied:
-                    self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
-                case .authorized:
-                    self.dependencies.mediaLibraryService.fetchMediaItems(in: self.collection, filter: self.filter)
-                default:
-                    break
-            }
-        }
-    }
 
     private func setupMediaItemsCollector() {
         mediaLibraryItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
@@ -222,5 +204,13 @@ extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
 // MARK: - MediaLibraryItemsModuleInput
 
 extension MediaLibraryItemsPresenter: MediaLibraryItemsModuleInput {
-    //
+
+    public func update(isAuthorized: Bool) {
+        if isAuthorized {
+            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        }
+        else {
+            view?.showMediaLibraryDeniedPermissionsPlaceholder()
+        }
+    }
 }

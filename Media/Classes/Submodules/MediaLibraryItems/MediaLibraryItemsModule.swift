@@ -15,6 +15,8 @@ public protocol MediaLibraryItemsModuleInput: AnyObject {
     var selectedItems: [MediaItem] { get set }
 
     var fetchResult: MediaItemFetchResult? { get }
+
+    func update(isAuthorized: Bool)
 }
 
 public protocol MediaLibraryItemsModuleOutput: AnyObject {

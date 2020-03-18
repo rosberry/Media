@@ -6,6 +6,7 @@ public protocol MediaItemCollectionsModuleInput: AnyObject {
 
     var collections: [MediaItemCollection] { get set }
 
+    func update(isAuthorized: Bool)
     func updateAlbumList()
 }
 

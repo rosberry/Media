@@ -4,6 +4,7 @@
 
 public protocol MediaLibraryModuleInput: AnyObject {
 
+    func update(isAuthorized: Bool)
     func select(_ collection: MediaItemCollection)
 }
 

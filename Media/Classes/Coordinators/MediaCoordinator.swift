@@ -8,13 +8,19 @@ import Photos
 
 public final class MediaCoordinator {
 
+     public enum Context {
+        case library
+        case albums
+        case items
+    }
+
     typealias Dependencies = HasMediaLibraryService
 
     private lazy var dependencies: Dependencies = Services
 
-    lazy var navigationViewController: UINavigationController = .init()
+    let navigationViewController: UINavigationController
 
-    private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
+    private lazy var permissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
 
@@ -44,11 +50,29 @@ public final class MediaCoordinator {
 
     public init(navigationViewController: UINavigationController) {
         self.navigationViewController = navigationViewController
+        setupPermissionsCollector()
     }
 
-    public func start() {
+    public func start(with context: Context) {
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
-        navigationViewController.pushViewController(mediaLibraryModule.viewController, animated: true)
+        switch context {
+            case .library:
+                navigationViewController.pushViewController(mediaLibraryModule.viewController, animated: true)
+            case .albums:
+                navigationViewController.pushViewController(mediaItemCollectionsModule.viewController, animated: true)
+            case .items:
+                navigationViewController.pushViewController(mediaLibraryItemsModule.viewController, animated: true)
+        }
+    }
+
+    // MARK: - Private
+
+    private func setupPermissionsCollector() {
+        permissionsCollector.subscribe { [weak self] status in
+            self?.mediaLibraryModule.input.update(isAuthorized: status == .authorized)
+            self?.mediaItemCollectionsModule.input.update(isAuthorized: status == .authorized)
+            self?.mediaLibraryItemsModule.input.update(isAuthorized: status == .authorized)
+        }
     }
 }
 

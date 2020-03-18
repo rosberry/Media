@@ -25,10 +25,6 @@ final class MediaLibraryPresenter {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
-    private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
-        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
-    }()
-
     private let maxItemsCount: Int
 
     // MARK: - Submodules
@@ -50,7 +46,6 @@ final class MediaLibraryPresenter {
 
     func viewReadyEventTriggered() {
         setupCollectionsCollector()
-        setupPermissionsCollector()
     }
 
     func albumPickerUpdateEventTriggered() {
@@ -91,19 +86,6 @@ final class MediaLibraryPresenter {
         }
     }
 
-    private func setupPermissionsCollector() {
-        mediaLibraryPermissionsCollector.subscribe { [weak self] (status: PHAuthorizationStatus) in
-            switch status {
-                case .denied:
-                    self?.view?.isAuthorized = false
-                case .authorized:
-                    self?.view?.isAuthorized = true
-                default:
-                    break
-            }
-        }
-    }
-
     private func updateMediaItemList() {
         guard let collection = activeCollection else {
             return
@@ -117,6 +99,10 @@ final class MediaLibraryPresenter {
 // MARK: - MediaLibraryModuleInput
 
 extension MediaLibraryPresenter: MediaLibraryModuleInput {
+
+    func update(isAuthorized: Bool) {
+        view?.isAuthorized = isAuthorized
+    }
 
     func select(_ collection: MediaItemCollection) {
         view?.hideAlbumPicker()
