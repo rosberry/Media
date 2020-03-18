@@ -18,32 +18,8 @@
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 internal enum Asset {
-  internal static let backArrow = ImageAsset(name: "backArrow")
-  internal static let group = ImageAsset(name: "group")
-  internal static let homeFeed = ImageAsset(name: "homeFeed")
-  internal static let icArrowBackDark24 = ImageAsset(name: "icArrowBackDark24")
-  internal static let icFiltersDownload = ImageAsset(name: "icFiltersDownload")
-  internal static let icFiltersDownloadingArrow = ImageAsset(name: "icFiltersDownloadingArrow")
-  internal static let icFiltersFree = ImageAsset(name: "icFiltersFree")
-  internal static let icFiltersInstagram = ImageAsset(name: "icFiltersInstagram")
-  internal static let icFiltersMail = ImageAsset(name: "icFiltersMail")
-  internal static let icLive12 = ImageAsset(name: "icLive12")
-  internal static let icRecentProjectsM = ImageAsset(name: "icRecentProjectsM")
-  internal static let icShopBlackWhite19 = ImageAsset(name: "icShopBlackWhite19")
-  internal static let icShopPlusSmall = ImageAsset(name: "icShopPlusSmall")
-  internal static let icShoppingCart = ImageAsset(name: "icShoppingCart")
-  internal static let icSquaresTemplateBlack32 = ImageAsset(name: "icSquaresTemplateBlack32")
-  internal static let iconShevroneLeftDark24 = ImageAsset(name: "iconShevroneLeftDark24")
-  internal static let imgHomeGallery = ImageAsset(name: "imgHomeGallery")
-  internal static let imgHomeStory = ImageAsset(name: "imgHomeStory")
-  internal static let workspaceAddSlide = ImageAsset(name: "workspaceAddSlide")
-  internal static let workspaceEdit = ImageAsset(name: "workspaceEdit")
-  internal static let icAddMediaFileM = ImageAsset(name: "icAddMediaFileM")
-  internal static let icArrowDropdownM = ImageAsset(name: "icArrowDropdownM")
-  internal static let icDoneM = ImageAsset(name: "icDoneM")
   internal static let icLivePhotoXs = ImageAsset(name: "icLivePhotoXs")
   internal static let icSloMoXs = ImageAsset(name: "icSloMoXs")
-  internal static let imgWorkspacePickTemplate = ImageAsset(name: "imgWorkspacePickTemplate")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

@@ -8,19 +8,19 @@ import Photos
 public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
 
     private lazy var permissionStatusEmitter: Emitter<PHAuthorizationStatus> = .init()
-    lazy public var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> = .init(permissionStatusEmitter)
+    public lazy var permissionStatusEventSource: AnyEventSource<PHAuthorizationStatus> = .init(permissionStatusEmitter)
 
     private lazy var mediaItemsEmitter: Emitter<MediaItemFetchResult> = .init()
-    lazy public var mediaItemsEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemsEmitter)
+    public lazy var mediaItemsEventSource: AnyEventSource<MediaItemFetchResult> = .init(mediaItemsEmitter)
 
     private lazy var collectionsEmitter: Emitter<[MediaItemCollection]> = .init()
-    lazy public var collectionsEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionsEmitter)
+    public lazy var collectionsEventSource: AnyEventSource<[MediaItemCollection]> = .init(collectionsEmitter)
 
     private lazy var mediaLibraryUpdateEmitter: Emitter<PHChange> = .init()
-    lazy public var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> = .init(mediaLibraryUpdateEmitter)
+    public lazy var mediaLibraryUpdateEventSource: AnyEventSource<PHChange> = .init(mediaLibraryUpdateEmitter)
 
     private lazy var mediaItemFetchProgressEmitter: Emitter<Float> = .init()
-    lazy public var mediaItemFetchProgressEventSource: AnyEventSource<Float> = .init(mediaItemFetchProgressEmitter)
+    public lazy var mediaItemFetchProgressEventSource: AnyEventSource<Float> = .init(mediaItemFetchProgressEmitter)
 
     private lazy var manager: PHCachingImageManager = .init()
     private let thumbnailCache: NSCache<NSString, UIImage> = .init()
@@ -65,7 +65,9 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
         }
     }
 
-    private func fetchCollections(with type: PHAssetCollectionType, subtype: PHAssetCollectionSubtype, options: PHFetchOptions? = nil) -> [MediaItemCollection] {
+    private func fetchCollections(with type: PHAssetCollectionType,
+                                  subtype: PHAssetCollectionSubtype,
+                                  options: PHFetchOptions? = nil) -> [MediaItemCollection] {
         let result = PHAssetCollection.fetchAssetCollections(with: type,
                                                              subtype: subtype,
                                                              options: options)
@@ -84,7 +86,8 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            guard let assetCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [collection.identifier], options: nil).firstObject else {
+            guard let assetCollection = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [collection.identifier],
+                                                                                options: nil).firstObject else {
                 return
             }
             let mediaType: PHAssetMediaType? = filter == .all ? nil : .video

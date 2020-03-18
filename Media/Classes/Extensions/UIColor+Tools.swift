@@ -32,7 +32,7 @@ public struct CMYK {
 // swiftlint:enable identifier_name
 
 extension UIColor {
-    
+
     convenience init(red: UInt32, green: UInt32, blue: UInt32, alpha: UInt32) {
         self.init(
             red: CGFloat(red) / 255.0,
@@ -41,7 +41,7 @@ extension UIColor {
             alpha: CGFloat(alpha) / 255.0
         )
     }
-    
+
     convenience init(rgba: UInt32) {
         self.init(
             red: (rgba >> 24) & 0xFF,
@@ -50,17 +50,17 @@ extension UIColor {
             alpha: rgba & 0xFF
         )
     }
-    
+
     // MARK: - Alpha
-    
+
     public var alpha: CGFloat {
         var alpha: CGFloat = 0.0
         getRed(nil, green: nil, blue: nil, alpha: &alpha)
         return alpha
     }
-    
+
     // MARK: - RGB
-    
+
     public var rgb: RGB {
         var red: CGFloat = 0.0
         var green: CGFloat = 0.0
@@ -68,9 +68,9 @@ extension UIColor {
         getRed(&red, green: &green, blue: &blue, alpha: nil)
         return RGB(r: red, g: green, b: blue)
     }
-    
+
     // MARK: - HSB
-    
+
     public var hsb: HSB {
         var hue: CGFloat = 0.0
         var saturation: CGFloat = 0.0
@@ -78,17 +78,17 @@ extension UIColor {
         getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: nil)
         return HSB(h: hue, s: saturation, b: brightness)
     }
-    
+
     // MARK: - YUV
-    
+
     public var yuv: YUV {
         let rgb = self.rgb
         let luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) // BT.601
         return YUV(y: luminance, u: rgb.b - luminance, v: rgb.r - luminance)
     }
-    
+
     // MARK: - CMYK
-    
+
     public var cmyk: CMYK {
         let rgb = self.rgb
         // swiftlint:disable identifier_name

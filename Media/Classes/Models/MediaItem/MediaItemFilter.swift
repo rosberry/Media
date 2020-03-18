@@ -10,10 +10,10 @@ public enum MediaItemFilter: String {
 
     public func matches(item: MediaItem) -> Bool {
         switch self {
-        case .all:
-            return true
-        case .video:
-            return item.type.isVideo
+            case .all:
+                return true
+            case .video:
+                return item.type.isVideo
         }
     }
 }

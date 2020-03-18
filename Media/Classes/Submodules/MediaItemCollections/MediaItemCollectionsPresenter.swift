@@ -5,7 +5,6 @@
 import Ion
 import Photos
 
-
 final class MediaItemCollectionsPresenter {
 
     typealias Dependencies = HasMediaLibraryService
@@ -20,11 +19,11 @@ final class MediaItemCollectionsPresenter {
     private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
-    
+
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
-    
+
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
         return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
@@ -39,10 +38,10 @@ final class MediaItemCollectionsPresenter {
         setupCollectionsCollector()
         setupPermissionsCollector()
         setupMediaLibraryUpdateEventCollector()
-        
+
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
-    
+
     // MARK: - Helpers
 
     private func setupCollectionsCollector() {
@@ -51,20 +50,20 @@ final class MediaItemCollectionsPresenter {
             self.view?.update(with: collections)
         }
     }
-    
+
     private func setupPermissionsCollector() {
         mediaLibraryPermissionsCollector.subscribe { (status: PHAuthorizationStatus) in
             switch status {
-            case .denied:
-                self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
-            case .authorized:
-                self.updateAlbumList()
-            default:
-                break
+                case .denied:
+                    self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
+                case .authorized:
+                    self.updateAlbumList()
+                default:
+                    break
             }
         }
     }
-    
+
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
             self?.updateAlbumList()

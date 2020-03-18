@@ -6,12 +6,12 @@ import UIKit
 import Framezilla
 
 public final class MediaLibraryViewController: UIViewController {
-    
+
     private let presenter: MediaLibraryPresenter
-    
+
     private lazy var mediaLibraryItemListViewController = presenter.mediaLibraryItemsModule.viewController
     private lazy var mediaLibraryAlbumListViewController = presenter.mediaItemCollectionsModule.viewController
-    
+
     public var isAuthorized: Bool = false {
         didSet {
             view.setNeedsLayout()
@@ -48,24 +48,15 @@ public final class MediaLibraryViewController: UIViewController {
         return button
     }()
 
-    private(set) lazy var doneButton: UIButton = {
-        let button = UIButton()
-        button.setImage(Asset.icDoneM.image, for: .normal)
-        button.contentEdgeInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
-        button.sizeToFit()
-        return button
-    }()
-
     private lazy var filterView: SwitchView = {
         let view = SwitchView()
         view.items = [
-            SwitchItem(title: L10n.MediaLibrary.Filter.videos.uppercased(), handler: { [weak self] in
+            SwitchItem(title: L10n.MediaLibrary.Filter.videos.uppercased()) { [weak self] in
                 self?.presenter.filterVideosEventTriggered()
-            }),
-            SwitchItem(title: L10n.MediaLibrary.Filter.all.uppercased(), handler: { [weak self] in
+            },
+            SwitchItem(title: L10n.MediaLibrary.Filter.all.uppercased()) { [weak self] in
                 self?.presenter.filterAllEventTriggered()
-            })
+            }
         ]
         return view
     }()
@@ -89,11 +80,15 @@ public final class MediaLibraryViewController: UIViewController {
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)
-        toolView.addSubview(doneButton)
         view.addSubview(toolView)
 
         add(child: mediaLibraryItemListViewController)
         add(child: mediaLibraryAlbumListViewController)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
+                                                            style: .done,
+                                                            target: self,
+                                                            action: #selector(doneButtonPressed))
 
         presenter.viewReadyEventTriggered()
     }
@@ -117,11 +112,6 @@ public final class MediaLibraryViewController: UIViewController {
         albumSelectionButton.configureFrame { (maker: Maker) in
             maker.top().bottom()
             maker.left(inset: 16).right(inset: 16)
-        }
-
-        doneButton.configureFrame { (maker: Maker) in
-            maker.right(inset: 2.0)
-            maker.centerY(to: albumSelectionButton.nui_centerY)
         }
 
         mediaLibraryItemListViewController.view.configureFrame { (maker) in
@@ -176,10 +166,10 @@ public final class MediaLibraryViewController: UIViewController {
         CATransaction.execute {
             CATransaction.setDisableActions(true)
             switch filter {
-            case .video:
-                filterView.selectedIndex = 0
-            case .all:
-                filterView.selectedIndex = 1
+                case .video:
+                    filterView.selectedIndex = 0
+                case .all:
+                    filterView.selectedIndex = 1
             }
         }
     }

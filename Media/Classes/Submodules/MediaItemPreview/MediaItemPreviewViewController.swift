@@ -6,13 +6,13 @@ import UIKit
 import AVFoundation
 
 final class MediaItemPreviewViewController: UIViewController {
-    
+
     private var previewAspectRatio: CGFloat = 1.0
 
     private let presenter: MediaItemPreviewPresenter
 
     // MARK: - Subviews
-    
+
     private lazy var contentView: UIView = {
         return UIView()
     }()
@@ -60,7 +60,7 @@ final class MediaItemPreviewViewController: UIViewController {
 
         var frame = view.bounds
         let safeAreaInsets = view.window?.safeAreaInsets ?? view.safeAreaInsets
-        
+
         frame.origin.y = safeAreaInsets.top
         frame.size.height = min(frame.width / previewAspectRatio, view.bounds.height - (safeAreaInsets.top + safeAreaInsets.bottom))
 

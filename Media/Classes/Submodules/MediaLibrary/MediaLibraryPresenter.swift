@@ -24,7 +24,7 @@ final class MediaLibraryPresenter {
     private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
-    
+
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
@@ -94,16 +94,16 @@ final class MediaLibraryPresenter {
             self?.activeCollection = collections.first
         }
     }
-    
+
     private func setupPermissionsCollector() {
         mediaLibraryPermissionsCollector.subscribe { [weak self] (status: PHAuthorizationStatus) in
             switch status {
-            case .denied:
-                self?.view?.isAuthorized = false
-            case .authorized:
-                self?.view?.isAuthorized = true
-            default:
-                break
+                case .denied:
+                    self?.view?.isAuthorized = false
+                case .authorized:
+                    self?.view?.isAuthorized = true
+                default:
+                    break
             }
         }
     }

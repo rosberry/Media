@@ -11,6 +11,6 @@ var Services: MainServicesFactory = { // swiftlint:disable:this variable_name
 }()
 
 final class MainServicesFactory: ServicesAlias {
-    
+
     lazy var mediaLibraryService: MediaLibraryService = MediaLibraryServiceImp()
 }

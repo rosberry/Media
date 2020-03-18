@@ -9,7 +9,7 @@ func abs(_ size: CGSize) -> CGSize {
 }
 
 extension AVAssetTrack {
-    
+
     var presentationSize: CGSize {
         return abs(naturalSize.applying(preferredTransform))
     }

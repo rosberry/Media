@@ -17,11 +17,11 @@ class MediaItemCell: UICollectionViewCell {
         recognizer.minimumPressDuration = 1.0
         return recognizer
     }()
-    
+
     weak var delegate: MediaItemCellDelegate?
-    
+
     // MARK: - Subviews
-    
+
     private(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -34,7 +34,7 @@ class MediaItemCell: UICollectionViewCell {
         view.backgroundColor = .main1
         return view
     }()
-    
+
     private(set) lazy var infoLabel: UILabel = {
         let label = UILabel()
         return label
@@ -66,7 +66,7 @@ class MediaItemCell: UICollectionViewCell {
 
     private func setup() {
         backgroundColor = .main4
-        
+
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 

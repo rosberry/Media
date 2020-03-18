@@ -27,20 +27,20 @@ final class MediaLibraryItemSectionsFactory {
 
         let cellItem: CollectionViewCellItem
         switch mediaItem.type {
-        case .unknown:
-            cellItem = PlaceholderCellItem()
-        case .photo, .livePhoto:
-            let item = PhotoMediaItemCellItem(viewModel: cellModel,
-                                              dependencies: Services,
-                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-            item.numberOfItemsInRow = numberOfItemsInRow
-            cellItem = item
-        case .video, .sloMoVideo:
-            let item = VideoMediaItemCellItem(viewModel: cellModel,
-                                              dependencies: Services,
-                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-            item.numberOfItemsInRow = numberOfItemsInRow
-            cellItem = item
+            case .unknown:
+                cellItem = PlaceholderCellItem()
+            case .photo, .livePhoto:
+                let item = PhotoMediaItemCellItem(viewModel: cellModel,
+                                                  dependencies: Services,
+                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+                item.numberOfItemsInRow = numberOfItemsInRow
+                cellItem = item
+            case .video, .sloMoVideo:
+                let item = VideoMediaItemCellItem(viewModel: cellModel,
+                                                  dependencies: Services,
+                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+                item.numberOfItemsInRow = numberOfItemsInRow
+                cellItem = item
         }
 
         cellItem.itemDidSelectHandler = { [weak self] in

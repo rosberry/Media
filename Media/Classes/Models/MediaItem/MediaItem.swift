@@ -22,52 +22,52 @@ public final class MediaItem: Codable {
 
         public var description: String {
             switch self {
-            case .unknown:
-                return "unknown"
-            case .photo:
-                return "photo"
-            case .video:
-                return "video"
-            case .sloMoVideo:
-                return "slo-mo"
-            case .livePhoto:
-                return "live photo"
+                case .unknown:
+                    return "unknown"
+                case .photo:
+                    return "photo"
+                case .video:
+                    return "video"
+                case .sloMoVideo:
+                    return "slo-mo"
+                case .livePhoto:
+                    return "live photo"
             }
         }
 
         public var isVideo: Bool {
             switch self {
-            case .video, .sloMoVideo:
-                return true
-            default:
-                return false
+                case .video, .sloMoVideo:
+                    return true
+                default:
+                    return false
             }
         }
 
         public var isLivePhoto: Bool {
             switch self {
-            case .livePhoto:
-                return true
-            default:
-                return false
+                case .livePhoto:
+                    return true
+                default:
+                    return false
             }
         }
 
         public var isSloMoVideo: Bool {
             switch self {
-            case .sloMoVideo:
-                return true
-            default:
-                return false
+                case .sloMoVideo:
+                    return true
+                default:
+                    return false
             }
         }
 
         public var isStatic: Bool {
             switch self {
-            case .photo:
-                return true
-            default:
-                return false
+                case .photo:
+                    return true
+                default:
+                    return false
             }
         }
     }
@@ -75,18 +75,18 @@ public final class MediaItem: Codable {
     public var asset: PHAsset?
     public var identifier: String
     public var thumbnail: UIImage?
-    
+
     public var type: SourceType = .unknown
     public var date: Date?
 
     public var duration: TimeInterval? {
         switch type {
-        case .unknown, .photo, .livePhoto:
-            return nil
-        case .video(let duration):
-            return duration
-        case .sloMoVideo(let duration):
-            return duration
+            case .unknown, .photo, .livePhoto:
+                return nil
+            case .video(let duration):
+                return duration
+            case .sloMoVideo(let duration):
+                return duration
         }
     }
 
@@ -97,7 +97,7 @@ public final class MediaItem: Codable {
 
     // MARK: - Codable
 
-    required public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         identifier = try container.decode(String.self, forKey: .identifier)
     }
@@ -114,22 +114,22 @@ extension MediaItem {
         let identifier = asset.localIdentifier
         let type: SourceType
         switch asset.mediaType {
-        case .image:
-            if asset.mediaSubtypes.contains(.photoLive) {
-                type = .livePhoto
-            }
-            else {
-                type = .photo
-            }
-        case .video:
-            if asset.mediaSubtypes.contains(.videoHighFrameRate) {
-                type = .sloMoVideo(asset.duration)
-            }
-            else {
-                type = .video(asset.duration)
-            }
-        default:
-            type = .unknown
+            case .image:
+                if asset.mediaSubtypes.contains(.photoLive) {
+                    type = .livePhoto
+                }
+                else {
+                    type = .photo
+                }
+            case .video:
+                if asset.mediaSubtypes.contains(.videoHighFrameRate) {
+                    type = .sloMoVideo(asset.duration)
+                }
+                else {
+                    type = .video(asset.duration)
+                }
+            default:
+                type = .unknown
         }
 
         self.init(identifier: identifier, type: type)

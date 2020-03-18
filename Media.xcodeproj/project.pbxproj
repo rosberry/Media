@@ -155,6 +155,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		064277892421D77C0036D878 /* MediaLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				1373B01B22DC237600F28EF0 /* MediaLibraryModule.swift */,
+				1373B01A22DC237600F28EF0 /* MediaLibraryViewController.swift */,
+				1373B01C22DC237600F28EF0 /* MediaLibraryPresenter.swift */,
+			);
+			path = MediaLibrary;
+			sourceTree = "<group>";
+		};
 		1373AFF222DC235400F28EF0 = {
 			isa = PBXGroup;
 			children = (
@@ -216,9 +226,6 @@
 		1373B01922DC237600F28EF0 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				1373B01B22DC237600F28EF0 /* MediaLibraryModule.swift */,
-				1373B01A22DC237600F28EF0 /* MediaLibraryViewController.swift */,
-				1373B01C22DC237600F28EF0 /* MediaLibraryPresenter.swift */,
 				1373B01D22DC237600F28EF0 /* Models */,
 				1373B02322DC237600F28EF0 /* Extensions */,
 				1373B03122DC237600F28EF0 /* Components */,
@@ -310,6 +317,7 @@
 		1373B03A22DC237600F28EF0 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				064277892421D77C0036D878 /* MediaLibrary */,
 				1373B03B22DC237600F28EF0 /* MediaItemPreview */,
 				1373B03F22DC237600F28EF0 /* MediaItemCollections */,
 				1373B04922DC237600F28EF0 /* MediaLibraryItems */,
@@ -468,6 +476,7 @@
 				1373AFF822DC235400F28EF0 /* Sources */,
 				1373AFF922DC235400F28EF0 /* Frameworks */,
 				1373AFFA22DC235400F28EF0 /* Resources */,
+				0642778A2421D9CC0036D878 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -532,6 +541,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0642778A2421D9CC0036D878 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1373AFF822DC235400F28EF0 /* Sources */ = {

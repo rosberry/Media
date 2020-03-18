@@ -36,7 +36,8 @@ class MediaItemCollectionCellItem: CollectionViewCellItem {
             return
         }
 
-        dependencies.mediaLibraryService.fetchThumbnail(for: viewModel, size: CGSize(width: 100.0, height: 100.0)) { [weak self] (_: UIImage?) in
+        let size = CGSize(width: 100.0, height: 100.0)
+        dependencies.mediaLibraryService.fetchThumbnail(for: viewModel, size: size) { [weak self] (_: UIImage?) in
             guard let self = self else {
                 return
             }

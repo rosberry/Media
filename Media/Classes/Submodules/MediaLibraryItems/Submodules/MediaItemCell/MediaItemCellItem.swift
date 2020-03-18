@@ -19,14 +19,14 @@ class MediaItemCellItem: CollectionViewCellItem {
 
     let viewModel: MediaItemCellModel
     private let dependencies: Dependencies
-    
+
     var reuseType: ReuseType {
         .class(Cell.self)
     }
 
     var previewStartHandler: ((MediaItemCellModel, CGRect) -> Void)?
     var previewStopHandler: ((MediaItemCellModel) -> Void)?
-    
+
     var isSelectionInfoLabelHidden: Bool
 
     var numberOfItemsInRow: Int = 4
@@ -60,7 +60,8 @@ class MediaItemCellItem: CollectionViewCellItem {
             return
         }
 
-        dependencies.mediaLibraryService.fetchThumbnail(for: viewModel.item, size: CGSize(width: 100.0, height: 100.0)) { [weak self] (_: UIImage?) in
+        let size = CGSize(width: 100.0, height: 100.0)
+        dependencies.mediaLibraryService.fetchThumbnail(for: viewModel.item, size: size) { [weak self] (_: UIImage?) in
             guard let self = self else {
                 return
             }

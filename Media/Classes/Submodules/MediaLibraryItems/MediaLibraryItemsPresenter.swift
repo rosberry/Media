@@ -50,7 +50,7 @@ public final class MediaLibraryItemsPresenter {
             updateSelection()
         }
     }
-    
+
     var mediaLibraryCollections: [MediaItemCollection] = []
     var activeCollection: MediaItemCollection? {
         didSet {
@@ -63,26 +63,26 @@ public final class MediaLibraryItemsPresenter {
     private lazy var mediaLibraryItemsCollector: Collector<MediaItemFetchResult> = {
         return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
-    
+
     private lazy var mediaLibraryPermissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
     }()
-    
+
     private lazy var mediaLibraryUpdateEventCollector: Collector<PHChange> = {
         return .init(source: dependencies.mediaLibraryService.mediaLibraryUpdateEventSource)
     }()
-    
+
     private lazy var factory: MediaLibraryItemSectionsFactory = {
         let factory = MediaLibraryItemSectionsFactory()
         factory.output = self
         return factory
     }()
-    
+
     lazy var mediaItemPreviewModule: MediaItemPreviewModule = {
         let module = MediaItemPreviewModule()
         return module
     }()
-    
+
     private let maxItemsCount: Int
 
     // MARK: - Lifecycle
@@ -94,11 +94,11 @@ public final class MediaLibraryItemsPresenter {
 
     func viewReadyEventTriggered() {
         filter = .all
-        
+
         setupPermissionsCollector()
         setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
-        
+
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
@@ -111,16 +111,16 @@ public final class MediaLibraryItemsPresenter {
     }
 
     // MARK: - Helpers
-    
+
     private func setupPermissionsCollector() {
         mediaLibraryPermissionsCollector.subscribe { (status: PHAuthorizationStatus) in
             switch status {
-            case .denied:
-                self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
-            case .authorized:
-                self.dependencies.mediaLibraryService.fetchMediaItems(in: self.collection, filter: self.filter)
-            default:
-                break
+                case .denied:
+                    self.view?.showMediaLibraryDeniedPermissionsPlaceholder()
+                case .authorized:
+                    self.dependencies.mediaLibraryService.fetchMediaItems(in: self.collection, filter: self.filter)
+                default:
+                    break
             }
         }
     }
@@ -135,7 +135,7 @@ public final class MediaLibraryItemsPresenter {
             self.output?.didFinishLoading(collection: result.collection, isMixedContentCollection: result.filter == .all)
         }
     }
-    
+
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
             if let filter = self?.filter {
@@ -146,7 +146,7 @@ public final class MediaLibraryItemsPresenter {
 
     private func dataSource(for result: PHFetchResult<PHAsset>) -> CollectionViewSectionDataSource {
         guard result.count != 0 else {
-            return GeneralCollectionViewSectionDataSource(sources: [], sectionItemProvider: { _ in return nil })
+            return GeneralCollectionViewSectionDataSource(sources: []) { _ in return nil }
         }
         let minimumLineSpacing: CGFloat = 8.0
         let minimumInteritemSpacing: CGFloat = 8.0
@@ -160,20 +160,20 @@ public final class MediaLibraryItemsPresenter {
             return self.factory.makeCellItem(mediaItem: mediaItem,
                                              selectionIndex: selectionIndex,
                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-        }, sizeProvider: { (index: Int, collectionView: UICollectionView) -> CGSize in
+        }, sizeProvider: { (_: Int, collectionView: UICollectionView) -> CGSize in
             let numberOfItemsInRow: CGFloat = 4
             let width = (collectionView.bounds.width - insets.left - insets.right -
                 numberOfItemsInRow * minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
         })
 
-        return GeneralCollectionViewSectionDataSource(sources: [itemSource], sectionItemProvider: { _ in
+        return GeneralCollectionViewSectionDataSource(sources: [itemSource]) { _ in
             let sectionItem = GeneralCollectionViewSectionItem()
             sectionItem.minimumLineSpacing = minimumLineSpacing
             sectionItem.minimumInteritemSpacing = minimumInteritemSpacing
             sectionItem.insets = insets
             return sectionItem
-        })
+        }
     }
 
     private func updateMediaItemList(usingPlaceholderTransition: Bool) {
@@ -209,12 +209,12 @@ extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
         }
         self.selectedItems = selectedItems
     }
-    
+
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect) {
         view?.showPreview(from: rect)
         mediaItemPreviewModule.input.mediaItem = item
     }
-    
+
     func didRequestPreviewStop(item: MediaItem) {
         view?.hidePreview()
         mediaItemPreviewModule.input.mediaItem = nil

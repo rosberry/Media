@@ -5,12 +5,12 @@
 import AVFoundation
 
 extension AVAsset {
-    
+
     var presentationSize: CGSize? {
         guard let track = tracks(withMediaType: .video).first else {
             return nil
         }
-        
+
         return track.presentationSize
     }
 }

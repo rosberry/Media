@@ -1,16 +1,16 @@
 //
-// Copyright (c) 2017 Rosberry. All rights reserved.
+// Copyright © 2017 Rosberry. All rights reserved.
 //
 
 import UIKit
 
-protocol Coordinator: class {
+protocol Coordinator: AnyObject {
     var delegate: CoordinatorDelegate? { get set }
     func append(child: Coordinator)
     func remove(child: Coordinator)
 }
 
-protocol CoordinatorDelegate: class {
+protocol CoordinatorDelegate: AnyObject {
     func childCoordinatorDidFinish(_ childCoordinator: Coordinator)
 }
 

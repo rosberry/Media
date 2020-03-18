@@ -26,21 +26,21 @@ final class PermissionsPlaceholderView: UIView {
     }
 
     // MARK: - Subviews
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
         label.numberOfLines = 0
         return label
     }()
-    
+
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
         label.numberOfLines = 0
         return label
     }()
-    
+
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .system)
         button.clipsToBounds = true
@@ -51,43 +51,43 @@ final class PermissionsPlaceholderView: UIView {
         button.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Lifecycle
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setup() {
         backgroundColor = UIColor.main2
-        
+
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(settingsButton)
     }
-    
+
     // MARK: - Layout
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         subtitleLabel.configureFrame { (maker: Maker) in
             maker.left(inset: 40).right(inset: 40)
             maker.centerY()
             maker.heightToFit()
         }
-        
+
         titleLabel.configureFrame { (maker: Maker) in
             maker.left(inset: 40).right(inset: 40)
             maker.bottom(to: subtitleLabel.nui_top, inset: 8)
             maker.heightToFit()
         }
-        
+
         settingsButton.configureFrame { (maker: Maker) in
             maker.top(to: subtitleLabel.nui_bottom, inset: 24)
             maker.centerX()
@@ -95,14 +95,14 @@ final class PermissionsPlaceholderView: UIView {
             maker.cornerRadius(byHalf: .height)
         }
     }
-    
+
     // MARK: - Actions
-    
+
     @objc private func settingsButtonPressed() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return
         }
-        
+
         UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
     }
 }

@@ -17,9 +17,9 @@ public final class MediaItemCollectionsController: UIViewController {
         factory.output = presenter
         return factory
     }()
-    
+
     // MARK: - Subviews
-    
+
     private(set) lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -29,7 +29,7 @@ public final class MediaItemCollectionsController: UIViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
-    
+
     private lazy var permissionsPlaceholderView: PermissionsPlaceholderView = {
         let view = PermissionsPlaceholderView()
         view.title = L10n.MediaLibrary.Permissions.title
@@ -55,13 +55,13 @@ public final class MediaItemCollectionsController: UIViewController {
         view.clipsToBounds = true
         view.addSubview(collectionView)
         view.addSubview(permissionsPlaceholderView)
-        
+
         presenter.viewReadyEventTriggered()
     }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         permissionsPlaceholderView.configureFrame { (maker: Maker) in
             maker.top().left().right()
             maker.bottom(inset: view.safeAreaInsets.bottom)
@@ -71,7 +71,7 @@ public final class MediaItemCollectionsController: UIViewController {
     }
 
     // MARK: -
-    
+
     func showMediaLibraryDeniedPermissionsPlaceholder() {
         permissionsPlaceholderView.isHidden = false
     }

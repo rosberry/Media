@@ -16,13 +16,13 @@ public final class MediaLibraryItemsViewController: UIViewController {
         factory.numberOfItemsInRow = numberOfItemsInRow
         return factory
     }()
-    
+
     private lazy var collectionViewManager: CollectionViewManager = {
         let manager = CollectionViewManager(collectionView: collectionView)
         manager.scrollDelegate = self
         return manager
     }()
-    
+
     private lazy var mediaItemPreviewViewController = presenter.mediaItemPreviewModule.viewController
 
     var numberOfItemsInRow: Int = 4 {
@@ -30,15 +30,15 @@ public final class MediaLibraryItemsViewController: UIViewController {
             factory.numberOfItemsInRow = numberOfItemsInRow
         }
     }
-    
+
     // MARK: - Subviews
-    
+
     private lazy var placeholderView: UIView = {
         let view = UIView()
         view.isHidden = true
         return view
     }()
-    
+
     private lazy var permissionsPlaceholderView: PermissionsPlaceholderView = {
         let view = PermissionsPlaceholderView()
         view.title = L10n.MediaLibrary.Permissions.title
@@ -46,7 +46,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
         view.isHidden = true
         return view
     }()
-    
+
     private lazy var placeholderLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black
@@ -61,10 +61,9 @@ public final class MediaLibraryItemsViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .main4
         collectionView.alwaysBounceVertical = true
-        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
-    
+
     // MARK: - Lifecycle
 
     init(presenter: MediaLibraryItemsPresenter) {
@@ -96,7 +95,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
             maker.left().right()
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
-        
+
         collectionView.frame = view.bounds
 
         permissionsPlaceholderView.configureFrame { (maker: Maker) in
@@ -175,20 +174,20 @@ public final class MediaLibraryItemsViewController: UIViewController {
         }
         collectionView.reloadData()
     }
-    
+
     func showMediaLibraryDeniedPermissionsPlaceholder() {
         permissionsPlaceholderView.isHidden = false
         view.setNeedsLayout()
         view.layoutIfNeeded()
     }
-    
+
     func showPreview(from rect: CGRect) {
         mediaItemPreviewViewController.modalPresentationStyle = .overCurrentContext
         mediaItemPreviewViewController.modalTransitionStyle = .crossDissolve
         mediaItemPreviewViewController.modalPresentationCapturesStatusBarAppearance = false
         present(mediaItemPreviewViewController, animated: true, completion: nil)
     }
-    
+
     func hidePreview() {
         dismiss(animated: true, completion: nil)
     }
