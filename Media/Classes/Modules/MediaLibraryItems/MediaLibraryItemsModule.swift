@@ -20,6 +20,8 @@ public protocol MediaLibraryItemsModuleInput: AnyObject {
 }
 
 public protocol MediaLibraryItemsModuleOutput: AnyObject {
+    func didStartPreview(item: MediaItem, from rect: CGRect)
+    func didStopPreview(item: MediaItem)
     func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool)
 }
 

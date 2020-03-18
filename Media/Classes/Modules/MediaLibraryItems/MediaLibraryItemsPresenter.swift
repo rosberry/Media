@@ -64,11 +64,6 @@ public final class MediaLibraryItemsPresenter {
         return factory
     }()
 
-    lazy var mediaItemPreviewModule: MediaItemPreviewModule = {
-        let module = MediaItemPreviewModule()
-        return module
-    }()
-
     private let maxItemsCount: Int
     public var numberOfItemsInRow: Int
 
@@ -183,13 +178,11 @@ extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
     }
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect) {
-        view?.showPreview(from: rect)
-        mediaItemPreviewModule.input.mediaItem = item
+        output?.didStartPreview(item: item, from: rect)
     }
 
     func didRequestPreviewStop(item: MediaItem) {
-        view?.hidePreview()
-        mediaItemPreviewModule.input.mediaItem = nil
+        output?.didStopPreview(item: item)
     }
 }
 

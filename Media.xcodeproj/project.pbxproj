@@ -240,7 +240,7 @@
 				1373B01D22DC237600F28EF0 /* Models */,
 				1373B02322DC237600F28EF0 /* Extensions */,
 				1373B03122DC237600F28EF0 /* Components */,
-				1373B03A22DC237600F28EF0 /* Submodules */,
+				1373B03A22DC237600F28EF0 /* Modules */,
 				1373B05C22DC237600F28EF0 /* Services */,
 			);
 			path = Classes;
@@ -325,7 +325,7 @@
 			path = DropdownButton;
 			sourceTree = "<group>";
 		};
-		1373B03A22DC237600F28EF0 /* Submodules */ = {
+		1373B03A22DC237600F28EF0 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				064277892421D77C0036D878 /* MediaLibrary */,
@@ -333,7 +333,7 @@
 				1373B03F22DC237600F28EF0 /* MediaItemCollections */,
 				1373B04922DC237600F28EF0 /* MediaLibraryItems */,
 			);
-			path = Submodules;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		1373B03B22DC237600F28EF0 /* MediaItemPreview */ = {

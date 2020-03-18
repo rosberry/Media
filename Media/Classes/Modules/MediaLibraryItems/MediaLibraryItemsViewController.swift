@@ -22,8 +22,6 @@ public final class MediaLibraryItemsViewController: UIViewController {
         return manager
     }()
 
-    private lazy var mediaItemPreviewViewController = presenter.mediaItemPreviewModule.viewController
-
     // MARK: - Subviews
 
     private lazy var placeholderView: UIView = {
@@ -172,17 +170,6 @@ public final class MediaLibraryItemsViewController: UIViewController {
         permissionsPlaceholderView.isHidden = false
         view.setNeedsLayout()
         view.layoutIfNeeded()
-    }
-
-    func showPreview(from rect: CGRect) {
-        mediaItemPreviewViewController.modalPresentationStyle = .overCurrentContext
-        mediaItemPreviewViewController.modalTransitionStyle = .crossDissolve
-        mediaItemPreviewViewController.modalPresentationCapturesStatusBarAppearance = false
-        present(mediaItemPreviewViewController, animated: true, completion: nil)
-    }
-
-    func hidePreview() {
-        dismiss(animated: true, completion: nil)
     }
 }
 

@@ -49,6 +49,14 @@ public final class MediaCoordinator {
         return module
     }()
 
+    lazy var mediaItemPreviewModule: MediaItemPreviewModule = {
+        let module = MediaItemPreviewModule()
+        module.viewController.modalPresentationStyle = .overCurrentContext
+        module.viewController.modalTransitionStyle = .crossDissolve
+        module.viewController.modalPresentationCapturesStatusBarAppearance = false
+        return module
+    }()
+
     // MARK: - Lifecycle
 
     public init(navigationViewController: UINavigationController) {
@@ -106,6 +114,14 @@ extension MediaCoordinator: MediaItemCollectionsModuleOutput {
 
 // MARK: - MediaLibraryItemsModuleOutput
 extension MediaCoordinator: MediaLibraryItemsModuleOutput {
+
+    public func didStartPreview(item: MediaItem, from rect: CGRect) {
+        navigationViewController.present(mediaItemPreviewModule.viewController, animated: true, completion: nil)
+    }
+
+    public func didStopPreview(item: MediaItem) {
+        navigationViewController.dismiss(animated: true, completion: nil)
+    }
 
     public func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool) {
 
