@@ -85,7 +85,7 @@ public final class MediaLibraryViewController: UIViewController {
         add(child: mediaLibraryItemListViewController)
         add(child: mediaLibraryAlbumListViewController)
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.MediaLibrary.done,
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(doneButtonPressed))

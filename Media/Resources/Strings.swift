@@ -19,6 +19,8 @@ internal enum L10n {
     internal static let allItems = L10n.tr("Localizable", "mediaLibrary.allItems")
     /// No media items
     internal static let empty = L10n.tr("Localizable", "mediaLibrary.empty")
+    /// Done
+    internal static let done = L10n.tr("Localizable", "mediaLibrary.done")
     /// Favorite videos & photos
     internal static let favoriteItems = L10n.tr("Localizable", "mediaLibrary.favoriteItems")
     /// Library

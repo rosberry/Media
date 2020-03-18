@@ -98,8 +98,6 @@ public final class MediaLibraryItemsPresenter {
         setupPermissionsCollector()
         setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
-
-        dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
     func scrollEventTriggered(direction: FocusDirection) {

@@ -38,8 +38,6 @@ final class MediaItemCollectionsPresenter {
         setupCollectionsCollector()
         setupPermissionsCollector()
         setupMediaLibraryUpdateEventCollector()
-
-        dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
     // MARK: - Helpers

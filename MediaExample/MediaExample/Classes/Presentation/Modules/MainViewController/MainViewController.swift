@@ -90,7 +90,7 @@ final class MainViewController: UIViewController {
     }
 
     @objc func mainButtonPressed() {
-        let module = MediaLibraryModule(maxItemsCount: 2)
-        self.navigationController?.pushViewController(module.viewController, animated: true)
+        let coordinator = MediaCoordinator(navigationViewController: navigationController!)
+        coordinator.start()
     }
 }
