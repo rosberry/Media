@@ -11,23 +11,23 @@ final class MainViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var mainButton: UIButton = {
+    private lazy var libraryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Main", for: .normal)
+        button.setTitle("Library", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
-        button.addTarget(self, action: #selector(mainButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(libraryButtonPressed), for: .touchUpInside)
         return button
     }()
 
-    private lazy var albumButton: UIButton = {
+    private lazy var albumsButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Album", for: .normal)
+        button.setTitle("Albums", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .white
         button.layer.cornerRadius = 8
-        button.addTarget(self, action: #selector(albumButtonPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(albumsButtonPressed), for: .touchUpInside)
         return button
     }()
 
@@ -41,8 +41,11 @@ final class MainViewController: UIViewController {
         return button
     }()
 
-    private lazy var containerView: UIView = {
-        let view = UIView()
+    private lazy var stackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [libraryButton, albumsButton, listButton])
+        view.axis = .vertical
+        view.distribution = .fillEqually
+        view.spacing = 8
         view.backgroundColor = .clear
         return view
     }()
@@ -53,43 +56,28 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         title = "Menu"
         view.backgroundColor = .gray
-        view.addSubview(containerView)
-        containerView.addSubview(mainButton)
-        containerView.addSubview(albumButton)
-        containerView.addSubview(listButton)
+        view.addSubview(stackView)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        containerView.configureFrame { maker in
+        stackView.configureFrame { maker in
             maker.size(width: 200, height: 166).center()
-        }
-
-        mainButton.configureFrame { maker in
-            maker.top().left().right().height(50)
-        }
-
-        albumButton.configureFrame { maker in
-            maker.top(to: mainButton.nui_bottom, inset: 8).left().right().height(50)
-        }
-
-        listButton.configureFrame { maker in
-            maker.top(to: albumButton.nui_bottom, inset: 8).left().right().height(50)
         }
     }
 
     // MARK: - Private
 
-    @objc func albumButtonPressed() {
+    @objc func libraryButtonPressed() {
+        coordinator.start(with: .library)
+    }
+
+    @objc func albumsButtonPressed() {
         coordinator.start(with: .albums)
     }
 
     @objc func listButtonPressed() {
         coordinator.start(with: .items)
-    }
-
-    @objc func mainButtonPressed() {
-        coordinator.start(with: .library)
     }
 }
