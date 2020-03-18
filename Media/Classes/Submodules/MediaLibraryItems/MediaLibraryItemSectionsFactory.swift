@@ -5,11 +5,8 @@
 import Foundation
 import CollectionViewTools
 
-typealias PhotoMediaItemCellItem = MediaItemCellItem<MediaLibraryPhotoMediaItemCell>
-typealias VideoMediaItemCellItem = MediaItemCellItem<MediaLibraryVideoMediaItemCell>
-
 protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
-    func didSelect(item: MediaItem)
+    func didSelect(_ item: MediaItem)
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect)
     func didRequestPreviewStop(item: MediaItem)
@@ -31,7 +28,7 @@ final class MediaLibraryItemSectionsFactory {
         let cellItem: CollectionViewCellItem
         switch mediaItem.type {
         case .unknown:
-            cellItem = MediaLibraryPlaceholderCellItem()
+            cellItem = PlaceholderCellItem()
         case .photo, .livePhoto:
             let item = PhotoMediaItemCellItem(viewModel: cellModel,
                                               dependencies: Services,
@@ -47,7 +44,7 @@ final class MediaLibraryItemSectionsFactory {
         }
 
         cellItem.itemDidSelectHandler = { [weak self] in
-            self?.output?.didSelect(item: mediaItem)
+            self?.output?.didSelect(mediaItem)
         }
 
         if let mediaCellItem = cellItem as? MediaItemCellItem {
@@ -79,7 +76,7 @@ final class MediaLibraryItemSectionsFactory {
 
     private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
         return (0..<count).map { _ in
-            let cellItem = MediaLibraryPlaceholderCellItem()
+            let cellItem = PlaceholderCellItem()
             cellItem.numberOfItemsInRow = numberOfItemsInRow
             return cellItem
         }

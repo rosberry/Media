@@ -199,7 +199,7 @@ public final class MediaLibraryItemsPresenter {
 
 extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
 
-    func didSelect(item: MediaItem) {
+    func didSelect(_ item: MediaItem) {
         var selectedItems = self.selectedItems
         if let index = selectedItems.firstIndex(of: item) {
             selectedItems.remove(at: index)

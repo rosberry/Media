@@ -4,7 +4,7 @@
 
 import UIKit
 
-final class MediaLibraryPhotoMediaItemCell: MediaItemCell {
+final class PhotoMediaItemCell: MediaItemCell {
 
     override func update(with viewModel: MediaItemCellModel) {
         super.update(with: viewModel)

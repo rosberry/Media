@@ -5,8 +5,9 @@
 import UIKit
 import CollectionViewTools
 
-final class MediaItemCellItem<Cell: MediaItemCell>: CollectionViewCellItem {
-    
+class MediaItemCellItem: CollectionViewCellItem {
+
+    typealias Cell = MediaItemCell
     typealias Dependencies = HasMediaLibraryService
 
     private var cell: Cell? {

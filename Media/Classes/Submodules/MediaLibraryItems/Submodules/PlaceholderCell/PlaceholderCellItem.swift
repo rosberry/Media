@@ -5,7 +5,7 @@
 import UIKit
 import CollectionViewTools
 
-class MediaLibraryPlaceholderCellItem: CollectionViewCellItem {
+class PlaceholderCellItem: CollectionViewCellItem {
 
     typealias Cell = UICollectionViewCell
     var reuseType = ReuseType.class(Cell.self)
