@@ -114,7 +114,7 @@ public final class MediaLibraryViewController: UIViewController {
             maker.left(inset: 16).right(inset: 16)
         }
 
-        mediaLibraryItemListViewController.view.configureFrame { (maker) in
+        [mediaLibraryItemListViewController.view, mediaLibraryAlbumListViewController.view].configureFrames { maker in
             if isAuthorized {
                 maker.top(to: toolView.nui_bottom)
             }
@@ -122,22 +122,18 @@ public final class MediaLibraryViewController: UIViewController {
                 maker.top(inset: view.safeAreaInsets.top)
             }
             maker.left().right()
+        }
+
+        mediaLibraryItemListViewController.view.configureFrame { maker in
             maker.bottom()
         }
 
-        mediaLibraryAlbumListViewController.view.configureFrame { (maker: Maker) in
-            if isAuthorized {
-                maker.top(to: toolView.nui_bottom)
-            }
-            else {
-                maker.top(inset: view.safeAreaInsets.top)
-            }
-            maker.left().right()
+        mediaLibraryAlbumListViewController.view.configureFrame { maker in
             if isAlbumPickerVisible {
                 maker.bottom()
             }
             else {
-                maker.height(0.0)
+                maker.height(0)
             }
         }
     }
