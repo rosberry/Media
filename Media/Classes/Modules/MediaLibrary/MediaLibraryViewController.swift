@@ -43,14 +43,11 @@ public final class MediaLibraryViewController: UIViewController {
 
     private lazy var filterView: SwitchView = {
         let view = SwitchView()
-        view.items = [
-            SwitchItem(title: L10n.MediaLibrary.Filter.videos.uppercased()) { [weak self] in
-                self?.presenter.filterVideosEventTriggered()
-            },
-            SwitchItem(title: L10n.MediaLibrary.Filter.all.uppercased()) { [weak self] in
-                self?.presenter.filterAllEventTriggered()
+        view.items = MediaItemFilter.allCases.map { filter in
+            SwitchItem(title: filter.title.uppercased()) { [weak self] in
+                self?.presenter.changeFilterEventTriggered(with: filter)
             }
-        ]
+        }
         return view
     }()
 
@@ -108,12 +105,12 @@ public final class MediaLibraryViewController: UIViewController {
         }
 
         [mediaLibraryItemListViewController.view, mediaLibraryAlbumListViewController.view].configureFrames { maker in
-//            if isAuthorized {
+            if isAuthorized {
                 maker.top(to: toolView.nui_bottom)
-//            }
-//            else {
-//                maker.top(inset: view.safeAreaInsets.top)
-//            }
+            }
+            else {
+                maker.top(inset: view.safeAreaInsets.top)
+            }
             maker.left().right()
         }
 
@@ -149,12 +146,7 @@ public final class MediaLibraryViewController: UIViewController {
 
         CATransaction.execute {
             CATransaction.setDisableActions(true)
-            switch filter {
-                case .video:
-                    filterView.selectedIndex = 0
-                case .all:
-                    filterView.selectedIndex = 1
-            }
+            filterView.selectedIndex = filter.rawValue
         }
     }
 

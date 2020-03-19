@@ -52,12 +52,8 @@ final class MediaLibraryPresenter {
         mediaItemCollectionsModule.input.updateAlbumList()
     }
 
-    func filterVideosEventTriggered() {
-        mediaLibraryItemsModule.input.filter = .video
-    }
-
-    func filterAllEventTriggered() {
-        mediaLibraryItemsModule.input.filter = .all
+    func changeFilterEventTriggered(with filter: MediaItemFilter) {
+        mediaLibraryItemsModule.input.filter = filter
     }
 
     func confirmationEventTriggered() {
