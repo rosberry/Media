@@ -27,7 +27,6 @@ public final class MediaLibraryItemsPresenter {
         }
     }
 
-    public var useStrictItemFiltering: Bool = false
     public var filter: MediaItemFilter = .video {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: true)

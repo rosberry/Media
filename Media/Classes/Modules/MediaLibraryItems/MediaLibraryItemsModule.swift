@@ -10,8 +10,8 @@ public protocol MediaLibraryItemsModuleInput: AnyObject {
 
     var numberOfItemsInRow: Int { get set }
 
-    var useStrictItemFiltering: Bool { get set }
     var filter: MediaItemFilter { get set }
+
     var selectedItems: [MediaItem] { get set }
 
     var fetchResult: MediaItemFetchResult? { get }
