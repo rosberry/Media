@@ -5,23 +5,23 @@
 import Ion
 import Photos
 
-typealias MediaLibraryDependencies = HasMediaLibraryService
-
 final class MediaLibraryPresenter {
 
-    private let dependencies: MediaLibraryDependencies
+    typealias Dependencies = HasMediaLibraryService
+
+    private let dependencies: Dependencies
     weak var view: MediaLibraryViewController?
 
     weak var output: MediaLibraryModuleOutput?
 
-    var mediaLibraryCollections: [MediaItemCollection] = []
+    var collections: [MediaItemCollection] = []
     var activeCollection: MediaItemCollection? {
         didSet {
             updateMediaItemList()
         }
     }
 
-    private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
+    private lazy var collectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
@@ -29,19 +29,19 @@ final class MediaLibraryPresenter {
 
     // MARK: - Submodules
 
-    let mediaItemCollectionsModule: MediaItemCollectionsModule
-    let mediaLibraryItemsModule: MediaLibraryItemsModule
+    let collectionsModule: CollectionsModule
+    let mediaItemsModule: MediaItemsModule
 
     // MARK: - Lifecycle
 
     init(maxItemsCount: Int,
-         dependencies: MediaLibraryDependencies,
-         mediaItemCollectionsModule: MediaItemCollectionsModule,
-         mediaLibraryItemsModule: MediaLibraryItemsModule) {
+         dependencies: Dependencies,
+         collectionsModule: CollectionsModule,
+         mediaItemsModule: MediaItemsModule) {
         self.maxItemsCount = maxItemsCount
         self.dependencies = dependencies
-        self.mediaItemCollectionsModule = mediaItemCollectionsModule
-        self.mediaLibraryItemsModule = mediaLibraryItemsModule
+        self.collectionsModule = collectionsModule
+        self.mediaItemsModule = mediaItemsModule
     }
 
     func viewReadyEventTriggered() {
@@ -49,16 +49,16 @@ final class MediaLibraryPresenter {
     }
 
     func albumPickerUpdateEventTriggered() {
-        mediaItemCollectionsModule.input.updateAlbumList()
+        collectionsModule.input.updateCollections()
     }
 
     func changeFilterEventTriggered(with filter: MediaItemFilter) {
-        mediaLibraryItemsModule.input.filter = filter
+        mediaItemsModule.input.filter = filter
     }
 
     func confirmationEventTriggered() {
-        var selectedItems = mediaLibraryItemsModule.input.selectedItems
-        if let fetchResult = mediaLibraryItemsModule.input.fetchResult?.fetchResult {
+        var selectedItems = mediaItemsModule.input.selectedItems
+        if let fetchResult = mediaItemsModule.input.fetchResult?.fetchResult {
             let mediaItems: [MediaItem] = (0..<fetchResult.count).map { index -> MediaItem in
                 let asset = fetchResult.object(at: index)
                 return MediaItem(asset: asset)
@@ -73,8 +73,8 @@ final class MediaLibraryPresenter {
     // MARK: - Helpers
 
     private func setupCollectionsCollector() {
-        mediaLibraryCollectionsCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
-            self?.mediaLibraryCollections = collections
+        collectionsCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
+            self?.collections = collections
             guard self?.activeCollection == nil else {
                 return
             }
@@ -87,8 +87,8 @@ final class MediaLibraryPresenter {
             return
         }
 
-        view?.setup(with: collection, filter: mediaLibraryItemsModule.input.filter)
-        mediaLibraryItemsModule.input.collection = collection
+        view?.setup(with: collection, filter: mediaItemsModule.input.filter)
+        mediaItemsModule.input.collection = collection
     }
 }
 
@@ -104,7 +104,7 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
     }
 
     func select(_ collection: MediaItemCollection) {
-        view?.updateAlbumPicker(isVisible: false)
+        view?.updateCollectionPicker(isVisible: false)
         activeCollection = collection
     }
 }

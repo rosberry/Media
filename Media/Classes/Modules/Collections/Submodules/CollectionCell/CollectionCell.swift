@@ -5,7 +5,7 @@
 import UIKit
 import Framezilla
 
-class MediaItemCollectionCell: UICollectionViewCell {
+class CollectionCell: UICollectionViewCell {
 
     override var isHighlighted: Bool {
         didSet {
@@ -77,7 +77,7 @@ class MediaItemCollectionCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(true)
     }
 
-    func update(with viewModel: MediaItemCollectionCellModel) {
+    func update(with viewModel: CollectionCellModel) {
         imageView.image = viewModel.thumbnail
         titleLabel.text = viewModel.title
 

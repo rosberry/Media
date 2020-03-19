@@ -4,4 +4,4 @@
 
 import Foundation
 
-typealias MediaItemCollectionCellModel = MediaItemCollection
+typealias CollectionCellModel = MediaItemCollection

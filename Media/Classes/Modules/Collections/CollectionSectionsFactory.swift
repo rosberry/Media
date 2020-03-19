@@ -5,14 +5,14 @@
 import Foundation
 import CollectionViewTools
 
-protocol MediaItemCollectionSectionsFactoryOutput: AnyObject {
+protocol CollectionSectionsFactoryOutput: AnyObject {
 
     func didSelect(_ collection: MediaItemCollection)
 }
 
-final class MediaItemCollectionSectionsFactory {
+final class CollectionSectionsFactory {
 
-    weak var output: MediaItemCollectionSectionsFactoryOutput?
+    weak var output: CollectionSectionsFactoryOutput?
 
     func makeSectionItems(mediaItemCollections: [MediaItemCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))
@@ -26,7 +26,7 @@ final class MediaItemCollectionSectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemCollection) -> CollectionViewCellItem {
-        let cellItem = MediaItemCollectionCellItem(viewModel: mediaItemCollection, dependencies: Services)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services)
         cellItem.itemDidSelectHandler = { [weak self] in
             self?.output?.didSelect(mediaItemCollection)
         }

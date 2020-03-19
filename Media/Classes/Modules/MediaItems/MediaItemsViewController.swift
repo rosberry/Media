@@ -6,9 +6,9 @@ import UIKit
 import CollectionViewTools
 import Framezilla
 
-public final class MediaLibraryItemsViewController: UIViewController {
+public final class MediaItemsViewController: UIViewController {
 
-    private let presenter: MediaLibraryItemsPresenter
+    private let presenter: MediaItemsPresenter
 
     private lazy var factory: MediaLibraryItemSectionsFactory = {
         let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow)
@@ -52,12 +52,13 @@ public final class MediaLibraryItemsViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .main4
         collectionView.alwaysBounceVertical = true
+        collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
     }()
 
     // MARK: - Lifecycle
 
-    init(presenter: MediaLibraryItemsPresenter) {
+    init(presenter: MediaItemsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -87,7 +88,9 @@ public final class MediaLibraryItemsViewController: UIViewController {
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        collectionView.frame = view.bounds
+        collectionView.configureFrame { maker in
+            maker.edges(insets: view.safeAreaInsets)
+        }
 
         permissionsPlaceholderView.configureFrame { (maker: Maker) in
             maker.top().left().right()
@@ -175,7 +178,7 @@ public final class MediaLibraryItemsViewController: UIViewController {
 
 // MARK: - UIScrollViewDelegate
 
-extension MediaLibraryItemsViewController: UIScrollViewDelegate {
+extension MediaItemsViewController: UIScrollViewDelegate {
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y == -scrollView.contentInset.top {
@@ -183,7 +186,7 @@ extension MediaLibraryItemsViewController: UIScrollViewDelegate {
         }
 
         let delta = scrollView.panGestureRecognizer.translation(in: scrollView).y
-        let direction: MediaLibraryItemsPresenter.FocusDirection = (delta > 0.0) ? .down : .up
+        let direction: MediaItemsPresenter.FocusDirection = (delta > 0.0) ? .down : .up
         presenter.scrollEventTriggered(direction: direction)
     }
 }

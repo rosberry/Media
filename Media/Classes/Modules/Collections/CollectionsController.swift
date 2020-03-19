@@ -6,14 +6,14 @@ import UIKit
 import CollectionViewTools
 import Framezilla
 
-public final class MediaItemCollectionsController: UIViewController {
+public final class CollectionsController: UIViewController {
 
-    private let presenter: MediaItemCollectionsPresenter
+    private let presenter: CollectionsPresenter
 
     private lazy var collectionViewManager: CollectionViewManager = .init(collectionView: collectionView)
 
-    private lazy var factory: MediaItemCollectionSectionsFactory = {
-        let factory = MediaItemCollectionSectionsFactory()
+    private lazy var factory: CollectionSectionsFactory = {
+        let factory = CollectionSectionsFactory()
         factory.output = presenter
         return factory
     }()
@@ -39,7 +39,7 @@ public final class MediaItemCollectionsController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(presenter: MediaItemCollectionsPresenter) {
+    init(presenter: CollectionsPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }

@@ -7,19 +7,19 @@ import UIKit
 import Photos
 import CollectionViewTools
 
-typealias MediaLibraryItemsDependencies = HasMediaLibraryService
-
-public final class MediaLibraryItemsPresenter {
+public final class MediaItemsPresenter {
 
     public enum FocusDirection {
         case up
         case down
     }
 
-    private let dependencies: MediaLibraryItemsDependencies
-    weak var view: MediaLibraryItemsViewController?
+    typealias Dependencies = HasMediaLibraryService
 
-    weak var output: MediaLibraryItemsModuleOutput?
+    private let dependencies: Dependencies
+    weak var view: MediaItemsViewController?
+
+    weak var output: MediaItemsModuleOutput?
 
     public var collection: MediaItemCollection? {
         didSet {
@@ -42,7 +42,7 @@ public final class MediaLibraryItemsPresenter {
 
     private var focusDirection: FocusDirection = .down
 
-    private lazy var mediaLibraryItemsCollector: Collector<MediaItemFetchResult> = {
+    private lazy var mediaItemsCollector: Collector<MediaItemFetchResult> = {
         return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
 
@@ -61,7 +61,7 @@ public final class MediaLibraryItemsPresenter {
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: MediaLibraryItemsDependencies) {
+    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies) {
         self.maxItemsCount = maxItemsCount
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
@@ -85,7 +85,7 @@ public final class MediaLibraryItemsPresenter {
     // MARK: - Helpers
 
     private func setupMediaItemsCollector() {
-        mediaLibraryItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
+        mediaItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
             guard let self = self else {
                 return
             }
@@ -154,9 +154,8 @@ public final class MediaLibraryItemsPresenter {
     }
 }
 
-// MARK: - MediaLibraryItemSectionsFactoryOutput
-
-extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
+// MARK: - MediaItemSectionsFactoryOutput
+extension MediaItemsPresenter: MediaItemSectionsFactoryOutput {
 
     func didSelect(_ item: MediaItem) {
         var selectedItems = self.selectedItems
@@ -178,9 +177,8 @@ extension MediaLibraryItemsPresenter: MediaLibraryItemSectionsFactoryOutput {
     }
 }
 
-// MARK: - MediaLibraryItemsModuleInput
-
-extension MediaLibraryItemsPresenter: MediaLibraryItemsModuleInput {
+// MARK: - MediaItemsModuleInput
+extension MediaItemsPresenter: MediaItemsModuleInput {
 
     public func update(isAuthorized: Bool) {
         if isAuthorized {

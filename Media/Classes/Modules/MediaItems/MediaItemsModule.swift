@@ -4,7 +4,7 @@
 
 import UIKit
 
-public protocol MediaLibraryItemsModuleInput: AnyObject {
+public protocol MediaItemsModuleInput: AnyObject {
 
     var collection: MediaItemCollection? { get set }
 
@@ -19,19 +19,19 @@ public protocol MediaLibraryItemsModuleInput: AnyObject {
     func update(isAuthorized: Bool)
 }
 
-public protocol MediaLibraryItemsModuleOutput: AnyObject {
+public protocol MediaItemsModuleOutput: AnyObject {
     func didStartPreview(item: MediaItem, from rect: CGRect)
     func didStopPreview(item: MediaItem)
     func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool)
 }
 
-public final class MediaLibraryItemsModule {
+public final class MediaItemsModule {
 
-    public var input: MediaLibraryItemsModuleInput {
+    public var input: MediaItemsModuleInput {
         return presenter
     }
 
-    public var output: MediaLibraryItemsModuleOutput? {
+    public var output: MediaItemsModuleOutput? {
         get {
             return presenter.output
         }
@@ -40,12 +40,12 @@ public final class MediaLibraryItemsModule {
         }
     }
 
-    public let viewController: MediaLibraryItemsViewController
-    private let presenter: MediaLibraryItemsPresenter
+    public let viewController: MediaItemsViewController
+    private let presenter: MediaItemsPresenter
 
     public init(maxItemsCount: Int, numberOfItemsInRow: Int, collection: MediaItemCollection? = nil) {
-        presenter = MediaLibraryItemsPresenter(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow, dependencies: Services)
-        viewController = MediaLibraryItemsViewController(presenter: presenter)
+        presenter = MediaItemsPresenter(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow, dependencies: Services)
+        viewController = MediaItemsViewController(presenter: presenter)
         presenter.view = viewController
         input.collection = collection
     }

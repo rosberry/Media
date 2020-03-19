@@ -5,15 +5,15 @@
 import UIKit
 import CollectionViewTools
 
-class MediaItemCollectionCellItem: CollectionViewCellItem {
-    typealias Cell = MediaItemCollectionCell
+class CollectionCellItem: CollectionViewCellItem {
+    typealias Cell = CollectionCell
     typealias Dependencies = HasMediaLibraryService
 
-    private let viewModel: MediaItemCollectionCellModel
+    private let viewModel: CollectionCellModel
     private let dependencies: Dependencies
     var reuseType = ReuseType.class(Cell.self)
 
-    init(viewModel: MediaItemCollectionCellModel, dependencies: Dependencies) {
+    init(viewModel: CollectionCellModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
     }

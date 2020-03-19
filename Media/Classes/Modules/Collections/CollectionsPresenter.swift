@@ -5,18 +5,18 @@
 import Ion
 import Photos
 
-final class MediaItemCollectionsPresenter {
+final class CollectionsPresenter {
 
     typealias Dependencies = HasMediaLibraryService
 
     private let dependencies: Dependencies
-    weak var view: MediaItemCollectionsController?
+    weak var view: CollectionsController?
 
-    weak var output: MediaItemCollectionsModuleOutput?
+    weak var output: CollectionsModuleOutput?
 
     var collections: [MediaItemCollection] = []
 
-    private lazy var mediaLibraryCollectionsCollector: Collector<[MediaItemCollection]> = {
+    private lazy var collectionsCollector: Collector<[MediaItemCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
@@ -38,7 +38,7 @@ final class MediaItemCollectionsPresenter {
     // MARK: - Helpers
 
     private func setupCollectionsCollector() {
-        mediaLibraryCollectionsCollector.subscribe { (collections: [MediaItemCollection]) in
+        collectionsCollector.subscribe { (collections: [MediaItemCollection]) in
             self.collections = collections
             self.view?.update(with: collections)
         }
@@ -46,14 +46,14 @@ final class MediaItemCollectionsPresenter {
 
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
-            self?.updateAlbumList()
+            self?.updateCollections()
         }
     }
 }
 
 // MARK: - MediaItemCollectionSectionsFactoryOutput
 
-extension MediaItemCollectionsPresenter: MediaItemCollectionSectionsFactoryOutput {
+extension CollectionsPresenter: CollectionSectionsFactoryOutput {
 
     func didSelect(_ collection: MediaItemCollection) {
         output?.didSelect(collection)
@@ -62,18 +62,18 @@ extension MediaItemCollectionsPresenter: MediaItemCollectionSectionsFactoryOutpu
 
 // MARK: - MediaItemCollectionsModuleInput
 
-extension MediaItemCollectionsPresenter: MediaItemCollectionsModuleInput {
+extension CollectionsPresenter: CollectionsModuleInput {
 
     func update(isAuthorized: Bool) {
         if isAuthorized {
-            updateAlbumList()
+            updateCollections()
         }
         else {
             view?.showMediaLibraryDeniedPermissionsPlaceholder()
         }
     }
 
-    func updateAlbumList() {
+    func updateCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
     }
 }

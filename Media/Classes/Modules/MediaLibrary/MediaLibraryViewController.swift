@@ -9,8 +9,8 @@ public final class MediaLibraryViewController: UIViewController {
 
     private let presenter: MediaLibraryPresenter
 
-    private lazy var mediaLibraryItemListViewController = presenter.mediaLibraryItemsModule.viewController
-    private lazy var mediaLibraryAlbumListViewController = presenter.mediaItemCollectionsModule.viewController
+    private lazy var mediaItemsViewController = presenter.mediaItemsModule.viewController
+    private lazy var collectionsViewController = presenter.collectionsModule.viewController
 
     public var isAuthorized: Bool = false {
         didSet {
@@ -19,9 +19,9 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
-    private var isAlbumPickerVisible: Bool = false {
+    private var isCollectionPickerVisible: Bool = false {
         didSet {
-            mediaLibraryAlbumListViewController.view.isUserInteractionEnabled = isAlbumPickerVisible
+            collectionsViewController.view.isUserInteractionEnabled = isCollectionPickerVisible
             view.setNeedsLayout()
             view.layoutIfNeeded()
         }
@@ -72,8 +72,8 @@ public final class MediaLibraryViewController: UIViewController {
         toolView.addSubview(filterView)
         view.addSubview(toolView)
 
-        add(child: mediaLibraryItemListViewController)
-        add(child: mediaLibraryAlbumListViewController)
+        add(child: mediaItemsViewController)
+        add(child: collectionsViewController)
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.MediaLibrary.done,
                                                             style: .done,
@@ -87,7 +87,7 @@ public final class MediaLibraryViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         toolView.configureFrame { (maker: Maker) in
-            maker.top(inset: 64)
+            maker.top(inset: view.safeAreaInsets.top)
             maker.left().right()
             maker.height(38)
         }
@@ -104,7 +104,7 @@ public final class MediaLibraryViewController: UIViewController {
             maker.left(inset: 16).right(inset: 16)
         }
 
-        [mediaLibraryItemListViewController.view, mediaLibraryAlbumListViewController.view].configureFrames { maker in
+        [mediaItemsViewController.view, collectionsViewController.view].configureFrames { maker in
             if isAuthorized {
                 maker.top(to: toolView.nui_bottom)
             }
@@ -114,12 +114,12 @@ public final class MediaLibraryViewController: UIViewController {
             maker.left().right()
         }
 
-        mediaLibraryItemListViewController.view.configureFrame { maker in
+        mediaItemsViewController.view.configureFrame { maker in
             maker.bottom()
         }
 
-        mediaLibraryAlbumListViewController.view.configureFrame { maker in
-            if isAlbumPickerVisible {
+        collectionsViewController.view.configureFrame { maker in
+            if isCollectionPickerVisible {
                 maker.bottom()
             }
             else {
@@ -132,7 +132,7 @@ public final class MediaLibraryViewController: UIViewController {
 
     @objc private func albumSelectionButtonPressed() {
         albumSelectionButton.isSelected.toggle()
-        updateAlbumPicker(isVisible: albumSelectionButton.isSelected)
+        updateCollectionPicker(isVisible: albumSelectionButton.isSelected)
     }
 
     @objc public func doneButtonPressed() {
@@ -150,13 +150,13 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
-    func updateAlbumPicker(isVisible: Bool) {
+    func updateCollectionPicker(isVisible: Bool) {
         albumSelectionButton.isSelected = isVisible
-        mediaLibraryAlbumListViewController.beginAppearanceTransition(isVisible, animated: true)
+        collectionsViewController.beginAppearanceTransition(isVisible, animated: true)
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0.5, options: [], animations: {
-            self.isAlbumPickerVisible = isVisible
+            self.isCollectionPickerVisible = isVisible
         }, completion: { _ in
-            self.mediaLibraryAlbumListViewController.endAppearanceTransition()
+            self.collectionsViewController.endAppearanceTransition()
         })
 
         UIView.animate(withDuration: 0.15) {

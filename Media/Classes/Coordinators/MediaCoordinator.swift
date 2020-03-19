@@ -32,8 +32,8 @@ public final class MediaCoordinator {
     // MARK: - Modules
 
     private var mediaLibraryModule: MediaLibraryModule?
-    private var mediaItemCollectionsModule: MediaItemCollectionsModule?
-    private var mediaLibraryItemsModule: MediaLibraryItemsModule?
+    private var collectionsModule: CollectionsModule?
+    private var mediaItemsModule: MediaItemsModule?
 
     // MARK: - Lifecycle
 
@@ -50,12 +50,12 @@ public final class MediaCoordinator {
                 mediaLibraryModule = module
                 navigationViewController.pushViewController(module.viewController, animated: true)
             case .albums:
-                let module = makeMediaItemCollectionsModule()
-                mediaItemCollectionsModule = module
+                let module = makeCollectionsModule()
+                collectionsModule = module
                 navigationViewController.pushViewController(module.viewController, animated: true)
             case .items:
-                let module = makeMediaLibraryItemsModule()
-                mediaLibraryItemsModule = module
+                let module = makeMediaItemsModule()
+                mediaItemsModule = module
                 navigationViewController.pushViewController(module.viewController, animated: true)
         }
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
@@ -66,27 +66,27 @@ public final class MediaCoordinator {
     private func setupPermissionsCollector() {
         permissionsCollector.subscribe { [weak self] status in
             self?.mediaLibraryModule?.input.update(isAuthorized: status == .authorized)
-            self?.mediaItemCollectionsModule?.input.update(isAuthorized: status == .authorized)
-            self?.mediaLibraryItemsModule?.input.update(isAuthorized: status == .authorized)
+            self?.collectionsModule?.input.update(isAuthorized: status == .authorized)
+            self?.mediaItemsModule?.input.update(isAuthorized: status == .authorized)
         }
     }
 
     private func makeMediaLibraryModule() -> MediaLibraryModule {
         let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
-                                        mediaItemCollectionsModule: makeMediaItemCollectionsModule(),
-                                        mediaLibraryItemsModule: makeMediaLibraryItemsModule())
+                                        collectionsModule: makeCollectionsModule(),
+                                        mediaItemsModule: makeMediaItemsModule())
         module.output = self
         return module
     }
 
-    private func makeMediaItemCollectionsModule() -> MediaItemCollectionsModule {
-        let module = MediaItemCollectionsModule()
+    private func makeCollectionsModule() -> CollectionsModule {
+        let module = CollectionsModule()
         module.output = self
         return module
     }
 
-    private func makeMediaLibraryItemsModule() -> MediaLibraryItemsModule {
-        let module = MediaLibraryItemsModule(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow)
+    private func makeMediaItemsModule() -> MediaItemsModule {
+        let module = MediaItemsModule(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow)
         module.output = self
         return module
     }
@@ -108,16 +108,16 @@ extension MediaCoordinator: MediaLibraryModuleOutput {
     }
 }
 
-// MARK: - MediaItemCollectionsModuleOutput
-extension MediaCoordinator: MediaItemCollectionsModuleOutput {
+// MARK: - CollectionsModuleOutput
+extension MediaCoordinator: CollectionsModuleOutput {
 
     public func didSelect(_ collection: MediaItemCollection) {
         switch context {
             case .library:
                 mediaLibraryModule?.input.select(collection)
             case .albums:
-                let module = makeMediaLibraryItemsModule()
-                mediaLibraryItemsModule = module
+                let module = makeMediaItemsModule()
+                mediaItemsModule = module
                 module.input.collection = collection
                 navigationViewController.pushViewController(module.viewController, animated: true)
             case .items:
@@ -126,8 +126,8 @@ extension MediaCoordinator: MediaItemCollectionsModuleOutput {
     }
 }
 
-// MARK: - MediaLibraryItemsModuleOutput
-extension MediaCoordinator: MediaLibraryItemsModuleOutput {
+// MARK: - MediaItemsModuleOutput
+extension MediaCoordinator: MediaItemsModuleOutput {
 
     public func didStartPreview(item: MediaItem, from rect: CGRect) {
         let module = makeMediaItemPreviewModule()

@@ -5,7 +5,7 @@
 import Foundation
 import CollectionViewTools
 
-protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
+protocol MediaItemSectionsFactoryOutput: AnyObject {
     func didSelect(_ item: MediaItem)
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect)
@@ -14,7 +14,7 @@ protocol MediaLibraryItemSectionsFactoryOutput: AnyObject {
 
 final class MediaLibraryItemSectionsFactory {
 
-    weak var output: MediaLibraryItemSectionsFactoryOutput?
+    weak var output: MediaItemSectionsFactoryOutput?
 
     let numberOfItemsInRow: Int
 
