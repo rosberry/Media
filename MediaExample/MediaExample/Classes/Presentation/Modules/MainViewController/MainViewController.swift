@@ -7,7 +7,7 @@ import Media
 
 final class MainViewController: UIViewController {
 
-    private lazy var coordinator: MediaCoordinator = .init(navigationViewController: navigationController!)
+    private var coordinator: MediaCoordinator?
 
     // MARK: - Subviews
 
@@ -70,14 +70,22 @@ final class MainViewController: UIViewController {
     // MARK: - Private
 
     @objc func libraryButtonPressed() {
-        coordinator.start(with: .library)
+        start(with: .library)
     }
 
     @objc func albumsButtonPressed() {
-        coordinator.start(with: .albums)
+        start(with: .albums)
     }
 
     @objc func listButtonPressed() {
-        coordinator.start(with: .items)
+        start(with: .items)
+    }
+
+    private func start(with context: MediaCoordinator.Context) {
+        guard let navigationController = navigationController else {
+            return
+        }
+        coordinator = .init(navigationViewController: navigationController, context: context)
+        coordinator?.start()
     }
 }

@@ -41,13 +41,6 @@ public final class MediaLibraryItemsPresenter {
         }
     }
 
-    var mediaLibraryCollections: [MediaItemCollection] = []
-    var activeCollection: MediaItemCollection? {
-        didSet {
-            collection = activeCollection
-        }
-    }
-
     private var focusDirection: FocusDirection = .down
 
     private lazy var mediaLibraryItemsCollector: Collector<MediaItemFetchResult> = {

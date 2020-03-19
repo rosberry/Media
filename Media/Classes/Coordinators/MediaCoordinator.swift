@@ -27,6 +27,8 @@ public final class MediaCoordinator {
     public var maxItemsCount: Int = 2
     public var numberOfItemsInRow: Int = 4
 
+    public let context: Context
+
     // MARK: - Modules
 
     private var mediaLibraryModule: MediaLibraryModule?
@@ -35,12 +37,13 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
-    public init(navigationViewController: UINavigationController) {
+    public init(navigationViewController: UINavigationController, context: Context) {
         self.navigationViewController = navigationViewController
+        self.context = context
         setupPermissionsCollector()
     }
 
-    public func start(with context: Context) {
+    public func start() {
         switch context {
             case .library:
                 let module = makeMediaLibraryModule()
@@ -109,7 +112,17 @@ extension MediaCoordinator: MediaLibraryModuleOutput {
 extension MediaCoordinator: MediaItemCollectionsModuleOutput {
 
     public func didSelect(_ collection: MediaItemCollection) {
-        mediaLibraryModule?.input.select(collection)
+        switch context {
+            case .library:
+                mediaLibraryModule?.input.select(collection)
+            case .albums:
+                let module = makeMediaLibraryItemsModule()
+                mediaLibraryItemsModule = module
+                module.input.collection = collection
+                navigationViewController.pushViewController(module.viewController, animated: true)
+            case .items:
+                break
+        }
     }
 }
 
