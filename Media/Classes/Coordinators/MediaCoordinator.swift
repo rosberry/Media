@@ -41,21 +41,21 @@ public final class MediaCoordinator {
     }
 
     public func start(with context: Context) {
-        dependencies.mediaLibraryService.requestMediaLibraryPermissions()
         switch context {
             case .library:
                 let module = makeMediaLibraryModule()
+                mediaLibraryModule = module
                 navigationViewController.pushViewController(module.viewController, animated: true)
-            mediaLibraryModule = module
             case .albums:
                 let module = makeMediaItemCollectionsModule()
-                navigationViewController.pushViewController(module.viewController, animated: true)
                 mediaItemCollectionsModule = module
+                navigationViewController.pushViewController(module.viewController, animated: true)
             case .items:
                 let module = makeMediaLibraryItemsModule()
-                navigationViewController.pushViewController(module.viewController, animated: true)
                 mediaLibraryItemsModule = module
+                navigationViewController.pushViewController(module.viewController, animated: true)
         }
+        dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
     // MARK: - Private
