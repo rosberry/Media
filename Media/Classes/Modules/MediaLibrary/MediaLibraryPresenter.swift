@@ -102,10 +102,13 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
 
     func update(isAuthorized: Bool) {
         view?.isAuthorized = isAuthorized
+        if isAuthorized {
+            dependencies.mediaLibraryService.fetchMediaItemCollections()
+        }
     }
 
     func select(_ collection: MediaItemCollection) {
-        view?.hideAlbumPicker()
+        view?.updateAlbumPicker(isVisible: false)
         activeCollection = collection
     }
 }

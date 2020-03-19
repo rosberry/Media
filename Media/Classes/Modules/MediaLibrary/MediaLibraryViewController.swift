@@ -29,13 +29,6 @@ public final class MediaLibraryViewController: UIViewController {
 
     // MARK: - Subviews
 
-    public var collectionView: UICollectionView {
-        if isAlbumPickerVisible {
-            return mediaLibraryAlbumListViewController.collectionView
-        }
-        return mediaLibraryItemListViewController.collectionView
-    }
-
     private lazy var toolView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.main4
@@ -97,7 +90,7 @@ public final class MediaLibraryViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         toolView.configureFrame { (maker: Maker) in
-            maker.top(inset: view.safeAreaInsets.top)
+            maker.top(inset: 64)
             maker.left().right()
             maker.height(38)
         }
@@ -115,12 +108,12 @@ public final class MediaLibraryViewController: UIViewController {
         }
 
         [mediaLibraryItemListViewController.view, mediaLibraryAlbumListViewController.view].configureFrames { maker in
-            if isAuthorized {
+//            if isAuthorized {
                 maker.top(to: toolView.nui_bottom)
-            }
-            else {
-                maker.top(inset: view.safeAreaInsets.top)
-            }
+//            }
+//            else {
+//                maker.top(inset: view.safeAreaInsets.top)
+//            }
             maker.left().right()
         }
 
@@ -142,12 +135,7 @@ public final class MediaLibraryViewController: UIViewController {
 
     @objc private func albumSelectionButtonPressed() {
         albumSelectionButton.isSelected.toggle()
-        if albumSelectionButton.isSelected {
-            showAlbumPicker()
-        }
-        else {
-            hideAlbumPicker()
-        }
+        updateAlbumPicker(isVisible: albumSelectionButton.isSelected)
     }
 
     @objc public func doneButtonPressed() {
@@ -170,32 +158,18 @@ public final class MediaLibraryViewController: UIViewController {
         }
     }
 
-    func showAlbumPicker() {
-        albumSelectionButton.isSelected = true
-        mediaLibraryAlbumListViewController.beginAppearanceTransition(true, animated: true)
+    func updateAlbumPicker(isVisible: Bool) {
+        albumSelectionButton.isSelected = isVisible
+        mediaLibraryAlbumListViewController.beginAppearanceTransition(isVisible, animated: true)
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0.5, options: [], animations: {
-            self.isAlbumPickerVisible = true
+            self.isAlbumPickerVisible = isVisible
         }, completion: { _ in
             self.mediaLibraryAlbumListViewController.endAppearanceTransition()
         })
 
         UIView.animate(withDuration: 0.15) {
-            self.filterView.alpha = 0.0
+            self.filterView.alpha = isVisible ? 0 : 1
         }
-    }
-
-    func hideAlbumPicker() {
-        albumSelectionButton.isSelected = false
-        mediaLibraryAlbumListViewController.beginAppearanceTransition(false, animated: true)
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.95, initialSpringVelocity: 0.5, options: [], animations: {
-            self.isAlbumPickerVisible = false
-        }, completion: { _ in
-            self.mediaLibraryAlbumListViewController.endAppearanceTransition()
-        })
-
-        UIView.animate(withDuration: 0.15, delay: 0.25, options: [], animations: {
-            self.filterView.alpha = 1.0
-        }, completion: nil)
     }
 
     func showFilterSelector() {
