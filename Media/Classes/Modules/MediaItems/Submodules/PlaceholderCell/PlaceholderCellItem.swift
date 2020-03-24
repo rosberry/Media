@@ -23,6 +23,6 @@ class PlaceholderCellItem: CollectionViewCellItem {
     }
 
     func configure(_ cell: UICollectionViewCell) {
-        cell.contentView.backgroundColor = UIColor.main3
+        cell.contentView.backgroundColor = .white
     }
 }

@@ -31,7 +31,7 @@ public final class MediaLibraryViewController: UIViewController {
 
     private lazy var toolView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.main4
+        view.backgroundColor = .gray
         return view
     }()
 
@@ -66,7 +66,7 @@ public final class MediaLibraryViewController: UIViewController {
         super.viewDidLoad()
 
         title = L10n.MediaLibrary.title.uppercased()
-        view.backgroundColor = UIColor.main4
+        view.backgroundColor = .gray
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)

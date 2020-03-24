@@ -76,7 +76,7 @@ final class MediaItemPreviewViewController: UIViewController {
     private func fadeIn() {
         view.isUserInteractionEnabled = true
         UIView.animate(withDuration: 0.35) {
-            self.view.backgroundColor = UIColor.main1.withAlphaComponent(0.75)
+            self.view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
             self.imageView.alpha = 1.0
             self.playerView.alpha = 1.0
         }

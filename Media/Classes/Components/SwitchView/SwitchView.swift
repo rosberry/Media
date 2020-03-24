@@ -54,14 +54,14 @@ final class SwitchView: UIView {
 
     private(set) lazy var backgroundLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        layer.fillColor = UIColor.main2.cgColor
+        layer.fillColor = UIColor.white.cgColor
         return layer
     }()
 
     private lazy var selectionLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.main1.cgColor
+        layer.strokeColor = UIColor.black.cgColor
         layer.lineWidth = 2.0
         return layer
     }()

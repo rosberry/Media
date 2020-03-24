@@ -10,7 +10,7 @@ class CollectionCell: UICollectionViewCell {
     override var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.25) {
-                self.contentView.backgroundColor = self.isHighlighted ? UIColor.main2 : UIColor.main4
+                self.contentView.backgroundColor = self.isHighlighted ? .white : .gray
             }
         }
     }
@@ -21,7 +21,7 @@ class CollectionCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = UIColor.main3
+        imageView.backgroundColor = .gray
         return imageView
     }()
 

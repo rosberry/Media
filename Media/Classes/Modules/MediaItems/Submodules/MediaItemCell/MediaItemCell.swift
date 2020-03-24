@@ -31,7 +31,7 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = .main1
+        view.backgroundColor = .black
         return view
     }()
 
@@ -43,7 +43,7 @@ class MediaItemCell: UICollectionViewCell {
     private(set) lazy var typeImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .center
-        view.tintColor = .main2
+        view.tintColor = .white
         return view
     }()
 
@@ -65,7 +65,7 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        backgroundColor = .main4
+        backgroundColor = .gray
 
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)

@@ -44,7 +44,7 @@ final class PermissionsPlaceholderView: UIView {
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .system)
         button.clipsToBounds = true
-        button.backgroundColor = UIColor.main1
+        button.backgroundColor = UIColor.black
         button.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
         button.setTitleColor(UIColor.white, for: .normal)
         button.setTitle(L10n.Permissions.action.uppercased(), for: .normal)
@@ -64,7 +64,7 @@ final class PermissionsPlaceholderView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColor.main2
+        backgroundColor = UIColor.white
 
         addSubview(titleLabel)
         addSubview(subtitleLabel)

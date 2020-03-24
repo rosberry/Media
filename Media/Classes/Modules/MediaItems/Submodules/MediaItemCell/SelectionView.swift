@@ -9,7 +9,7 @@ final class SelectionView: UIView {
 
     private(set) lazy var selectionInfoLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .main1
+        label.backgroundColor = .black
         return label
     }()
 

@@ -50,7 +50,7 @@ public final class MediaItemsViewController: UIViewController {
         layout.scrollDirection = .vertical
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .main4
+        collectionView.backgroundColor = .gray
         collectionView.alwaysBounceVertical = true
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView

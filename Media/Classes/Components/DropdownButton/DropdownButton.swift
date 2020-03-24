@@ -37,7 +37,7 @@ final class DropdownButton: UIButton {
     private lazy var arrowLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
         layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.main1.cgColor
+        layer.strokeColor = UIColor.black.cgColor
         layer.lineCap = .round
         layer.lineJoin = .round
         layer.lineWidth = 2

@@ -24,7 +24,7 @@ public final class CollectionsController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = UIColor.main4
+        collectionView.backgroundColor = .gray
         collectionView.alwaysBounceVertical = true
         return collectionView
     }()
