@@ -103,7 +103,10 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
 
     // MARK: - Thumbnails
 
-    public func fetchThumbnail(for item: MediaItem, size: CGSize, completion: @escaping Completion<UIImage?>) {
+    public func fetchThumbnail(for item: MediaItem,
+                               size: CGSize,
+                               contentMode: PHImageContentMode,
+                               completion: @escaping Completion<UIImage?>) {
         if let thumbnail = item.thumbnail, thumbnail.size == size {
             completion(thumbnail)
             return
@@ -117,7 +120,7 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
                 return
             }
 
-            self.fetchThumbnail(for: asset, size: size) { (image: UIImage?) in
+            self.fetchThumbnail(for: asset, size: size, contentMode: contentMode) { (image: UIImage?) in
                 item.thumbnail = image
                 DispatchQueue.main.async {
                     completion(image)
@@ -126,7 +129,10 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
         }
     }
 
-    public func fetchThumbnail(for collection: MediaItemCollection, size: CGSize, completion: @escaping Completion<UIImage?>) {
+    public func fetchThumbnail(for collection: MediaItemCollection,
+                               size: CGSize,
+                               contentMode: PHImageContentMode,
+                               completion: @escaping Completion<UIImage?>) {
         if let thumbnail = collection.thumbnail, thumbnail.size == size {
             completion(thumbnail)
             return
@@ -156,7 +162,7 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
                 return
             }
 
-            self.fetchThumbnail(for: asset, size: size) { (image: UIImage?) in
+            self.fetchThumbnail(for: asset, size: size, contentMode: contentMode) { (image: UIImage?) in
                 collection.thumbnail = image
                 DispatchQueue.main.async {
                     completion(image)
@@ -168,21 +174,24 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
     // MARK: - Data
 
     public func fetchImage(for item: MediaItem, completion: @escaping Completion<UIImage?>) {
+        let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        options.progressHandler = { [weak self] (progress: Double, _, _, _) in
+            DispatchQueue.main.async {
+                self?.mediaItemFetchProgressEmitter.replace(Float(progress))
+            }
+        }
+        fetchImage(for: item, options: options, completion: completion)
+    }
+
+    public func fetchImage(for item: MediaItem, options: PHImageRequestOptions, completion: @escaping Completion<UIImage?>) {
         guard let asset = makeAsset(item: item) else {
             completion(nil)
             return
         }
 
-        let requestOptions = PHImageRequestOptions()
-        requestOptions.isNetworkAccessAllowed = true
-        requestOptions.deliveryMode = .highQualityFormat
-        requestOptions.progressHandler = { [weak self] (progress: Double, _, _, _) in
-            DispatchQueue.main.async {
-                self?.mediaItemFetchProgressEmitter.replace(Float(progress))
-            }
-        }
-
-        manager.requestImageData(for: asset, options: requestOptions) { (imageData: Data?, _, _, _) in
+        manager.requestImageData(for: asset, options: options) { (imageData: Data?, _, _, _) in
             guard let data = imageData else {
                 completion(nil)
                 return
@@ -301,7 +310,10 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
         return PHAsset.fetchAssets(withLocalIdentifiers: [item.identifier], options: fetchOptions).firstObject
     }
 
-    private func fetchThumbnail(for asset: PHAsset, size: CGSize, completion: @escaping Completion<UIImage?>) {
+    private func fetchThumbnail(for asset: PHAsset,
+                                size: CGSize,
+                                contentMode: PHImageContentMode,
+                                completion: @escaping Completion<UIImage?>) {
         if let thumbnail = thumbnailCache.object(forKey: asset.localIdentifier as NSString) {
             completion(thumbnail)
             return
@@ -311,7 +323,7 @@ public final class MediaLibraryServiceImp: NSObject, MediaLibraryService {
         options.deliveryMode = .opportunistic
         options.isNetworkAccessAllowed = true
 
-        manager.requestImage(for: asset, targetSize: size, contentMode: .aspectFill, options: options) { [weak self] (image: UIImage?, _) in
+        manager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: options) { [weak self] (image: UIImage?, _) in
             if let image = image {
                 self?.thumbnailCache.setObject(image, forKey: asset.localIdentifier as NSString)
             }

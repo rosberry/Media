@@ -32,11 +32,15 @@ public protocol MediaLibraryService: AnyObject {
 
     // MARK: - Thumbnails
 
-    func fetchThumbnail(for item: MediaItem, size: CGSize, completion: @escaping Completion<UIImage?>)
-    func fetchThumbnail(for collection: MediaItemCollection, size: CGSize, completion: @escaping Completion<UIImage?>)
+    func fetchThumbnail(for item: MediaItem, size: CGSize, contentMode: PHImageContentMode, completion: @escaping Completion<UIImage?>)
+    func fetchThumbnail(for collection: MediaItemCollection,
+                        size: CGSize,
+                        contentMode: PHImageContentMode,
+                        completion: @escaping Completion<UIImage?>)
 
     // MARK: - Data
 
     func fetchImage(for item: MediaItem, completion: @escaping Completion<UIImage?>)
+    func fetchImage(for item: MediaItem, options: PHImageRequestOptions, completion: @escaping Completion<UIImage?>)
     func fetchVideoAsset(for item: MediaItem, completion: @escaping Completion<AVAsset?>)
 }
