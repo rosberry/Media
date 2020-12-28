@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -70,6 +70,11 @@
 		1373B0A722DC237700F28EF0 /* MainServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06022DC237600F28EF0 /* MainServiceFactory.swift */; };
 		1373B0A822DC237700F28EF0 /* MediaLibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06222DC237600F28EF0 /* MediaLibraryService.swift */; };
 		1373B0A922DC237700F28EF0 /* MediaLibraryServiceImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B06322DC237600F28EF0 /* MediaLibraryServiceImp.swift */; };
+		368B87722599F9360056E044 /* CollectionViewTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1373B0AE22DC246000F28EF0 /* CollectionViewTools.framework */; };
+		368B87742599F9360056E044 /* Framezilla.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1373B0AD22DC246000F28EF0 /* Framezilla.framework */; };
+		368B87762599F9360056E044 /* Ion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1373B0AF22DC246000F28EF0 /* Ion.framework */; };
+		368B87782599F9360056E044 /* Texstyle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1373B0B022DC246000F28EF0 /* Texstyle.framework */; };
+		368B877C2599F9360056E044 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 368B877B2599F9360056E044 /* DeepDiff.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -142,6 +147,7 @@
 		1373B0AE22DC246000F28EF0 /* CollectionViewTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewTools.framework; path = Carthage/Build/iOS/CollectionViewTools.framework; sourceTree = "<group>"; };
 		1373B0AF22DC246000F28EF0 /* Ion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ion.framework; path = Carthage/Build/iOS/Ion.framework; sourceTree = "<group>"; };
 		1373B0B022DC246000F28EF0 /* Texstyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Texstyle.framework; path = Carthage/Build/iOS/Texstyle.framework; sourceTree = "<group>"; };
+		368B877B2599F9360056E044 /* DeepDiff.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeepDiff.framework; path = Carthage/Build/iOS/DeepDiff.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +155,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				368B87782599F9360056E044 /* Texstyle.framework in Frameworks */,
+				368B87722599F9360056E044 /* CollectionViewTools.framework in Frameworks */,
+				368B87762599F9360056E044 /* Ion.framework in Frameworks */,
+				368B877C2599F9360056E044 /* DeepDiff.framework in Frameworks */,
+				368B87742599F9360056E044 /* Framezilla.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,6 +465,7 @@
 		1373B0AC22DC246000F28EF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				368B877B2599F9360056E044 /* DeepDiff.framework */,
 				1373B0AE22DC246000F28EF0 /* CollectionViewTools.framework */,
 				1373B0AD22DC246000F28EF0 /* Framezilla.framework */,
 				1373B0AF22DC246000F28EF0 /* Ion.framework */,
@@ -485,6 +497,7 @@
 				1373AFF922DC235400F28EF0 /* Frameworks */,
 				1373AFFA22DC235400F28EF0 /* Resources */,
 				0642778A2421D9CC0036D878 /* Swiftlint */,
+				162A1801135D8F41BFE9328D /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -569,6 +582,26 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
+		};
+		162A1801135D8F41BFE9328D /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/xcfilelists/Media-inputPaths.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = Carthage;
+			outputFileListPaths = (
+				"$(SRCROOT)/xcfilelists/Media-outputPaths.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 

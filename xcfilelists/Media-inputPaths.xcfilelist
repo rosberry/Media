@@ -1,0 +1,5 @@
+$(SRCROOT)/Carthage/Build/iOS/CollectionViewTools.framework
+$(SRCROOT)/Carthage/Build/iOS/DeepDiff.framework
+$(SRCROOT)/Carthage/Build/iOS/Framezilla.framework
+$(SRCROOT)/Carthage/Build/iOS/Ion.framework
+$(SRCROOT)/Carthage/Build/iOS/Texstyle.framework

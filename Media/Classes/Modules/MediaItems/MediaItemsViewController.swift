@@ -110,57 +110,44 @@ public final class MediaItemsViewController: UIViewController {
         collectionView.setContentOffset(.zero, animated: false)
         collectionView.isUserInteractionEnabled = false
         collectionViewManager.sectionItems = factory.placeholderSectionItems(placeholderCount: estimatedItemCount)
-        collectionViewManager.dataSource = nil
 
         placeholderView.isHidden = true
     }
 
-    func update(with dataSource: CollectionViewSectionDataSource, animated: Bool) {
+    func update(with sectionItemsProvider: SectionItemsProvider, animated: Bool) {
         if animated {
             UIView.transition(with: collectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
-                self.collectionViewManager.dataSource = dataSource
+                self.collectionViewManager.sectionItemsProvider = sectionItemsProvider
                 self.collectionView.isUserInteractionEnabled = true
             }, completion: nil)
         }
         else {
-            collectionViewManager.dataSource = dataSource
+            collectionViewManager.sectionItemsProvider = sectionItemsProvider
             collectionView.isUserInteractionEnabled = true
         }
-        placeholderView.isHidden = dataSource.sectionCount != 0
+        placeholderView.isHidden = sectionItemsProvider.numberOfSections != 0
     }
 
     public func select(items: [MediaItem]) {
         var items = items
-        guard let sectionItemsDataSource = collectionViewManager.dataSource else {
-            return
-        }
-        for sectionIndex in 0..<sectionItemsDataSource.sectionCount {
-            guard let cellItemsDataSource = sectionItemsDataSource.itemDataSource(at: sectionIndex) else {
-                continue
-            }
-            for cellIndex in 0..<cellItemsDataSource.itemCount {
-                let cellItem = cellItemsDataSource.cellItem(at: cellIndex)
-                if let baseCellItem = cellItem as? MediaItemCellItem {
-                    if let index = items.firstIndex(of: baseCellItem.viewModel.item) {
-                        baseCellItem.viewModel.selectionIndex = index
-                        items.remove(at: index)
-                    }
+        let sectionItemsDataSource = collectionViewManager.sectionItemsProvider
+        for section in sectionItemsDataSource.sectionItems {
+            for cellItem in section.cellItems {
+                guard let baseCellItem = cellItem as? MediaItemCellItem,
+                      let index = items.firstIndex(of: baseCellItem.viewModel.item) else {
+                    continue
                 }
+                baseCellItem.viewModel.selectionIndex = index
+                items.remove(at: index)
             }
         }
         collectionView.reloadData()
     }
 
-    public func updateSelection(handler: (_ mediaItem: MediaItem) -> (Int?)) {
-        guard let sectionItemsDataSource = collectionViewManager.dataSource else {
-            return
-        }
-        for sectionIndex in 0..<sectionItemsDataSource.sectionCount {
-            guard let cellItemsDataSource = sectionItemsDataSource.itemDataSource(at: sectionIndex) else {
-                continue
-            }
-            for cellIndex in 0..<cellItemsDataSource.itemCount {
-                let cellItem = cellItemsDataSource.cellItem(at: cellIndex)
+    public func updateSelection(handler: (_ mediaItem: MediaItem) -> Int?) {
+        let sectionItemsProvider = collectionViewManager.sectionItemsProvider
+        for section in sectionItemsProvider.sectionItems {
+            for cellItem in section.cellItems {
                 if let baseCellItem = cellItem as? MediaItemCellItem {
                     baseCellItem.viewModel.selectionIndex = handler(baseCellItem.viewModel.item)
                 }

@@ -12,11 +12,7 @@ class PlaceholderCellItem: CollectionViewCellItem {
 
     var numberOfItemsInRow: Int = 4
 
-    func size() -> CGSize {
-        guard let collectionView = collectionView,
-            let sectionItem = sectionItem else {
-                return .zero
-        }
+    func size(in collectionView: UICollectionView, sectionItem: CollectionViewSectionItem) -> CGSize {
         let width = (collectionView.bounds.width - sectionItem.insets.left - sectionItem.insets.right -
             CGFloat(numberOfItemsInRow) * (sectionItem.minimumInteritemSpacing)) / CGFloat(numberOfItemsInRow)
         return CGSize(width: width, height: width)

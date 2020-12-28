@@ -76,19 +76,19 @@ final class PermissionsPlaceholderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        subtitleLabel.configureFrame { (maker: Maker) in
+        subtitleLabel.configureFrame { maker in
             maker.left(inset: 40).right(inset: 40)
             maker.centerY()
             maker.heightToFit()
         }
 
-        titleLabel.configureFrame { (maker: Maker) in
+        titleLabel.configureFrame { maker in
             maker.left(inset: 40).right(inset: 40)
             maker.bottom(to: subtitleLabel.nui_top, inset: 8)
             maker.heightToFit()
         }
 
-        settingsButton.configureFrame { (maker: Maker) in
+        settingsButton.configureFrame { maker in
             maker.top(to: subtitleLabel.nui_bottom, inset: 24)
             maker.centerX()
             maker.sizeToFit()

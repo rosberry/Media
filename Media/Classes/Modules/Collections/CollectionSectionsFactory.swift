@@ -27,7 +27,7 @@ final class CollectionSectionsFactory {
 
     private func makeCellItem(mediaItemCollection: MediaItemCollection) -> CollectionViewCellItem {
         let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services)
-        cellItem.itemDidSelectHandler = { [weak self] in
+        cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }
         return cellItem

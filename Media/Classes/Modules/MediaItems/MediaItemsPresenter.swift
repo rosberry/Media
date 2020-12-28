@@ -90,7 +90,7 @@ public final class MediaItemsPresenter {
                 return
             }
             self.fetchResult = result
-            self.view?.update(with: self.dataSource(for: result.fetchResult), animated: true)
+            self.view?.update(with: self.sectionItemsProvider(for: result.fetchResult), animated: true)
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
         }
     }
@@ -103,36 +103,42 @@ public final class MediaItemsPresenter {
         }
     }
 
-    private func dataSource(for result: PHFetchResult<PHAsset>) -> CollectionViewSectionDataSource {
+    private func sectionItemsProvider(for result: PHFetchResult<PHAsset>) -> SectionItemsProvider {
         guard result.count != 0 else {
-            return GeneralCollectionViewSectionDataSource(sources: []) { _ in return nil }
+            return ArraySectionItemsProvider(sectionItems: [])
         }
         let minimumLineSpacing: CGFloat = 8.0
         let minimumInteritemSpacing: CGFloat = 8.0
         let insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         let count = result.count
-        let itemSource = GeneralCollectionViewItemDataSource(count: count, cellItemProvider: { (index: Int) -> CollectionViewCellItem? in
+
+        let factory = TypeCellItemFactory<Int, UICollectionViewCell>()
+        factory.sizeConfigurationHandler = { [weak self] object, collection, section in
+            let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
+            let widthWithoutInsets: CGFloat = collection.bounds.width - insets.left - insets.right
+            let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * minimumInteritemSpacing) / numberOfItemsInRow
+            return CGSize(width: width, height: width)
+        }
+        factory.initializationHandler = { index, object in
             let asset = result.object(at: count - index - 1)
             let mediaItem = MediaItem(asset: asset)
             let selectionIndex = self.selectedItems.firstIndex(of: mediaItem)
             let isSelectionInfoLabelHidden = self.maxItemsCount == 1
-            return self.factory.makeCellItem(mediaItem: mediaItem,
-                                             selectionIndex: selectionIndex,
-                                             isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
-        }, sizeProvider: { (_: Int, collectionView: UICollectionView) -> CGSize in
-            let numberOfItemsInRow: CGFloat = 4
-            let width = (collectionView.bounds.width - insets.left - insets.right -
-                numberOfItemsInRow * minimumInteritemSpacing) / numberOfItemsInRow
-            return CGSize(width: width, height: width)
-        })
-
-        return GeneralCollectionViewSectionDataSource(sources: [itemSource]) { _ in
-            let sectionItem = GeneralCollectionViewSectionItem()
-            sectionItem.minimumLineSpacing = minimumLineSpacing
-            sectionItem.minimumInteritemSpacing = minimumInteritemSpacing
-            sectionItem.insets = insets
-            return sectionItem
+            return [self.factory.makeCellItem(mediaItem: mediaItem,
+                                              selectionIndex: selectionIndex,
+                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)]
         }
+        let provider = LazyAssociatedFactoryTypeSectionItemsProvider(factory: factory,
+                                                                     cellItemsNumberHandler: { _ in count },
+                                                                     makeSectionItemHandler: { _ in
+                                                                         let sectionItem = GeneralCollectionViewSectionItem()
+                                                                         sectionItem.minimumLineSpacing = minimumLineSpacing
+                                                                         sectionItem.minimumInteritemSpacing = minimumInteritemSpacing
+                                                                         sectionItem.insets = insets
+                                                                         return sectionItem
+                                                                     },
+                                                                     objectHandler: { index in result[count - index.row - 1] })
+        return provider
     }
 
     private func updateMediaItemList(usingPlaceholderTransition: Bool) {

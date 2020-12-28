@@ -18,12 +18,8 @@ class CollectionCellItem: CollectionViewCellItem {
         self.dependencies = dependencies
     }
 
-    func size() -> CGSize {
-        guard let collectionView = collectionView else {
-            return .zero
-        }
-
-        return CGSize(width: collectionView.bounds.width, height: 72)
+    func size(in collectionView: UICollectionView, sectionItem: CollectionViewSectionItem) -> CGSize {
+        CGSize(width: collectionView.bounds.width, height: 72)
     }
 
     func configure(_ cell: UICollectionViewCell) {

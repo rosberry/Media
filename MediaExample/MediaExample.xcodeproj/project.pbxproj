@@ -15,6 +15,7 @@
 		1373B16622DC789A00F28EF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B16522DC789A00F28EF0 /* MainViewController.swift */; };
 		13949FCA22DF21280097A040 /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; };
 		13949FCB22DF21280097A040 /* Media.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		36C9E1462599FA3C00FEAD7F /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13949FCA22DF21280097A040 /* Media.framework in Frameworks */,
+				36C9E1462599FA3C00FEAD7F /* Media.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

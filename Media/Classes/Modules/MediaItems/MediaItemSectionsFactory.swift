@@ -45,7 +45,7 @@ final class MediaLibraryItemSectionsFactory {
                                                   numberOfItemsInRow: numberOfItemsInRow)
         }
 
-        cellItem.itemDidSelectHandler = { [weak self] in
+        cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItem)
         }
 
