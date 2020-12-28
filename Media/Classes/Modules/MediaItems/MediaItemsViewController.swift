@@ -82,7 +82,7 @@ public final class MediaItemsViewController: UIViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        permissionsPlaceholderView.configureFrame { (maker: Maker) in
+        permissionsPlaceholderView.configureFrame { maker in
             maker.top()
             maker.left().right()
             maker.bottom(inset: view.safeAreaInsets.bottom)
@@ -92,12 +92,12 @@ public final class MediaItemsViewController: UIViewController {
             maker.edges(insets: view.safeAreaInsets)
         }
 
-        permissionsPlaceholderView.configureFrame { (maker: Maker) in
+        permissionsPlaceholderView.configureFrame { maker in
             maker.top().left().right()
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        placeholderLabel.configureFrame { (maker: Maker) in
+        placeholderLabel.configureFrame { maker in
             maker.left().right()
             maker.centerY()
             maker.heightToFit()

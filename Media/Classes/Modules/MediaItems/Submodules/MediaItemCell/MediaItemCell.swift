@@ -86,15 +86,15 @@ class MediaItemCell: UICollectionViewCell {
         imageView.frame = contentView.bounds
         selectionView.frame = contentView.bounds
 
-        infoView.configureFrame { (maker: Maker) in
+        infoView.configureFrame { maker in
             maker.height(16).bottom()
         }
-        typeImageView.configureFrame { (maker: Maker) in
+        typeImageView.configureFrame { maker in
             maker.left(inset: 2)
             maker.centerY()
             maker.sizeToFit()
         }
-        infoLabel.configureFrame { (maker: Maker) in
+        infoLabel.configureFrame { maker in
             if typeImageView.image == nil {
                 maker.left(inset: 4)
             }
@@ -104,7 +104,7 @@ class MediaItemCell: UICollectionViewCell {
             maker.centerY(offset: -0.5)
             maker.sizeToFit()
         }
-        infoView.configureFrame { (maker: Maker) in
+        infoView.configureFrame { maker in
             maker.width(infoLabel.frame.maxX + 4)
             maker.right()
         }

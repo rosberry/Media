@@ -54,20 +54,20 @@ class CollectionCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(false)
 
         imageView.layer.cornerRadius = 4.0
-        imageView.configureFrame { (maker: Maker) in
+        imageView.configureFrame { maker in
             maker.left(inset: 15.0)
             maker.centerY()
             maker.size(width: contentView.bounds.height - 16.0, height: contentView.bounds.height - 16.0)
         }
 
-        titleLabel.configureFrame { (maker: Maker) in
+        titleLabel.configureFrame { maker in
             maker.left(to: imageView.nui_right, inset: 15.0)
             maker.right(inset: 20.0)
             maker.bottom(to: imageView.nui_centerY, inset: 1.0)
             maker.heightToFit()
         }
 
-        itemCountLabel.configureFrame { (maker: Maker) in
+        itemCountLabel.configureFrame { maker in
             maker.left(to: imageView.nui_right, inset: 15.0)
             maker.right(inset: 20.0)
             maker.top(to: imageView.nui_centerY, inset: 1.0)
