@@ -5,6 +5,7 @@
 import UIKit
 import CollectionViewTools
 import Framezilla
+import MediaService
 
 public final class MediaItemsViewController: UIViewController {
 

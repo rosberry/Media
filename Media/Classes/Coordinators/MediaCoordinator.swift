@@ -5,6 +5,7 @@
 import UIKit
 import Ion
 import Photos
+import MediaService
 
 public final class MediaCoordinator {
 
@@ -111,7 +112,7 @@ extension MediaCoordinator: MediaLibraryModuleOutput {
 // MARK: - CollectionsModuleOutput
 extension MediaCoordinator: CollectionsModuleOutput {
 
-    public func didSelect(_ collection: MediaItemCollection) {
+    public func didSelect(_ collection: MediaItemsCollection) {
         switch context {
             case .library:
                 mediaLibraryModule?.input.select(collection)
@@ -138,7 +139,7 @@ extension MediaCoordinator: MediaItemsModuleOutput {
         navigationViewController.dismiss(animated: true, completion: nil)
     }
 
-    public func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool) {
+    public func didFinishLoading(_ collection: MediaItemsCollection, isMixedContentCollection: Bool) {
 
     }
 }

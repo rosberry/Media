@@ -13,24 +13,7 @@
 		1373B13D22DC663900F28EF0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B13C22DC663900F28EF0 /* AppCoordinator.swift */; };
 		1373B14722DC686300F28EF0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B14622DC686300F28EF0 /* Coordinator.swift */; };
 		1373B16622DC789A00F28EF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B16522DC789A00F28EF0 /* MainViewController.swift */; };
-		13949FCA22DF21280097A040 /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; };
-		13949FCB22DF21280097A040 /* Media.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		36C9E1462599FA3C00FEAD7F /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13949FC922DF21280097A040 /* Media.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		1373B0DF22DC260200F28EF0 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				13949FCB22DF21280097A040 /* Media.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1373B0BF22DC252300F28EF0 /* MediaExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,10 +25,11 @@
 		1373B14122DC671B00F28EF0 /* Framezilla.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Framezilla.framework; path = ../Carthage/Build/iOS/Framezilla.framework; sourceTree = "<group>"; };
 		1373B14622DC686300F28EF0 /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		1373B16522DC789A00F28EF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		13949FC922DF21280097A040 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13949FCC22DF27D10097A040 /* Ion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Ion.framework; path = ../Carthage/Build/iOS/Ion.framework; sourceTree = "<group>"; };
 		13949FCD22DF27D10097A040 /* Texstyle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Texstyle.framework; path = ../Carthage/Build/iOS/Texstyle.framework; sourceTree = "<group>"; };
 		13949FCE22DF27D10097A040 /* CollectionViewTools.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CollectionViewTools.framework; path = ../Carthage/Build/iOS/CollectionViewTools.framework; sourceTree = "<group>"; };
+		A920202A26FDA3130045BD61 /* Media.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Media.framework; sourceTree = "<group>"; };
+		A920202C26FDAD480045BD61 /* MediaService.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaService.framework; path = ../Carthage/Build/iOS/MediaService.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +37,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13949FCA22DF21280097A040 /* Media.framework in Frameworks */,
-				36C9E1462599FA3C00FEAD7F /* Media.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +46,6 @@
 		1373B0B622DC252300F28EF0 = {
 			isa = PBXGroup;
 			children = (
-				13949FC922DF21280097A040 /* Media.framework */,
 				1373B0C122DC252300F28EF0 /* MediaExample */,
 				1373B0C022DC252300F28EF0 /* Products */,
 				1373B14022DC671B00F28EF0 /* Frameworks */,
@@ -136,6 +117,8 @@
 		1373B14022DC671B00F28EF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A920202C26FDAD480045BD61 /* MediaService.framework */,
+				A920202A26FDA3130045BD61 /* Media.framework */,
 				13949FCE22DF27D10097A040 /* CollectionViewTools.framework */,
 				13949FCC22DF27D10097A040 /* Ion.framework */,
 				13949FCD22DF27D10097A040 /* Texstyle.framework */,
@@ -178,7 +161,6 @@
 				1373B0BB22DC252300F28EF0 /* Sources */,
 				1373B0BC22DC252300F28EF0 /* Frameworks */,
 				1373B0BD22DC252300F28EF0 /* Resources */,
-				1373B0DF22DC260200F28EF0 /* Embed Frameworks */,
 				1373B14322DC671F00F28EF0 /* Carthage */,
 			);
 			buildRules = (
@@ -248,6 +230,7 @@
 				"$(SRCROOT)/../Carthage/Build/iOS/Ion.framework",
 				"$(SRCROOT)/../Carthage/Build/iOS/CollectionViewTools.framework",
 				"$(SRCROOT)/../Carthage/Build/iOS/Texstyle.framework",
+				"$(SRCROOT)/../Carthage/Build/iOS/MediaService.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -257,6 +240,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Ion.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CollectionViewTools.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Texstyle.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/MediaService.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -415,6 +399,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MediaExample/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -438,6 +423,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Carthage/Build/iOS",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MediaExample/Resources/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

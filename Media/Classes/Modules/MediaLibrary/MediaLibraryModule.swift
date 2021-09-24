@@ -2,10 +2,12 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
+import MediaService
+
 public protocol MediaLibraryModuleInput: AnyObject {
 
     func update(isAuthorized: Bool)
-    func select(_ collection: MediaItemCollection)
+    func select(_ collection: MediaItemsCollection)
 }
 
 public protocol MediaLibraryModuleOutput: AnyObject {

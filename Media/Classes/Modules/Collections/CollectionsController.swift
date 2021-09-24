@@ -5,6 +5,7 @@
 import UIKit
 import CollectionViewTools
 import Framezilla
+import MediaService
 
 public final class CollectionsController: UIViewController {
 
@@ -75,7 +76,7 @@ public final class CollectionsController: UIViewController {
         permissionsPlaceholderView.isHidden = false
     }
 
-    func update(with mediaItemCollections: [MediaItemCollection]) {
+    func update(with mediaItemCollections: [MediaItemsCollection]) {
         collectionView.contentOffset = .zero
         collectionViewManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
         collectionView.isUserInteractionEnabled = true

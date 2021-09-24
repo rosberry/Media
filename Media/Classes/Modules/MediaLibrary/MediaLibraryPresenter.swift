@@ -4,6 +4,7 @@
 
 import Ion
 import Photos
+import MediaService
 
 final class MediaLibraryPresenter {
 
@@ -14,14 +15,14 @@ final class MediaLibraryPresenter {
 
     weak var output: MediaLibraryModuleOutput?
 
-    var collections: [MediaItemCollection] = []
-    var activeCollection: MediaItemCollection? {
+    var collections: [MediaItemsCollection] = []
+    var activeCollection: MediaItemsCollection? {
         didSet {
             updateMediaItemList()
         }
     }
 
-    private lazy var collectionsCollector: Collector<[MediaItemCollection]> = {
+    private lazy var collectionsCollector: Collector<[MediaItemsCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
@@ -52,7 +53,7 @@ final class MediaLibraryPresenter {
         collectionsModule.input.updateCollections()
     }
 
-    func changeFilterEventTriggered(with filter: MediaItemFilter) {
+    func changeFilterEventTriggered(with filter: MediaItemsFilter) {
         mediaItemsModule.input.filter = filter
     }
 
@@ -73,7 +74,7 @@ final class MediaLibraryPresenter {
     // MARK: - Helpers
 
     private func setupCollectionsCollector() {
-        collectionsCollector.subscribe { [weak self] (collections: [MediaItemCollection]) in
+        collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
             self?.collections = collections
             guard self?.activeCollection == nil else {
                 return
@@ -103,7 +104,7 @@ extension MediaLibraryPresenter: MediaLibraryModuleInput {
         }
     }
 
-    func select(_ collection: MediaItemCollection) {
+    func select(_ collection: MediaItemsCollection) {
         view?.updateCollectionPicker(isVisible: false)
         activeCollection = collection
     }

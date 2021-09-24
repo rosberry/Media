@@ -4,6 +4,7 @@
 
 import Foundation
 import CollectionViewTools
+import MediaService
 
 protocol MediaItemSectionsFactoryOutput: AnyObject {
     func didSelect(_ item: MediaItem)

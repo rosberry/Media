@@ -2,9 +2,11 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
+import MediaService
+
 public protocol CollectionsModuleInput: AnyObject {
 
-    var collections: [MediaItemCollection] { get set }
+    var collections: [MediaItemsCollection] { get set }
 
     func update(isAuthorized: Bool)
     func updateCollections()
@@ -12,7 +14,7 @@ public protocol CollectionsModuleInput: AnyObject {
 
 public protocol CollectionsModuleOutput: AnyObject {
 
-    func didSelect(_ collection: MediaItemCollection)
+    func didSelect(_ collection: MediaItemsCollection)
 }
 
 public final class CollectionsModule {

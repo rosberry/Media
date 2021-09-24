@@ -4,28 +4,29 @@
 
 import Foundation
 import CollectionViewTools
+import MediaService
 
 protocol CollectionSectionsFactoryOutput: AnyObject {
 
-    func didSelect(_ collection: MediaItemCollection)
+    func didSelect(_ collection: MediaItemsCollection)
 }
 
 final class CollectionSectionsFactory {
 
     weak var output: CollectionSectionsFactoryOutput?
 
-    func makeSectionItems(mediaItemCollections: [MediaItemCollection]) -> [CollectionViewSectionItem] {
+    func makeSectionItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))
         return [sectionItem]
     }
 
     // MARK: - Private
 
-    private func makeCellItems(mediaItemCollections: [MediaItemCollection]) -> [CollectionViewCellItem] {
+    private func makeCellItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewCellItem] {
         mediaItemCollections.map(makeCellItem)
     }
 
-    private func makeCellItem(mediaItemCollection: MediaItemCollection) -> CollectionViewCellItem {
+    private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
         let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)

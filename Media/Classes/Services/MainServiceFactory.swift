@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import MediaService
 
 typealias ServicesAlias = HasMediaLibraryService
 

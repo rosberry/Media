@@ -4,6 +4,7 @@
 
 import UIKit
 import CollectionViewTools
+import MediaService
 
 class MediaItemCellItem: CollectionViewCellItem {
 

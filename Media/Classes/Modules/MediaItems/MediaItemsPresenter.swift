@@ -6,6 +6,7 @@ import Ion
 import UIKit
 import Photos
 import CollectionViewTools
+import MediaService
 
 public final class MediaItemsPresenter {
 
@@ -21,19 +22,19 @@ public final class MediaItemsPresenter {
 
     weak var output: MediaItemsModuleOutput?
 
-    public var collection: MediaItemCollection? {
+    public var collection: MediaItemsCollection? {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
         }
     }
 
-    public var filter: MediaItemFilter = .video {
+    public var filter: MediaItemsFilter = .all {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: true)
         }
     }
 
-    public var fetchResult: MediaItemFetchResult?
+    public var fetchResult: MediaItemsFetchResult?
     public var selectedItems: [MediaItem] = [] {
         didSet {
             updateSelection()
@@ -42,7 +43,7 @@ public final class MediaItemsPresenter {
 
     private var focusDirection: FocusDirection = .down
 
-    private lazy var mediaItemsCollector: Collector<MediaItemFetchResult> = {
+    private lazy var mediaItemsCollector: Collector<MediaItemsFetchResult> = {
         return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
 
@@ -85,7 +86,7 @@ public final class MediaItemsPresenter {
     // MARK: - Helpers
 
     private func setupMediaItemsCollector() {
-        mediaItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
+        mediaItemsCollector.subscribe { [weak self] (result: MediaItemsFetchResult) in
             guard let self = self else {
                 return
             }

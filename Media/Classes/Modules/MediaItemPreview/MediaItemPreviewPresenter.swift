@@ -4,6 +4,7 @@
 
 import AVFoundation
 import UIKit
+import MediaService
 
 typealias MediaItemPreviewDependencies = HasMediaLibraryService
 

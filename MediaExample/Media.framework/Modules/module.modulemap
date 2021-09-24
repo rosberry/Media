@@ -1,0 +1,11 @@
+framework module Media {
+  umbrella header "Media.h"
+
+  export *
+  module * { export * }
+}
+
+module Media.Swift {
+    header "Media-Swift.h"
+    requires objc
+}

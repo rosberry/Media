@@ -3,18 +3,19 @@
 //
 
 import UIKit
+import MediaService
 
 public protocol MediaItemsModuleInput: AnyObject {
 
-    var collection: MediaItemCollection? { get set }
+    var collection: MediaItemsCollection? { get set }
 
     var numberOfItemsInRow: Int { get set }
 
-    var filter: MediaItemFilter { get set }
+    var filter: MediaItemsFilter { get set }
 
     var selectedItems: [MediaItem] { get set }
 
-    var fetchResult: MediaItemFetchResult? { get }
+    var fetchResult: MediaItemsFetchResult? { get }
 
     func update(isAuthorized: Bool)
 }
@@ -22,7 +23,7 @@ public protocol MediaItemsModuleInput: AnyObject {
 public protocol MediaItemsModuleOutput: AnyObject {
     func didStartPreview(item: MediaItem, from rect: CGRect)
     func didStopPreview(item: MediaItem)
-    func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool)
+    func didFinishLoading(_ collection: MediaItemsCollection, isMixedContentCollection: Bool)
 }
 
 public final class MediaItemsModule {
@@ -43,7 +44,7 @@ public final class MediaItemsModule {
     public let viewController: MediaItemsViewController
     private let presenter: MediaItemsPresenter
 
-    public init(maxItemsCount: Int, numberOfItemsInRow: Int, collection: MediaItemCollection? = nil) {
+    public init(maxItemsCount: Int, numberOfItemsInRow: Int, collection: MediaItemsCollection? = nil) {
         presenter = MediaItemsPresenter(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow, dependencies: Services)
         viewController = MediaItemsViewController(presenter: presenter)
         presenter.view = viewController
