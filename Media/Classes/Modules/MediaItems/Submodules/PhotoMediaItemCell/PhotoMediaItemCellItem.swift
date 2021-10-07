@@ -4,11 +4,11 @@
 
 import CollectionViewTools
 
-class PhotoMediaItemCellItem: MediaItemCellItem {
-
-    typealias Cell = PhotoMediaItemCell
-
-    override var reuseType: ReuseType {
-        .class(Cell.self)
-    }
-}
+//class PhotoMediaItemCellItem: MediaItemCellItem {
+//
+//    typealias Cell = PhotoMediaItemCell
+//
+//    override var reuseType: ReuseType {
+//        .class(Cell.self)
+//    }
+//}

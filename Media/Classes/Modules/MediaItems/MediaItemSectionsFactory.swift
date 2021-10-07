@@ -5,6 +5,7 @@
 import Foundation
 import CollectionViewTools
 import MediaService
+import Photos
 
 protocol MediaItemSectionsFactoryOutput: AnyObject {
     func didSelect(_ item: MediaItem)
@@ -15,52 +16,105 @@ protocol MediaItemSectionsFactoryOutput: AnyObject {
 
 final class MediaLibraryItemSectionsFactory {
 
+    typealias Dependencies = HasMediaLibraryService
+
+    private(set) lazy var complexFactory: ComplexCellItemsFactory = {
+        let complexFactory = ComplexCellItemsFactory()
+        complexFactory.factory(byJoining: photoCellItemsFactory)
+        complexFactory.factory(byJoining: placeholderCellItemsFactory)
+        complexFactory.factory(byJoining: videoCellItemFactory)
+        return complexFactory
+    }()
+
+    private(set) lazy var placeholderCellItemsFactory: CellItemsFactory<EmptyItemCellModel, UICollectionViewCell> = {
+        let factory = CellItemsFactory<EmptyItemCellModel, UICollectionViewCell>()
+        factory.cellItemConfigurationHandler = { [weak self] cellItem in
+            cellItem.itemDidSelectHandler = { _ in
+                self?.output?.didSelect(cellItem.object.mediaItem)
+            }
+        }
+        return factory
+    }()
+
+    private enum Kind {
+        case video
+        case photo
+    }
+
+    private(set) lazy var photoCellItemsFactory: CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell> = {
+        let factory = CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell>()
+        factory.cellConfigurationHandler = { [weak self] cell, cellItem in
+            guard let self = self else {
+                return
+            }
+
+            self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
+                                                                 size: self.thumbnailSize,
+                                                                 contentMode: .aspectFill) { _ in
+                cell.update(with: cellItem.object)
+            }
+
+            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
+
+            cell.didRequestPreviewStartHandler = { [weak self] sender in
+                self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
+            }
+
+            cell.didRequestPreviewStopHandler = { [weak self] _ in
+                self?.output?.didRequestPreviewStop(item: cellItem.object.mediaItem)
+            }
+        }
+        factory.cellItemConfigurationHandler = { [weak self] cellItem in
+            let mediaItem = cellItem.object.mediaItem
+            cellItem.itemDidSelectHandler = { _ in
+                self?.output?.didSelect(mediaItem)
+            }
+        }
+        return factory
+    }()
+
+    private(set) lazy var videoCellItemFactory: CellItemsFactory<VideoItemCellModel, VideoMediaItemCell> = {
+        let factory = CellItemsFactory<VideoItemCellModel, VideoMediaItemCell>()
+        factory.cellConfigurationHandler = { [weak self] cell, cellItem in
+            guard let self = self else {
+                return
+            }
+
+            self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
+                                                                 size: self.thumbnailSize,
+                                                                 contentMode: .aspectFill) { _ in
+                cell.update(with: cellItem.object)
+            }
+
+            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
+
+            cell.didRequestPreviewStartHandler = { [weak self] sender in
+                self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
+            }
+
+            cell.didRequestPreviewStopHandler = { [weak self] _ in
+                self?.output?.didRequestPreviewStop(item: cellItem.object.mediaItem)
+            }
+        }
+        factory.cellItemConfigurationHandler = { [weak self] cellItem in
+
+            let mediaItem = cellItem.object.mediaItem
+            cellItem.itemDidSelectHandler = { _ in
+                self?.output?.didSelect(mediaItem)
+            }
+        }
+        return factory
+    }()
+
     weak var output: MediaItemSectionsFactoryOutput?
 
     let numberOfItemsInRow: Int
+    private let dependencies: Dependencies
+    private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int) {
+    init(numberOfItemsInRow: Int, dependencies: Dependencies) {
         self.numberOfItemsInRow = numberOfItemsInRow
-    }
-
-    // MARK: - Media Items
-
-    func makeCellItem(mediaItem: MediaItem,
-                      selectionIndex: Int?,
-                      isSelectionInfoLabelHidden: Bool) -> CollectionViewCellItem {
-        let cellModel = MediaItemCellModel(mediaItem: mediaItem, selectionIndex: selectionIndex)
-
-        let cellItem: CollectionViewCellItem
-        switch mediaItem.type {
-            case .unknown:
-                cellItem = PlaceholderCellItem()
-            case .photo, .livePhoto:
-                cellItem = PhotoMediaItemCellItem(viewModel: cellModel,
-                                                  dependencies: Services,
-                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden,
-                                                  numberOfItemsInRow: numberOfItemsInRow)
-            case .video, .sloMoVideo:
-                cellItem = VideoMediaItemCellItem(viewModel: cellModel,
-                                                  dependencies: Services,
-                                                  isSelectionInfoLabelHidden: isSelectionInfoLabelHidden,
-                                                  numberOfItemsInRow: numberOfItemsInRow)
-        }
-
-        cellItem.itemDidSelectHandler = { [weak self] _ in
-            self?.output?.didSelect(mediaItem)
-        }
-
-        if let mediaCellItem = cellItem as? MediaItemCellItem {
-            mediaCellItem.previewStartHandler = { [weak output] (_, rect: CGRect) in
-                output?.didRequestPreviewStart(item: mediaItem, from: rect)
-            }
-
-            mediaCellItem.previewStopHandler = { [weak output] _ in
-                output?.didRequestPreviewStop(item: mediaItem)
-            }
-        }
-
-        return cellItem
+        self.dependencies = dependencies
     }
 
     // MARK: - Placeholders

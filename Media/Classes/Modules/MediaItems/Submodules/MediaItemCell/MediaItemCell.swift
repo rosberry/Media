@@ -5,11 +5,6 @@
 import UIKit
 import Framezilla
 
-protocol MediaItemCellDelegate: AnyObject {
-    func didRequestPreviewStart(_ sender: UICollectionViewCell)
-    func didRequsetPreviewStop(_ sender: UICollectionViewCell)
-}
-
 class MediaItemCell: UICollectionViewCell {
 
     private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
@@ -18,7 +13,8 @@ class MediaItemCell: UICollectionViewCell {
         return recognizer
     }()
 
-    weak var delegate: MediaItemCellDelegate?
+    var didRequestPreviewStartHandler: ((UICollectionViewCell) -> Void)?
+    var didRequestPreviewStopHandler: ((UICollectionViewCell) -> Void)?
 
     // MARK: - Subviews
 
@@ -35,10 +31,7 @@ class MediaItemCell: UICollectionViewCell {
         return view
     }()
 
-    private(set) lazy var infoLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    private(set) lazy var infoLabel: UILabel = .init()
 
     private(set) lazy var typeImageView: UIImageView = {
         let view = UIImageView()
@@ -115,17 +108,17 @@ class MediaItemCell: UICollectionViewCell {
 
     @objc private func viewPressed() {
         if longPressGestureRecognizer.state == .began {
-            delegate?.didRequestPreviewStart(self)
+            didRequestPreviewStartHandler?(self)
         }
         else if longPressGestureRecognizer.state != .changed {
-            delegate?.didRequsetPreviewStop(self)
+            didRequestPreviewStopHandler?(self)
         }
     }
 
     // MARK: -
 
-    func update(with viewModel: MediaItemCellModel) {
-        imageView.image = viewModel.item.thumbnail
+    func update(with viewModel: BaseItemCellModel) {
+        imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0
             selectionView.selectionInfoLabel.text = "\(selectionIndex + 1)"
