@@ -132,6 +132,7 @@ extension MediaCoordinator: MediaItemsModuleOutput {
 
     public func didStartPreview(item: MediaItem, from rect: CGRect) {
         let module = makeMediaItemPreviewModule()
+        module.input.mediaItem = item
         navigationViewController.present(module.viewController, animated: true, completion: nil)
     }
 
