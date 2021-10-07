@@ -5,7 +5,7 @@
 import MediaService
 import CollectionViewTools
 
-final class VideoItemCellModel: BaseItemCellModel {
+final class VideoItemCellModel: EmptyItemCellModel {
     override var diffIdentifier: String {
         mediaItem.identifier
     }

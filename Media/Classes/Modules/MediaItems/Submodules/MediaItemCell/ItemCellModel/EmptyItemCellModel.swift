@@ -5,12 +5,28 @@
 import CollectionViewTools
 import MediaService
 
-final class EmptyItemCellModel: BaseItemCellModel {
-    override var diffIdentifier: String {
+class EmptyItemCellModel: DiffCompatible {
+    var diffIdentifier: String {
         UUID().uuidString
     }
 
+    let mediaItem: MediaItem
+    var selectionIndex: Int?
+    let isSelectionInfoLabelHidden: Bool
+
     init(mediaItem: MediaItem, selectionIndex: Int?) {
-        super.init(mediaItem: mediaItem, selectionIndex: selectionIndex, isSelectionInfoLabelHidden: false)
+        self.mediaItem = mediaItem
+        self.selectionIndex = selectionIndex
+        isSelectionInfoLabelHidden = false
+    }
+
+    init(mediaItem: MediaItem, selectionIndex: Int?, isSelectionInfoLabelHidden: Bool) {
+        self.mediaItem = mediaItem
+        self.selectionIndex = selectionIndex
+        self.isSelectionInfoLabelHidden = isSelectionInfoLabelHidden
+    }
+
+    func makeDiffComparator() -> Bool {
+        true
     }
 }
