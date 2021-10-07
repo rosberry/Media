@@ -43,66 +43,13 @@ final class MediaLibraryItemSectionsFactory {
 
     private(set) lazy var photoCellItemsFactory: CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell> = {
         let factory = CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell>()
-        factory.cellConfigurationHandler = { [weak self] cell, cellItem in
-            guard let self = self else {
-                return
-            }
-
-            self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
-                                                                 size: self.thumbnailSize,
-                                                                 contentMode: .aspectFill) { _ in
-                cell.update(with: cellItem.object)
-            }
-
-            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
-
-            cell.didRequestPreviewStartHandler = { [weak self] sender in
-                self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
-            }
-
-            cell.didRequestPreviewStopHandler = { [weak self] _ in
-                self?.output?.didRequestPreviewStop(item: cellItem.object.mediaItem)
-            }
-        }
-        factory.cellItemConfigurationHandler = { [weak self] cellItem in
-            let mediaItem = cellItem.object.mediaItem
-            cellItem.itemDidSelectHandler = { _ in
-                self?.output?.didSelect(mediaItem)
-            }
-        }
+        configureFactory(factory: factory)
         return factory
     }()
 
     private(set) lazy var videoCellItemFactory: CellItemsFactory<VideoItemCellModel, VideoMediaItemCell> = {
         let factory = CellItemsFactory<VideoItemCellModel, VideoMediaItemCell>()
-        factory.cellConfigurationHandler = { [weak self] cell, cellItem in
-            guard let self = self else {
-                return
-            }
-
-            self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
-                                                                 size: self.thumbnailSize,
-                                                                 contentMode: .aspectFill) { _ in
-                cell.update(with: cellItem.object)
-            }
-
-            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
-
-            cell.didRequestPreviewStartHandler = { [weak self] sender in
-                self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
-            }
-
-            cell.didRequestPreviewStopHandler = { [weak self] _ in
-                self?.output?.didRequestPreviewStop(item: cellItem.object.mediaItem)
-            }
-        }
-        factory.cellItemConfigurationHandler = { [weak self] cellItem in
-
-            let mediaItem = cellItem.object.mediaItem
-            cellItem.itemDidSelectHandler = { _ in
-                self?.output?.didSelect(mediaItem)
-            }
-        }
+        configureFactory(factory: factory)
         return factory
     }()
 
@@ -121,6 +68,42 @@ final class MediaLibraryItemSectionsFactory {
 
     func placeholderSectionItems(placeholderCount: Int) -> [CollectionViewSectionItem] {
         [makeSectionItem(cellItems: makePlaceholderCellItems(count: placeholderCount))]
+    }
+
+    private func configureFactory<Object: EmptyItemCellModel, Cell: MediaItemCell>(factory: CellItemsFactory<Object, Cell>) {
+        factory.cellConfigurationHandler = { [weak self] cell, cellItem in
+            guard let self = self else {
+                return
+            }
+
+            cell.modelIdentifier = cellItem.object.diffIdentifier
+
+            self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
+                                                                 size: self.thumbnailSize,
+                                                                 contentMode: .aspectFill) { _ in
+                guard cell.modelIdentifier == cellItem.object.diffIdentifier else {
+                    return
+                }
+
+                cell.update(with: cellItem.object)
+            }
+
+            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
+
+            cell.didRequestPreviewStartHandler = { [weak self] sender in
+                self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
+            }
+
+            cell.didRequestPreviewStopHandler = { [weak self] _ in
+                self?.output?.didRequestPreviewStop(item: cellItem.object.mediaItem)
+            }
+        }
+        factory.cellItemConfigurationHandler = { [weak self] cellItem in
+            let mediaItem = cellItem.object.mediaItem
+            cellItem.itemDidSelectHandler = { _ in
+                self?.output?.didSelect(mediaItem)
+            }
+        }
     }
 
     private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
