@@ -1,5 +1,5 @@
-github "onmyway133/DeepDiff" "2.3.1"
-github "rosberry/CollectionViewTools" "e1b04899202b68de1d2efdb727ab67c2199c9fe2"
+github "onmyway133/DeepDiff" "2.3.3"
+github "rosberry/CollectionViewTools" "581963ff75c443cb2e4fa5d54cef7c27db76c399"
 github "rosberry/Framezilla" "5.1.0"
 github "rosberry/Texstyle" "0.5"
 github "rosberry/ion" "0.1.3"
