@@ -16,6 +16,8 @@ class MediaItemCell: UICollectionViewCell {
     var didRequestPreviewStartHandler: ((UICollectionViewCell) -> Void)?
     var didRequestPreviewStopHandler: ((UICollectionViewCell) -> Void)?
 
+    var modelIdentifier: String?
+
     // MARK: - Subviews
 
     private(set) lazy var imageView: UIImageView = {
@@ -27,11 +29,18 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .gray
+        view.alpha = 0.5
+        view.layer.cornerRadius = 3
+        view.clipsToBounds = true
         return view
     }()
 
-    private(set) lazy var infoLabel: UILabel = .init()
+    private(set) lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        return label
+    }()
 
     private(set) lazy var typeImageView: UIImageView = {
         let view = UIImageView()
@@ -60,6 +69,7 @@ class MediaItemCell: UICollectionViewCell {
     private func setup() {
         backgroundColor = .gray
 
+        contentView.layer.cornerRadius = 5
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
@@ -80,7 +90,7 @@ class MediaItemCell: UICollectionViewCell {
         selectionView.frame = contentView.bounds
 
         infoView.configureFrame { maker in
-            maker.height(16).bottom()
+            maker.height(14).bottom(inset: 2)
         }
         typeImageView.configureFrame { maker in
             maker.left(inset: 2)
@@ -99,7 +109,7 @@ class MediaItemCell: UICollectionViewCell {
         }
         infoView.configureFrame { maker in
             maker.width(infoLabel.frame.maxX + 4)
-            maker.right()
+            maker.right(inset: 2)
         }
         infoView.isHidden = (infoLabel.text == nil) && (typeImageView.image == nil)
     }
@@ -117,7 +127,7 @@ class MediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: BaseItemCellModel) {
+    func update(with viewModel: EmptyItemCellModel) {
         imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0

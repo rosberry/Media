@@ -9,7 +9,7 @@ final class SelectionView: UIView {
 
     private(set) lazy var selectionInfoLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .black
+        label.textColor = .white
         return label
     }()
 
@@ -30,7 +30,7 @@ final class SelectionView: UIView {
 
         selectionInfoLabel.configureFrame { (maker: Maker) in
             maker.right().top()
-            maker.width(28).height(28)
+            .width(28).height(28)
         }
     }
 
