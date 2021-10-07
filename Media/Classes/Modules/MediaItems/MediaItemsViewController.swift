@@ -150,7 +150,6 @@ public final class MediaItemsViewController: UIViewController {
                 }
             }
         }
-        collectionView.reloadData()
     }
 
     public func updateSelection(handler: (_ mediaItem: MediaItem) -> Int?) {
@@ -158,13 +157,20 @@ public final class MediaItemsViewController: UIViewController {
             for cellItem in section.cellItems {
                 if let photoCellItem = cellItem as? PhotoCellItem {
                     photoCellItem.object.selectionIndex = handler(photoCellItem.object.mediaItem)
+                    guard let cell = photoCellItem.cell as? MediaItemCell else {
+                        return
+                    }
+                    cell.update(with: photoCellItem.object)
                 }
                 else if let videoCellItem = cellItem as? VideoCellItem {
                     videoCellItem.object.selectionIndex = handler(videoCellItem.object.mediaItem)
+                    guard let cell = videoCellItem.cell as? MediaItemCell else {
+                        return
+                    }
+                    cell.update(with: videoCellItem.object)
                 }
             }
         }
-        collectionView.reloadData()
     }
 
     func showMediaLibraryDeniedPermissionsPlaceholder() {
