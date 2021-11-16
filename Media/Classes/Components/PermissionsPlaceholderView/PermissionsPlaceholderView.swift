@@ -9,7 +9,7 @@ final class PermissionsPlaceholderView: UIView {
 
     var title: String? {
         get {
-            return titleLabel.text
+            titleLabel.text
         }
         set {
             titleLabel.text = newValue
@@ -18,7 +18,7 @@ final class PermissionsPlaceholderView: UIView {
 
     var subtitle: String? {
         get {
-            return subtitleLabel.text
+            subtitleLabel.text
         }
         set {
             subtitleLabel.text = newValue
