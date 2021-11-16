@@ -5,13 +5,12 @@
 import Foundation
 import MediaService
 
+// swiftlint:disable switch_case_alignment
 extension MediaItemsFilter {
     var title: String {
         switch self {
-        // swiftlint:disable:next switch_case_alignment
         case .video:
             return L10n.MediaLibrary.Filter.videos
-        // swiftlint:disable:next switch_case_alignment
         case .all, .livePhoto, .photo, .sloMoVideo, .unknown:
             return L10n.MediaLibrary.Filter.all
         }
@@ -19,12 +18,11 @@ extension MediaItemsFilter {
 
     func matches(item: MediaItem) -> Bool {
         switch self {
-        // swiftlint:disable:next switch_case_alignment
         case .video:
             return item.type.isVideo
-        // swiftlint:disable:next switch_case_alignment
         case .all, .livePhoto, .photo, .sloMoVideo, .unknown:
             return true
         }
     }
 }
+// swiftlint:enable switch_case_alignment
