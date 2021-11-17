@@ -14,6 +14,7 @@ protocol CollectionSectionsFactoryOutput: AnyObject {
 final class CollectionSectionsFactory {
 
     weak var output: CollectionSectionsFactoryOutput?
+    var configureCell: ConfigureCell = .init()
 
     func makeSectionItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))
@@ -27,7 +28,7 @@ final class CollectionSectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
-        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, configureCell: configureCell)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }

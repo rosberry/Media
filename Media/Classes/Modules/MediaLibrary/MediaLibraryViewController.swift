@@ -66,8 +66,8 @@ public final class MediaLibraryViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        title = L10n.MediaLibrary.title.uppercased()
-        view.backgroundColor = .gray
+        title = L10n.MediaLibrary.title
+        view.backgroundColor = presenter.configureView.backgroundColor
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)

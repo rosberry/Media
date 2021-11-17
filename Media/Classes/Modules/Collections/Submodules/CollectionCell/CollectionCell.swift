@@ -7,10 +7,17 @@ import Framezilla
 
 class CollectionCell: UICollectionViewCell {
 
+    private var configureCell: ConfigureCell = .init()
+
     override var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.25) {
-                self.contentView.backgroundColor = self.isHighlighted ? .white : .gray
+                if self.isHighlighted {
+                    self.contentView.backgroundColor = self.configureCell.selectedColor
+                }
+                else {
+                    self.contentView.backgroundColor = self.configureCell.highlightedColor
+                }
             }
         }
     }
@@ -21,7 +28,7 @@ class CollectionCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .gray
+        imageView.backgroundColor = configureCell.infoViewBackgroundColor
         return imageView
     }()
 
@@ -77,7 +84,8 @@ class CollectionCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(true)
     }
 
-    func update(with viewModel: CollectionCellModel) {
+    func update(with viewModel: CollectionCellModel, configureCell: ConfigureCell) {
+        self.configureCell = configureCell
         imageView.image = viewModel.thumbnail
         titleLabel.text = viewModel.title
 
@@ -96,6 +104,8 @@ class CollectionCell: UICollectionViewCell {
                 itemCountLabelString = "\(count)"
         }
         itemCountLabel.text = itemCountLabelString
+        setNeedsLayout()
+        layoutIfNeeded()
     }
 
     // MARK: - Private

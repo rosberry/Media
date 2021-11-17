@@ -6,8 +6,8 @@ import UIKit
 
 final class PhotoMediaItemCell: MediaItemCell {
 
-    override func update(with viewModel: EmptyItemCellModel) {
-        super.update(with: viewModel)
+    override func update(with viewModel: EmptyItemCellModel, configureCell: ConfigureCell) {
+        super.update(with: viewModel, configureCell: configureCell)
 
         if viewModel.mediaItem.type.isLivePhoto {
             typeImageView.image = Asset.icLivePhotoXs.image

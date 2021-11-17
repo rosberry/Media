@@ -16,6 +16,7 @@ final class CollectionsPresenter {
     weak var output: CollectionsModuleOutput?
 
     var collections: [MediaItemsCollection] = []
+    var configureView: ConfigureView
 
     private lazy var collectionsCollector: Collector<[MediaItemsCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
@@ -27,8 +28,9 @@ final class CollectionsPresenter {
 
     // MARK: - Lifecycle
 
-    init(dependencies: Dependencies) {
+    init(dependencies: Dependencies, configureView: ConfigureView) {
         self.dependencies = dependencies
+        self.configureView = configureView
     }
 
     func viewReadyEventTriggered() {

@@ -30,6 +30,8 @@ public final class MediaCoordinator {
 
     public let context: Context
 
+    public var configureUI: ConfigureUI
+
     // MARK: - Modules
 
     private var mediaLibraryModule: MediaLibraryModule?
@@ -38,9 +40,17 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
+    public init(navigationViewController: UINavigationController, context: Context, configureUI: ConfigureUI) {
+        self.navigationViewController = navigationViewController
+        self.context = context
+        self.configureUI = configureUI
+        setupPermissionsCollector()
+    }
+
     public init(navigationViewController: UINavigationController, context: Context) {
         self.navigationViewController = navigationViewController
         self.context = context
+        self.configureUI = .init()
         setupPermissionsCollector()
     }
 
@@ -74,20 +84,24 @@ public final class MediaCoordinator {
 
     private func makeMediaLibraryModule() -> MediaLibraryModule {
         let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
+                                        configurable: configureUI.library,
                                         collectionsModule: makeCollectionsModule(),
-                                        mediaItemsModule: makeMediaItemsModule())
+                                        mediaItemsModule: makeMediaItemsModule(),
+                                        configureView: configureUI.library)
         module.output = self
         return module
     }
 
     private func makeCollectionsModule() -> CollectionsModule {
-        let module = CollectionsModule()
+        let module = CollectionsModule(configureView: configureUI.albums)
         module.output = self
         return module
     }
 
     private func makeMediaItemsModule() -> MediaItemsModule {
-        let module = MediaItemsModule(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow)
+        let module = MediaItemsModule(maxItemsCount: maxItemsCount,
+                                      numberOfItemsInRow: numberOfItemsInRow,
+                                      configureView: configureUI.list)
         module.output = self
         return module
     }

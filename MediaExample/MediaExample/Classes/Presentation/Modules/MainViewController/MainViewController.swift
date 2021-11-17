@@ -85,7 +85,33 @@ final class MainViewController: UIViewController {
         guard let navigationController = navigationController else {
             return
         }
-        coordinator = .init(navigationViewController: navigationController, context: context)
+
+        let configureCell = ConfigureCell(contentViewCornerRadius: 5,
+                                         contentViewColor: .clear,
+                                         selectedColor: .green,
+                                         highlightedColor: .blue)
+        let configureSection = ConfigureSection(minimumLineSpacing: 5,
+                                               minimumInteritemSpacing: 5,
+                                               insets: .init(top: 5, left: 5, bottom: 5, right: 5))
+
+        let library = ConfigureView(backgroundColor: .brown,
+                                   collectionViewBackgroundColor: .clear,
+                                   configureCell: configureCell,
+                                   configureSection: configureSection)
+
+        let albums = ConfigureView(backgroundColor: .yellow,
+                                  collectionViewBackgroundColor: .clear,
+                                  configureCell: configureCell,
+                                  configureSection: configureSection)
+
+        let list = ConfigureView(backgroundColor: .red,
+                                collectionViewBackgroundColor: .yellow,
+                                configureCell: configureCell,
+                                configureSection: configureSection)
+
+        let configureUI = ConfigureUI(library: library, albums: albums, list: list)
+        coordinator = .init(navigationViewController: navigationController, context: context, configureUI: configureUI)
+        coordinator?.numberOfItemsInRow = 3
         coordinator?.start()
     }
 }

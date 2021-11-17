@@ -56,12 +56,14 @@ final class MediaLibraryItemSectionsFactory {
     weak var output: MediaItemSectionsFactoryOutput?
 
     let numberOfItemsInRow: Int
+    private let configureView: ConfigureView
     private let dependencies: Dependencies
     private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int, dependencies: Dependencies) {
+    init(numberOfItemsInRow: Int, dependencies: Dependencies, configureView: ConfigureView) {
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
+        self.configureView = configureView
     }
 
     // MARK: - Placeholders
@@ -80,12 +82,13 @@ final class MediaLibraryItemSectionsFactory {
 
             self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
                                                                  size: self.thumbnailSize,
-                                                                 contentMode: .aspectFill) { _ in
-                guard cell.modelIdentifier == cellItem.object.diffIdentifier else {
+                                                                 contentMode: .aspectFill) { [weak self] _ in
+                guard let self = self,
+                    cell.modelIdentifier == cellItem.object.diffIdentifier else {
                     return
                 }
 
-                cell.update(with: cellItem.object)
+                cell.update(with: cellItem.object, configureCell: self.configureView.configureCell)
             }
 
             cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
@@ -108,9 +111,9 @@ final class MediaLibraryItemSectionsFactory {
 
     private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems)
-        sectionItem.minimumLineSpacing = 8
-        sectionItem.minimumInteritemSpacing = 8
-        sectionItem.insets = .init(top: 8, left: 8, bottom: 8, right: 8)
+        sectionItem.minimumLineSpacing = configureView.configureSection.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = configureView.configureSection.minimumInteritemSpacing
+        sectionItem.insets = configureView.configureSection.insets
         return sectionItem
     }
 

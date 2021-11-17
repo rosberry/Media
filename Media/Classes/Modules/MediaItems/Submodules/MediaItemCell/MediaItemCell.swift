@@ -18,6 +18,8 @@ class MediaItemCell: UICollectionViewCell {
 
     var modelIdentifier: String?
 
+    private var configureCell: ConfigureCell = .init()
+
     // MARK: - Subviews
 
     private(set) lazy var imageView: UIImageView = {
@@ -29,9 +31,9 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = .gray
-        view.alpha = 0.5
-        view.layer.cornerRadius = 3
+        view.backgroundColor = configureCell.infoViewBackgroundColor
+        view.alpha = CGFloat(configureCell.infoViewAlpha)
+        view.layer.cornerRadius = CGFloat(configureCell.infoViewCornerRadius)
         view.clipsToBounds = true
         return view
     }()
@@ -50,7 +52,7 @@ class MediaItemCell: UICollectionViewCell {
     }()
 
     private(set) lazy var selectionView: SelectionView = {
-        let view = SelectionView()
+        let view = SelectionView(textColor: .white)
         view.alpha = 0.0
         return view
     }()
@@ -67,9 +69,9 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        backgroundColor = .gray
+        backgroundColor = configureCell.contentViewColor
 
-        contentView.layer.cornerRadius = 5
+        contentView.layer.cornerRadius = CGFloat(configureCell.contentViewCornerRadius)
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
@@ -127,7 +129,8 @@ class MediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: EmptyItemCellModel) {
+    func update(with viewModel: EmptyItemCellModel, configureCell: ConfigureCell) {
+        self.configureCell = configureCell
         imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0
@@ -140,5 +143,6 @@ class MediaItemCell: UICollectionViewCell {
             imageView.layer.cornerRadius = 0.0
         }
         setNeedsLayout()
+        layoutIfNeeded()
     }
 }

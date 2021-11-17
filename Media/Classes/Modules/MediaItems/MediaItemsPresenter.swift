@@ -53,20 +53,23 @@ public final class MediaItemsPresenter {
 
     private lazy var factory: MediaLibraryItemSectionsFactory = {
         let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
-                                                      dependencies: Services)
+                                                      dependencies: Services,
+                                                      configureView: configureView)
         factory.output = self
         return factory
     }()
 
     private let maxItemsCount: Int
     public var numberOfItemsInRow: Int
+    public var configureView: ConfigureView
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies) {
+    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies, configureView: ConfigureView) {
         self.maxItemsCount = maxItemsCount
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
+        self.configureView = configureView
     }
 
     func viewReadyEventTriggered() {
@@ -106,23 +109,21 @@ public final class MediaItemsPresenter {
     }
 
     private func sectionItemsProvider(for result: PHFetchResult<PHAsset>) -> LazySectionItemsProvider {
-        let minimumLineSpacing: CGFloat = 8.0
-        let minimumInteritemSpacing: CGFloat = 8.0
-        let insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         let count = result.count
+        let configureSection = configureView.configureSection
 
         let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
             count
         } makeSectionItemHandler: { _ in
             let sectionItem = GeneralCollectionViewDiffSectionItem()
-            sectionItem.minimumLineSpacing = minimumLineSpacing
-            sectionItem.minimumInteritemSpacing = minimumInteritemSpacing
-            sectionItem.insets = insets
+            sectionItem.minimumLineSpacing = configureSection.minimumLineSpacing
+            sectionItem.minimumInteritemSpacing = configureSection.minimumInteritemSpacing
+            sectionItem.insets = configureSection.insets
             return sectionItem
         } sizeHandler: { [weak self] _, collection in
             let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
-            let widthWithoutInsets: CGFloat = collection.bounds.width - insets.left - insets.right
-            let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * minimumInteritemSpacing) / numberOfItemsInRow
+            let widthWithoutInsets: CGFloat = collection.bounds.width - configureSection.insets.left - configureSection.insets.right
+            let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * configureSection.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
         } objectHandler: { indexPath in
             guard indexPath.row < count else {

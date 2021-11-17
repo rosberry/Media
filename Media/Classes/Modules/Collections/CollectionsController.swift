@@ -16,6 +16,7 @@ public final class CollectionsController: UIViewController {
     private lazy var factory: CollectionSectionsFactory = {
         let factory = CollectionSectionsFactory()
         factory.output = presenter
+        factory.configureCell = presenter.configureView.configureCell
         return factory
     }()
 
@@ -25,7 +26,7 @@ public final class CollectionsController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .gray
+        collectionView.backgroundColor = presenter.configureView.backgroundColor
         collectionView.alwaysBounceVertical = true
         return collectionView
     }()
@@ -67,7 +68,9 @@ public final class CollectionsController: UIViewController {
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        collectionView.frame = view.bounds
+        collectionView.configureFrame { maker in
+            maker.left().right().top(to: view.nui_safeArea.top).bottom(to: view.nui_safeArea.bottom)
+        }
     }
 
     // MARK: -
@@ -77,7 +80,7 @@ public final class CollectionsController: UIViewController {
     }
 
     func update(with mediaItemCollections: [MediaItemsCollection]) {
-        collectionView.contentOffset = .zero
+        view.setNeedsLayout()
         collectionViewManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
         collectionView.isUserInteractionEnabled = true
     }
