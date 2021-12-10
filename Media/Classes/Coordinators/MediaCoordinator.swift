@@ -101,7 +101,7 @@ public final class MediaCoordinator {
     private func makeMediaItemsModule() -> MediaItemsModule {
         let module = MediaItemsModule(maxItemsCount: maxItemsCount,
                                       numberOfItemsInRow: numberOfItemsInRow,
-                                      configureView: configureUI.list)
+                                      configureView: mediaAppearance.list)
         module.output = self
         return module
     }
