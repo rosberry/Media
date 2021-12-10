@@ -19,8 +19,23 @@
 		A93A90652706E85700DB8FC1 /* DeepDiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90642706E85700DB8FC1 /* DeepDiff.xcframework */; };
 		A93A90672706E85700DB8FC1 /* Framezilla.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90662706E85700DB8FC1 /* Framezilla.xcframework */; };
 		A93A90692706E85700DB8FC1 /* Ion.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90682706E85700DB8FC1 /* Ion.xcframework */; };
-		A93A906B2706E88500DB8FC1 /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A906A2706E88500DB8FC1 /* Media.framework */; };
+		A94FF53D27635B410029C3A5 /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94FF53C27635B410029C3A5 /* Media.framework */; };
+		A94FF53E27635B410029C3A5 /* Media.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94FF53C27635B410029C3A5 /* Media.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A94FF53F27635B410029C3A5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A94FF53E27635B410029C3A5 /* Media.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1373B0BF22DC252300F28EF0 /* MediaExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MediaExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,6 +59,8 @@
 		A93A90662706E85700DB8FC1 /* Framezilla.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Framezilla.xcframework; path = ../Carthage/Build/Framezilla.xcframework; sourceTree = "<group>"; };
 		A93A90682706E85700DB8FC1 /* Ion.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Ion.xcframework; path = ../Carthage/Build/Ion.xcframework; sourceTree = "<group>"; };
 		A93A906A2706E88500DB8FC1 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A94FF53827635A3F0029C3A5 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A94FF53C27635B410029C3A5 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +68,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A93A906B2706E88500DB8FC1 /* Media.framework in Frameworks */,
 				A93A90632706E85700DB8FC1 /* CollectionViewTools.xcframework in Frameworks */,
+				A94FF53D27635B410029C3A5 /* Media.framework in Frameworks */,
 				A93A90652706E85700DB8FC1 /* DeepDiff.xcframework in Frameworks */,
 				A93A90672706E85700DB8FC1 /* Framezilla.xcframework in Frameworks */,
 				A93A90692706E85700DB8FC1 /* Ion.xcframework in Frameworks */,
@@ -138,6 +155,8 @@
 		1373B14022DC671B00F28EF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A94FF53C27635B410029C3A5 /* Media.framework */,
+				A94FF53827635A3F0029C3A5 /* Media.framework */,
 				A93A906A2706E88500DB8FC1 /* Media.framework */,
 				A93A90622706E85700DB8FC1 /* CollectionViewTools.xcframework */,
 				A93A90642706E85700DB8FC1 /* DeepDiff.xcframework */,
@@ -190,6 +209,7 @@
 				1373B0BC22DC252300F28EF0 /* Frameworks */,
 				1373B0BD22DC252300F28EF0 /* Resources */,
 				1373B14322DC671F00F28EF0 /* Carthage */,
+				A94FF53F27635B410029C3A5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
