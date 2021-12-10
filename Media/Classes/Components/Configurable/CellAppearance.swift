@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct ConfigureCell {
+public struct CellAppearance {
     public var contentViewCornerRadius: Double
     public var contentViewColor: UIColor
     public var infoViewCornerRadius: Double

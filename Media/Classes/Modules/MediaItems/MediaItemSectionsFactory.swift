@@ -56,11 +56,11 @@ final class MediaLibraryItemSectionsFactory {
     weak var output: MediaItemSectionsFactoryOutput?
 
     let numberOfItemsInRow: Int
-    private let configureView: ConfigureView
+    private let configureView: CollectionViewAppearance
     private let dependencies: Dependencies
     private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int, dependencies: Dependencies, configureView: ConfigureView) {
+    init(numberOfItemsInRow: Int, dependencies: Dependencies, configureView: CollectionViewAppearance) {
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.configureView = configureView

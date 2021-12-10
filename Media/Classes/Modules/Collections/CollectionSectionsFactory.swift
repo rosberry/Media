@@ -14,7 +14,7 @@ protocol CollectionSectionsFactoryOutput: AnyObject {
 final class CollectionSectionsFactory {
 
     weak var output: CollectionSectionsFactoryOutput?
-    var configureCell: ConfigureCell = .init()
+    var configureCell: CellAppearance = .init()
 
     func makeSectionItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))

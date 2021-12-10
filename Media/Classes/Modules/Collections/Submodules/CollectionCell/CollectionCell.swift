@@ -7,7 +7,7 @@ import Framezilla
 
 class CollectionCell: UICollectionViewCell {
 
-    private var configureCell: ConfigureCell = .init()
+    private var configureCell: CellAppearance = .init()
 
     override var isHighlighted: Bool {
         didSet {
@@ -84,7 +84,7 @@ class CollectionCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(true)
     }
 
-    func update(with viewModel: CollectionCellModel, configureCell: ConfigureCell) {
+    func update(with viewModel: CollectionCellModel, configureCell: CellAppearance) {
         self.configureCell = configureCell
         imageView.image = viewModel.thumbnail
         titleLabel.text = viewModel.title

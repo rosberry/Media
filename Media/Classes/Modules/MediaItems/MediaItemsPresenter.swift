@@ -61,11 +61,11 @@ public final class MediaItemsPresenter {
 
     private let maxItemsCount: Int
     public var numberOfItemsInRow: Int
-    public var configureView: ConfigureView
+    public var configureView: CollectionViewAppearance
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies, configureView: ConfigureView) {
+    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies, configureView: CollectionViewAppearance) {
         self.maxItemsCount = maxItemsCount
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies

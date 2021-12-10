@@ -4,16 +4,16 @@
 
 import Foundation
 
-public struct ConfigureView {
+public struct CollectionViewAppearance {
     public var backgroundColor: UIColor
     public var collectionViewBackgroundColor: UIColor
-    public var configureCell: ConfigureCell
-    public var configureSection: ConfigureSection
+    public var configureCell: CellAppearance
+    public var configureSection: SectionAppearance
 
     public init(backgroundColor: UIColor = .black,
                 collectionViewBackgroundColor: UIColor = .clear,
-                configureCell: ConfigureCell = .init(),
-                configureSection: ConfigureSection = .init()) {
+                configureCell: CellAppearance = .init(),
+                configureSection: SectionAppearance = .init()) {
         self.backgroundColor = backgroundColor
         self.collectionViewBackgroundColor = collectionViewBackgroundColor
         self.configureCell = configureCell

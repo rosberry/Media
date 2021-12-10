@@ -30,7 +30,7 @@ public final class MediaCoordinator {
 
     public let context: Context
 
-    public var configureUI: ConfigureUI
+    public var mediaAppearance: MediaAppearance
 
     // MARK: - Modules
 
@@ -40,17 +40,17 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
-    public init(navigationViewController: UINavigationController, context: Context, configureUI: ConfigureUI) {
+    public init(navigationViewController: UINavigationController, context: Context, configureUI: MediaAppearance) {
         self.navigationViewController = navigationViewController
         self.context = context
-        self.configureUI = configureUI
+        self.mediaAppearance = configureUI
         setupPermissionsCollector()
     }
 
     public init(navigationViewController: UINavigationController, context: Context) {
         self.navigationViewController = navigationViewController
         self.context = context
-        self.configureUI = .init()
+        self.mediaAppearance = .init()
         setupPermissionsCollector()
     }
 
@@ -84,16 +84,16 @@ public final class MediaCoordinator {
 
     private func makeMediaLibraryModule() -> MediaLibraryModule {
         let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
-                                        configurable: configureUI.library,
+                                        configurable: mediaAppearance.library,
                                         collectionsModule: makeCollectionsModule(),
                                         mediaItemsModule: makeMediaItemsModule(),
-                                        configureView: configureUI.library)
+                                        configureView: mediaAppearance.library)
         module.output = self
         return module
     }
 
     private func makeCollectionsModule() -> CollectionsModule {
-        let module = CollectionsModule(configureView: configureUI.albums)
+        let module = CollectionsModule(configureView: mediaAppearance.albums)
         module.output = self
         return module
     }

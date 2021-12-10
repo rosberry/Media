@@ -47,7 +47,7 @@ public final class MediaItemsModule {
     public init(maxItemsCount: Int,
                 numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
-                configureView: ConfigureView) {
+                configureView: CollectionViewAppearance) {
         presenter = MediaItemsPresenter(maxItemsCount: maxItemsCount,
                                         numberOfItemsInRow: numberOfItemsInRow,
                                         dependencies: Services,

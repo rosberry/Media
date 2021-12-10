@@ -18,7 +18,7 @@ class MediaItemCell: UICollectionViewCell {
 
     var modelIdentifier: String?
 
-    private var configureCell: ConfigureCell = .init()
+    private var configureCell: CellAppearance = .init()
 
     // MARK: - Subviews
 
@@ -129,7 +129,7 @@ class MediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: EmptyItemCellModel, configureCell: ConfigureCell) {
+    func update(with viewModel: EmptyItemCellModel, configureCell: CellAppearance) {
         self.configureCell = configureCell
         imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
