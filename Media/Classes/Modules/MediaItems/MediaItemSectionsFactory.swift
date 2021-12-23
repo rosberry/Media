@@ -56,14 +56,14 @@ final class MediaLibraryItemSectionsFactory {
     weak var output: MediaItemSectionsFactoryOutput?
 
     let numberOfItemsInRow: Int
-    private let configureView: CollectionViewAppearance
+    private let collectionAppearance: CollectionViewAppearance
     private let dependencies: Dependencies
     private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int, dependencies: Dependencies, configureView: CollectionViewAppearance) {
+    init(numberOfItemsInRow: Int, dependencies: Dependencies, collectionAppearance: CollectionViewAppearance) {
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
-        self.configureView = configureView
+        self.collectionAppearance = collectionAppearance
     }
 
     // MARK: - Placeholders
@@ -88,7 +88,7 @@ final class MediaLibraryItemSectionsFactory {
                     return
                 }
 
-                cell.update(with: cellItem.object, configureCell: self.configureView.configureCell)
+                cell.update(with: cellItem.object, cellAppearance: self.collectionAppearance.cellAppearance)
             }
 
             cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
@@ -111,9 +111,9 @@ final class MediaLibraryItemSectionsFactory {
 
     private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems)
-        sectionItem.minimumLineSpacing = configureView.configureSection.minimumLineSpacing
-        sectionItem.minimumInteritemSpacing = configureView.configureSection.minimumInteritemSpacing
-        sectionItem.insets = configureView.configureSection.insets
+        sectionItem.minimumLineSpacing = collectionAppearance.sectionAppearance.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = collectionAppearance.sectionAppearance.minimumInteritemSpacing
+        sectionItem.insets = collectionAppearance.sectionAppearance.insets
         return sectionItem
     }
 

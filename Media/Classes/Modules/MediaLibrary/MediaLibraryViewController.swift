@@ -67,7 +67,7 @@ public final class MediaLibraryViewController: UIViewController {
         super.viewDidLoad()
 
         title = L10n.MediaLibrary.title
-        view.backgroundColor = presenter.configureView.backgroundColor
+        view.backgroundColor = presenter.collectionAppearance.backgroundColor
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)

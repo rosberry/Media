@@ -16,7 +16,7 @@ public final class CollectionsController: UIViewController {
     private lazy var factory: CollectionSectionsFactory = {
         let factory = CollectionSectionsFactory()
         factory.output = presenter
-        factory.configureCell = presenter.configureView.configureCell
+        factory.cellAppearance = presenter.collectionViewAppearance.cellAppearance
         return factory
     }()
 
@@ -26,7 +26,7 @@ public final class CollectionsController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = presenter.configureView.backgroundColor
+        collectionView.backgroundColor = presenter.collectionViewAppearance.backgroundColor
         collectionView.alwaysBounceVertical = true
         return collectionView
     }()

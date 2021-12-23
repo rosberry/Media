@@ -86,31 +86,31 @@ final class MainViewController: UIViewController {
             return
         }
 
-        let configureCell = CellAppearance(contentViewCornerRadius: 5,
+        let cellAppearance = CellAppearance(contentViewCornerRadius: 5,
                                            contentViewColor: .clear,
                                            selectedColor: .green,
                                            highlightedColor: .blue)
-        let configureSection = SectionAppearance(minimumLineSpacing: 5,
+        let sectionAppearance = SectionAppearance(minimumLineSpacing: 5,
                                                  minimumInteritemSpacing: 5,
                                                  insets: .init(top: 5, left: 5, bottom: 5, right: 5))
 
         let library = CollectionViewAppearance(backgroundColor: .brown,
                                                collectionViewBackgroundColor: .clear,
-                                               configureCell: configureCell,
-                                               configureSection: configureSection)
+                                               cellAppearance: cellAppearance,
+                                               sectionAppearance: sectionAppearance)
 
         let albums = CollectionViewAppearance(backgroundColor: .yellow,
                                               collectionViewBackgroundColor: .clear,
-                                              configureCell: configureCell,
-                                              configureSection: configureSection)
+                                              cellAppearance: cellAppearance,
+                                              sectionAppearance: sectionAppearance)
 
         let list = CollectionViewAppearance(backgroundColor: .red,
                                             collectionViewBackgroundColor: .yellow,
-                                            configureCell: configureCell,
-                                            configureSection: configureSection)
+                                            cellAppearance: cellAppearance,
+                                            sectionAppearance: sectionAppearance)
 
-        let configureUI = MediaAppearance(library: library, albums: albums, list: list)
-        coordinator = .init(navigationViewController: navigationController, context: context, configureUI: configureUI)
+        let mediaAppearance = MediaAppearance(library: library, albums: albums, list: list)
+        coordinator = .init(navigationViewController: navigationController, context: context, mediaAppearance: mediaAppearance)
         coordinator?.numberOfItemsInRow = 3
         coordinator?.start()
     }

@@ -272,7 +272,7 @@
 		1373B03122DC237600F28EF0 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				A9FF44072743B943001D7559 /* Configurable */,
+				A9FF44072743B943001D7559 /* Appearance */,
 				1373B03222DC237600F28EF0 /* PlayerView */,
 				1373B03422DC237600F28EF0 /* PermissionsPlaceholderView */,
 				1373B03622DC237600F28EF0 /* SwitchView */,
@@ -457,7 +457,7 @@
 			path = ItemCellModel;
 			sourceTree = "<group>";
 		};
-		A9FF44072743B943001D7559 /* Configurable */ = {
+		A9FF44072743B943001D7559 /* Appearance */ = {
 			isa = PBXGroup;
 			children = (
 				A9FF44082743B967001D7559 /* MediaAppearance.swift */,
@@ -465,7 +465,7 @@
 				A9FF440C2743BC7A001D7559 /* CellAppearance.swift */,
 				A9FF44132744BD9E001D7559 /* SectionAppearance.swift */,
 			);
-			path = Configurable;
+			path = Appearance;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

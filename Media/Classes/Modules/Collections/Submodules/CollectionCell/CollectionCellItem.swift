@@ -12,13 +12,13 @@ class CollectionCellItem: CollectionViewCellItem {
 
     private let viewModel: CollectionCellModel
     private let dependencies: Dependencies
-    private let configureCell: CellAppearance
+    private let cellAppearance: CellAppearance
     var reuseType = ReuseType.class(Cell.self)
 
-    init(viewModel: CollectionCellModel, dependencies: Dependencies, configureCell: CellAppearance) {
+    init(viewModel: CollectionCellModel, dependencies: Dependencies, cellAppearance: CellAppearance) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        self.configureCell = configureCell
+        self.cellAppearance = cellAppearance
     }
 
     func size(in collectionView: UICollectionView, sectionItem: CollectionViewSectionItem) -> CGSize {
@@ -30,7 +30,7 @@ class CollectionCellItem: CollectionViewCellItem {
             return
         }
 
-        cell.update(with: viewModel, configureCell: configureCell)
+        cell.update(with: viewModel, cellAppearance: cellAppearance)
         guard viewModel.thumbnail == nil else {
             return
         }
@@ -41,7 +41,7 @@ class CollectionCellItem: CollectionViewCellItem {
                 return
             }
 
-            cell.update(with: self.viewModel, configureCell: self.configureCell)
+            cell.update(with: self.viewModel, cellAppearance: self.cellAppearance)
         }
     }
 }

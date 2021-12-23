@@ -47,11 +47,11 @@ public final class MediaItemsModule {
     public init(maxItemsCount: Int,
                 numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
-                configureView: CollectionViewAppearance) {
+                collectionAppearance: CollectionViewAppearance) {
         presenter = MediaItemsPresenter(maxItemsCount: maxItemsCount,
                                         numberOfItemsInRow: numberOfItemsInRow,
                                         dependencies: Services,
-                                        configureView: configureView)
+                                        collectionAppearance: collectionAppearance)
         viewController = MediaItemsViewController(presenter: presenter)
         presenter.view = viewController
         input.collection = collection

@@ -34,15 +34,14 @@ public final class MediaLibraryModule {
     private let presenter: MediaLibraryPresenter
 
     public init(maxItemsCount: Int,
-                configurable: CollectionViewAppearance,
                 collectionsModule: CollectionsModule,
                 mediaItemsModule: MediaItemsModule,
-                configureView: CollectionViewAppearance) {
+                collectionAppearance: CollectionViewAppearance) {
         presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount,
                                           dependencies: Services,
                                           collectionsModule: collectionsModule,
                                           mediaItemsModule: mediaItemsModule,
-                                          configureView: configureView)
+                                          collectionAppearance: collectionAppearance)
         viewController = MediaLibraryViewController(presenter: presenter)
         presenter.view = viewController
     }

@@ -40,10 +40,10 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
-    public init(navigationViewController: UINavigationController, context: Context, configureUI: MediaAppearance) {
+    public init(navigationViewController: UINavigationController, context: Context, mediaAppearance: MediaAppearance) {
         self.navigationViewController = navigationViewController
         self.context = context
-        self.mediaAppearance = configureUI
+        self.mediaAppearance = mediaAppearance
         setupPermissionsCollector()
     }
 
@@ -84,16 +84,15 @@ public final class MediaCoordinator {
 
     private func makeMediaLibraryModule() -> MediaLibraryModule {
         let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
-                                        configurable: mediaAppearance.library,
                                         collectionsModule: makeCollectionsModule(),
                                         mediaItemsModule: makeMediaItemsModule(),
-                                        configureView: mediaAppearance.library)
+                                        collectionAppearance: mediaAppearance.library)
         module.output = self
         return module
     }
 
     private func makeCollectionsModule() -> CollectionsModule {
-        let module = CollectionsModule(configureView: mediaAppearance.albums)
+        let module = CollectionsModule(collectionViewAppearance: mediaAppearance.albums)
         module.output = self
         return module
     }
@@ -101,7 +100,7 @@ public final class MediaCoordinator {
     private func makeMediaItemsModule() -> MediaItemsModule {
         let module = MediaItemsModule(maxItemsCount: maxItemsCount,
                                       numberOfItemsInRow: numberOfItemsInRow,
-                                      configureView: mediaAppearance.list)
+                                      collectionAppearance: mediaAppearance.list)
         module.output = self
         return module
     }

@@ -16,7 +16,7 @@ final class MediaLibraryPresenter {
     weak var output: MediaLibraryModuleOutput?
 
     var collections: [MediaItemsCollection] = []
-    var configureView: CollectionViewAppearance
+    var collectionAppearance: CollectionViewAppearance
     var activeCollection: MediaItemsCollection? {
         didSet {
             updateMediaItemList()
@@ -40,12 +40,12 @@ final class MediaLibraryPresenter {
          dependencies: Dependencies,
          collectionsModule: CollectionsModule,
          mediaItemsModule: MediaItemsModule,
-         configureView: CollectionViewAppearance) {
+         collectionAppearance: CollectionViewAppearance) {
         self.maxItemsCount = maxItemsCount
         self.dependencies = dependencies
         self.collectionsModule = collectionsModule
         self.mediaItemsModule = mediaItemsModule
-        self.configureView = configureView
+        self.collectionAppearance = collectionAppearance
     }
 
     func viewReadyEventTriggered() {

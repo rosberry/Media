@@ -18,7 +18,7 @@ class MediaItemCell: UICollectionViewCell {
 
     var modelIdentifier: String?
 
-    private var configureCell: CellAppearance = .init()
+    private var cellAppearance: CellAppearance = .init()
 
     // MARK: - Subviews
 
@@ -31,9 +31,9 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = configureCell.infoViewBackgroundColor
-        view.alpha = CGFloat(configureCell.infoViewAlpha)
-        view.layer.cornerRadius = CGFloat(configureCell.infoViewCornerRadius)
+        view.backgroundColor = cellAppearance.infoViewBackgroundColor
+        view.alpha = CGFloat(cellAppearance.infoViewAlpha)
+        view.layer.cornerRadius = CGFloat(cellAppearance.infoViewCornerRadius)
         view.clipsToBounds = true
         return view
     }()
@@ -69,9 +69,9 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        backgroundColor = configureCell.contentViewColor
+        backgroundColor = cellAppearance.contentViewColor
 
-        contentView.layer.cornerRadius = CGFloat(configureCell.contentViewCornerRadius)
+        contentView.layer.cornerRadius = CGFloat(cellAppearance.contentViewCornerRadius)
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
@@ -129,8 +129,8 @@ class MediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: EmptyItemCellModel, configureCell: CellAppearance) {
-        self.configureCell = configureCell
+    func update(with viewModel: EmptyItemCellModel, cellAppearance: CellAppearance) {
+        self.cellAppearance = cellAppearance
         imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0

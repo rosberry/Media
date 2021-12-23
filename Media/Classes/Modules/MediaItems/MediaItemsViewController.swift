@@ -17,7 +17,7 @@ public final class MediaItemsViewController: UIViewController {
     private lazy var factory: MediaLibraryItemSectionsFactory = {
         let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
                                                       dependencies: Services,
-                                                      configureView: presenter.configureView)
+                                                      collectionAppearance: presenter.collectionAppearance)
         factory.output = presenter
         return factory
     }()
@@ -56,7 +56,7 @@ public final class MediaItemsViewController: UIViewController {
         layout.scrollDirection = .vertical
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = presenter.configureView.collectionViewBackgroundColor
+        collectionView.backgroundColor = presenter.collectionAppearance.collectionViewBackgroundColor
         collectionView.alwaysBounceVertical = true
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
@@ -76,7 +76,7 @@ public final class MediaItemsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         title = L10n.MediaLibrary.list
-        view.backgroundColor = presenter.configureView.backgroundColor
+        view.backgroundColor = presenter.collectionAppearance.backgroundColor
         view.addSubview(collectionView)
         placeholderView.addSubview(placeholderLabel)
         view.addSubview(placeholderView)
@@ -162,14 +162,14 @@ public final class MediaItemsViewController: UIViewController {
                     guard let cell = photoCellItem.cell as? MediaItemCell else {
                         return
                     }
-                    cell.update(with: photoCellItem.object, configureCell: presenter.configureView.configureCell)
+                    cell.update(with: photoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
                 }
                 else if let videoCellItem = cellItem as? VideoCellItem {
                     videoCellItem.object.selectionIndex = handler(videoCellItem.object.mediaItem)
                     guard let cell = videoCellItem.cell as? MediaItemCell else {
                         return
                     }
-                    cell.update(with: videoCellItem.object, configureCell: presenter.configureView.configureCell)
+                    cell.update(with: videoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
                 }
             }
         }

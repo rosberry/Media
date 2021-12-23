@@ -35,8 +35,8 @@ public final class CollectionsModule {
     public let viewController: CollectionsController
     private let presenter: CollectionsPresenter
 
-    public init(configureView: CollectionViewAppearance) {
-        presenter = CollectionsPresenter(dependencies: Services, configureView: configureView)
+    public init(collectionViewAppearance: CollectionViewAppearance) {
+        presenter = CollectionsPresenter(dependencies: Services, collectionViewAppearance: collectionViewAppearance)
         viewController = CollectionsController(presenter: presenter)
         presenter.view = viewController
     }
