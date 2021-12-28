@@ -6,6 +6,7 @@ import Ion
 import UIKit
 import Photos
 import CollectionViewTools
+import MediaService
 
 public final class MediaItemsPresenter {
 
@@ -21,19 +22,19 @@ public final class MediaItemsPresenter {
 
     weak var output: MediaItemsModuleOutput?
 
-    public var collection: MediaItemCollection? {
+    public var collection: MediaItemsCollection? {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
         }
     }
 
-    public var filter: MediaItemFilter = .video {
+    public var filter: MediaItemsFilter = .all {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: true)
         }
     }
 
-    public var fetchResult: MediaItemFetchResult?
+    public var fetchResult: MediaItemsFetchResult?
     public var selectedItems: [MediaItem] = [] {
         didSet {
             updateSelection()
@@ -42,7 +43,7 @@ public final class MediaItemsPresenter {
 
     private var focusDirection: FocusDirection = .down
 
-    private lazy var mediaItemsCollector: Collector<MediaItemFetchResult> = {
+    private lazy var mediaItemsCollector: Collector<MediaItemsFetchResult> = {
         return .init(source: dependencies.mediaLibraryService.mediaItemsEventSource)
     }()
 
@@ -51,20 +52,24 @@ public final class MediaItemsPresenter {
     }()
 
     private lazy var factory: MediaLibraryItemSectionsFactory = {
-        let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: numberOfItemsInRow)
+        let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
+                                                      dependencies: Services,
+                                                      collectionAppearance: collectionAppearance)
         factory.output = self
         return factory
     }()
 
     private let maxItemsCount: Int
     public var numberOfItemsInRow: Int
+    public var collectionAppearance: CollectionViewAppearance
 
     // MARK: - Lifecycle
 
-    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies) {
+    init(maxItemsCount: Int, numberOfItemsInRow: Int, dependencies: Dependencies, collectionAppearance: CollectionViewAppearance) {
         self.maxItemsCount = maxItemsCount
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
+        self.collectionAppearance = collectionAppearance
     }
 
     func viewReadyEventTriggered() {
@@ -85,7 +90,7 @@ public final class MediaItemsPresenter {
     // MARK: - Helpers
 
     private func setupMediaItemsCollector() {
-        mediaItemsCollector.subscribe { [weak self] (result: MediaItemFetchResult) in
+        mediaItemsCollector.subscribe { [weak self] (result: MediaItemsFetchResult) in
             guard let self = self else {
                 return
             }
@@ -103,41 +108,45 @@ public final class MediaItemsPresenter {
         }
     }
 
-    private func sectionItemsProvider(for result: PHFetchResult<PHAsset>) -> SectionItemsProvider {
-        guard result.count != 0 else {
-            return ArraySectionItemsProvider(sectionItems: [])
-        }
-        let minimumLineSpacing: CGFloat = 8.0
-        let minimumInteritemSpacing: CGFloat = 8.0
-        let insets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    private func sectionItemsProvider(for result: PHFetchResult<PHAsset>) -> LazySectionItemsProvider {
         let count = result.count
+        let sectionAppearance = collectionAppearance.sectionAppearance
 
-        let factory = TypeCellItemFactory<Int, UICollectionViewCell>()
-        factory.sizeConfigurationHandler = { [weak self] object, collection, section in
+        let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
+            count
+        } makeSectionItemHandler: { _ in
+            let sectionItem = GeneralCollectionViewDiffSectionItem()
+            sectionItem.minimumLineSpacing = sectionAppearance.minimumLineSpacing
+            sectionItem.minimumInteritemSpacing = sectionAppearance.minimumInteritemSpacing
+            sectionItem.insets = sectionAppearance.insets
+            return sectionItem
+        } sizeHandler: { [weak self] _, collection in
             let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
-            let widthWithoutInsets: CGFloat = collection.bounds.width - insets.left - insets.right
-            let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * minimumInteritemSpacing) / numberOfItemsInRow
+            let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
+            let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
-        }
-        factory.initializationHandler = { index, object in
-            let asset = result.object(at: count - index - 1)
+        } objectHandler: { indexPath in
+            guard indexPath.row < count else {
+                return nil
+            }
+            let asset = result.object(at: count - indexPath.row - 1)
             let mediaItem = MediaItem(asset: asset)
             let selectionIndex = self.selectedItems.firstIndex(of: mediaItem)
             let isSelectionInfoLabelHidden = self.maxItemsCount == 1
-            return [self.factory.makeCellItem(mediaItem: mediaItem,
-                                              selectionIndex: selectionIndex,
-                                              isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)]
+
+            switch mediaItem.type {
+              case .unknown:
+                return EmptyItemCellModel(mediaItem: mediaItem, selectionIndex: selectionIndex)
+              case .photo, .livePhoto:
+                return PhotoItemCellModel(mediaItem: mediaItem,
+                                          selectionIndex: selectionIndex,
+                                          isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+              case .video, .sloMoVideo:
+                return VideoItemCellModel(mediaItem: mediaItem,
+                                          selectionIndex: selectionIndex,
+                                          isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
+            }
         }
-        let provider = LazyAssociatedFactoryTypeSectionItemsProvider(factory: factory,
-                                                                     cellItemsNumberHandler: { _ in count },
-                                                                     makeSectionItemHandler: { _ in
-                                                                         let sectionItem = GeneralCollectionViewSectionItem()
-                                                                         sectionItem.minimumLineSpacing = minimumLineSpacing
-                                                                         sectionItem.minimumInteritemSpacing = minimumInteritemSpacing
-                                                                         sectionItem.insets = insets
-                                                                         return sectionItem
-                                                                     },
-                                                                     objectHandler: { index in result[count - index.row - 1] })
         return provider
     }
 
@@ -162,7 +171,6 @@ public final class MediaItemsPresenter {
 
 // MARK: - MediaItemSectionsFactoryOutput
 extension MediaItemsPresenter: MediaItemSectionsFactoryOutput {
-
     func didSelect(_ item: MediaItem) {
         var selectedItems = self.selectedItems
         if let index = selectedItems.firstIndex(of: item) {

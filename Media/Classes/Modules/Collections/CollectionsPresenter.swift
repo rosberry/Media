@@ -4,6 +4,7 @@
 
 import Ion
 import Photos
+import MediaService
 
 final class CollectionsPresenter {
 
@@ -14,9 +15,10 @@ final class CollectionsPresenter {
 
     weak var output: CollectionsModuleOutput?
 
-    var collections: [MediaItemCollection] = []
+    var collections: [MediaItemsCollection] = []
+    var collectionViewAppearance: CollectionViewAppearance
 
-    private lazy var collectionsCollector: Collector<[MediaItemCollection]> = {
+    private lazy var collectionsCollector: Collector<[MediaItemsCollection]> = {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
@@ -26,8 +28,9 @@ final class CollectionsPresenter {
 
     // MARK: - Lifecycle
 
-    init(dependencies: Dependencies) {
+    init(dependencies: Dependencies, collectionViewAppearance: CollectionViewAppearance) {
         self.dependencies = dependencies
+        self.collectionViewAppearance = collectionViewAppearance
     }
 
     func viewReadyEventTriggered() {
@@ -38,7 +41,7 @@ final class CollectionsPresenter {
     // MARK: - Helpers
 
     private func setupCollectionsCollector() {
-        collectionsCollector.subscribe { (collections: [MediaItemCollection]) in
+        collectionsCollector.subscribe { (collections: [MediaItemsCollection]) in
             self.collections = collections
             self.view?.update(with: collections)
         }
@@ -55,7 +58,7 @@ final class CollectionsPresenter {
 
 extension CollectionsPresenter: CollectionSectionsFactoryOutput {
 
-    func didSelect(_ collection: MediaItemCollection) {
+    func didSelect(_ collection: MediaItemsCollection) {
         output?.didSelect(collection)
     }
 }

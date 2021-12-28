@@ -5,13 +5,19 @@
 import UIKit
 import CollectionViewTools
 import Framezilla
+import MediaService
 
 public final class MediaItemsViewController: UIViewController {
+
+    private typealias PhotoCellItem = UniversalCollectionViewCellItem<PhotoItemCellModel, PhotoMediaItemCell>
+    private typealias VideoCellItem = UniversalCollectionViewCellItem<VideoItemCellModel, VideoMediaItemCell>
 
     private let presenter: MediaItemsPresenter
 
     private lazy var factory: MediaLibraryItemSectionsFactory = {
-        let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow)
+        let factory = MediaLibraryItemSectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
+                                                      dependencies: Services,
+                                                      collectionAppearance: presenter.collectionAppearance)
         factory.output = presenter
         return factory
     }()
@@ -50,7 +56,7 @@ public final class MediaItemsViewController: UIViewController {
         layout.scrollDirection = .vertical
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .gray
+        collectionView.backgroundColor = presenter.collectionAppearance.collectionViewBackgroundColor
         collectionView.alwaysBounceVertical = true
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
@@ -70,6 +76,7 @@ public final class MediaItemsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         title = L10n.MediaLibrary.list
+        view.backgroundColor = presenter.collectionAppearance.backgroundColor
         view.addSubview(collectionView)
         placeholderView.addSubview(placeholderLabel)
         view.addSubview(placeholderView)
@@ -114,46 +121,58 @@ public final class MediaItemsViewController: UIViewController {
         placeholderView.isHidden = true
     }
 
-    func update(with sectionItemsProvider: SectionItemsProvider, animated: Bool) {
+    func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
         if animated {
             UIView.transition(with: collectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
-                self.collectionViewManager.sectionItemsProvider = sectionItemsProvider
+                self.collectionViewManager.mode = .lazy(provider: sectionItemsProvider)
                 self.collectionView.isUserInteractionEnabled = true
+                self.collectionView.reloadData()
             }, completion: nil)
         }
         else {
-            collectionViewManager.sectionItemsProvider = sectionItemsProvider
+            self.collectionViewManager.mode = .lazy(provider: sectionItemsProvider)
             collectionView.isUserInteractionEnabled = true
+            self.collectionView.reloadData()
         }
-        placeholderView.isHidden = sectionItemsProvider.numberOfSections != 0
+        placeholderView.isHidden = sectionItemsProvider.sectionItemsNumberHandler() != 0
     }
 
     public func select(items: [MediaItem]) {
         var items = items
-        let sectionItemsDataSource = collectionViewManager.sectionItemsProvider
-        for section in sectionItemsDataSource.sectionItems {
+        for section in collectionViewManager.sectionItems {
             for cellItem in section.cellItems {
-                guard let baseCellItem = cellItem as? MediaItemCellItem,
-                      let index = items.firstIndex(of: baseCellItem.viewModel.item) else {
-                    continue
+                if let photoCellItem = cellItem as? PhotoCellItem,
+                   let index = items.firstIndex(of: photoCellItem.object.mediaItem) {
+                    photoCellItem.object.selectionIndex = index
                 }
-                baseCellItem.viewModel.selectionIndex = index
-                items.remove(at: index)
+                else if let videoCellItem = cellItem as? VideoCellItem,
+                        let index = items.firstIndex(of: videoCellItem.object.mediaItem) {
+                    videoCellItem.object.selectionIndex = index
+                    items.remove(at: index)
+                }
             }
         }
-        collectionView.reloadData()
     }
 
     public func updateSelection(handler: (_ mediaItem: MediaItem) -> Int?) {
-        let sectionItemsProvider = collectionViewManager.sectionItemsProvider
-        for section in sectionItemsProvider.sectionItems {
+        for section in collectionViewManager.sectionItems {
             for cellItem in section.cellItems {
-                if let baseCellItem = cellItem as? MediaItemCellItem {
-                    baseCellItem.viewModel.selectionIndex = handler(baseCellItem.viewModel.item)
+                if let photoCellItem = cellItem as? PhotoCellItem {
+                    photoCellItem.object.selectionIndex = handler(photoCellItem.object.mediaItem)
+                    guard let cell = photoCellItem.cell as? MediaItemCell else {
+                        return
+                    }
+                    cell.update(with: photoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
+                }
+                else if let videoCellItem = cellItem as? VideoCellItem {
+                    videoCellItem.object.selectionIndex = handler(videoCellItem.object.mediaItem)
+                    guard let cell = videoCellItem.cell as? MediaItemCell else {
+                        return
+                    }
+                    cell.update(with: videoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
                 }
             }
         }
-        collectionView.reloadData()
     }
 
     func showMediaLibraryDeniedPermissionsPlaceholder() {

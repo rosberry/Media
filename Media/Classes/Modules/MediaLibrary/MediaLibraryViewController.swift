@@ -4,6 +4,7 @@
 
 import UIKit
 import Framezilla
+import MediaService
 
 public final class MediaLibraryViewController: UIViewController {
 
@@ -43,7 +44,7 @@ public final class MediaLibraryViewController: UIViewController {
 
     private lazy var filterView: SwitchView = {
         let view = SwitchView()
-        view.items = MediaItemFilter.allCases.map { filter in
+        view.items = MediaItemsFilter.allCases.map { filter in
             SwitchItem(title: filter.title.uppercased()) { [weak self] in
                 self?.presenter.changeFilterEventTriggered(with: filter)
             }
@@ -65,8 +66,8 @@ public final class MediaLibraryViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        title = L10n.MediaLibrary.title.uppercased()
-        view.backgroundColor = .gray
+        title = L10n.MediaLibrary.title
+        view.backgroundColor = presenter.collectionAppearance.backgroundColor
 
         toolView.addSubview(albumSelectionButton)
         toolView.addSubview(filterView)
@@ -141,7 +142,7 @@ public final class MediaLibraryViewController: UIViewController {
 
     // MARK: -
 
-    func setup(with collection: MediaItemCollection, filter: MediaItemFilter) {
+    func setup(with collection: MediaItemsCollection, filter: MediaItemsFilter) {
         albumSelectionButton.title = collection.title?.uppercased()
 
         CATransaction.execute {

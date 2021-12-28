@@ -7,16 +7,13 @@ import Framezilla
 
 final class SelectionView: UIView {
 
-    private(set) lazy var selectionInfoLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .black
-        return label
-    }()
+    private(set) lazy var selectionInfoLabel: UILabel = .init()
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(textColor: UIColor) {
+        super.init(frame: .zero)
+        selectionInfoLabel.textColor = textColor
         setup()
     }
 
@@ -27,10 +24,9 @@ final class SelectionView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
         selectionInfoLabel.configureFrame { (maker: Maker) in
             maker.right().top()
-            maker.width(28).height(28)
+            .width(28).height(28)
         }
     }
 

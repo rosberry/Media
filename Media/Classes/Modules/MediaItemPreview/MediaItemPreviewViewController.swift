@@ -13,13 +13,13 @@ final class MediaItemPreviewViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var contentView: UIView = {
-        return UIView()
-    }()
+    private lazy var contentView: UIView = .init()
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
 
@@ -38,6 +38,10 @@ final class MediaItemPreviewViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        presenter.stopPreviewEventTriggered()
     }
 
     override func viewDidLoad() {
@@ -61,8 +65,8 @@ final class MediaItemPreviewViewController: UIViewController {
         var frame = view.bounds
         let safeAreaInsets = view.window?.safeAreaInsets ?? view.safeAreaInsets
 
-        frame.origin.y = safeAreaInsets.top
         frame.size.height = min(frame.width / previewAspectRatio, view.bounds.height - (safeAreaInsets.top + safeAreaInsets.bottom))
+        frame.origin.y = view.bounds.center.y - (frame.size.height / 2)
 
         contentView.frame = frame
         imageView.frame = contentView.bounds

@@ -22,13 +22,13 @@ final class DropdownButton: UIButton {
     }
 
     var title: String? {
+        get {
+            title(for: .normal)
+        }
         set {
             arrowLayer.isHidden = newValue == nil
             setTitleColor(UIColor.black, for: .normal)
             setTitle(newValue, for: .normal)
-        }
-        get {
-            return title(for: .normal)
         }
     }
 

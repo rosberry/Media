@@ -3,5 +3,6 @@
 //
 
 import Foundation
+import MediaService
 
-typealias CollectionCellModel = MediaItemCollection
+typealias CollectionCellModel = MediaItemsCollection

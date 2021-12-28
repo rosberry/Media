@@ -5,11 +5,6 @@
 import UIKit
 import Framezilla
 
-protocol MediaItemCellDelegate: AnyObject {
-    func didRequestPreviewStart(_ sender: UICollectionViewCell)
-    func didRequsetPreviewStop(_ sender: UICollectionViewCell)
-}
-
 class MediaItemCell: UICollectionViewCell {
 
     private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
@@ -18,7 +13,12 @@ class MediaItemCell: UICollectionViewCell {
         return recognizer
     }()
 
-    weak var delegate: MediaItemCellDelegate?
+    var didRequestPreviewStartHandler: ((UICollectionViewCell) -> Void)?
+    var didRequestPreviewStopHandler: ((UICollectionViewCell) -> Void)?
+
+    var modelIdentifier: String?
+
+    private var cellAppearance: CellAppearance = .init()
 
     // MARK: - Subviews
 
@@ -31,12 +31,16 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = cellAppearance.infoViewBackgroundColor
+        view.alpha = CGFloat(cellAppearance.infoViewAlpha)
+        view.layer.cornerRadius = CGFloat(cellAppearance.infoViewCornerRadius)
+        view.clipsToBounds = true
         return view
     }()
 
     private(set) lazy var infoLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .white
         return label
     }()
 
@@ -48,7 +52,7 @@ class MediaItemCell: UICollectionViewCell {
     }()
 
     private(set) lazy var selectionView: SelectionView = {
-        let view = SelectionView()
+        let view = SelectionView(textColor: .white)
         view.alpha = 0.0
         return view
     }()
@@ -65,8 +69,9 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        backgroundColor = .gray
+        backgroundColor = cellAppearance.contentViewColor
 
+        contentView.layer.cornerRadius = CGFloat(cellAppearance.contentViewCornerRadius)
         contentView.clipsToBounds = true
         contentView.addSubview(imageView)
 
@@ -87,7 +92,7 @@ class MediaItemCell: UICollectionViewCell {
         selectionView.frame = contentView.bounds
 
         infoView.configureFrame { maker in
-            maker.height(16).bottom()
+            maker.height(14).bottom(inset: 2)
         }
         typeImageView.configureFrame { maker in
             maker.left(inset: 2)
@@ -106,7 +111,7 @@ class MediaItemCell: UICollectionViewCell {
         }
         infoView.configureFrame { maker in
             maker.width(infoLabel.frame.maxX + 4)
-            maker.right()
+            maker.right(inset: 2)
         }
         infoView.isHidden = (infoLabel.text == nil) && (typeImageView.image == nil)
     }
@@ -115,17 +120,18 @@ class MediaItemCell: UICollectionViewCell {
 
     @objc private func viewPressed() {
         if longPressGestureRecognizer.state == .began {
-            delegate?.didRequestPreviewStart(self)
+            didRequestPreviewStartHandler?(self)
         }
         else if longPressGestureRecognizer.state != .changed {
-            delegate?.didRequsetPreviewStop(self)
+            didRequestPreviewStopHandler?(self)
         }
     }
 
     // MARK: -
 
-    func update(with viewModel: MediaItemCellModel) {
-        imageView.image = viewModel.item.thumbnail
+    func update(with viewModel: EmptyItemCellModel, cellAppearance: CellAppearance) {
+        self.cellAppearance = cellAppearance
+        imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
             selectionView.alpha = 1.0
             selectionView.selectionInfoLabel.text = "\(selectionIndex + 1)"
@@ -137,5 +143,6 @@ class MediaItemCell: UICollectionViewCell {
             imageView.layer.cornerRadius = 0.0
         }
         setNeedsLayout()
+        layoutIfNeeded()
     }
 }

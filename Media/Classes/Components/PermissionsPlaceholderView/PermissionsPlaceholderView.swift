@@ -8,20 +8,20 @@ import Framezilla
 final class PermissionsPlaceholderView: UIView {
 
     var title: String? {
+        get {
+            titleLabel.text
+        }
         set {
             titleLabel.text = newValue
-        }
-        get {
-            return titleLabel.text
         }
     }
 
     var subtitle: String? {
+        get {
+            subtitleLabel.text
+        }
         set {
             subtitleLabel.text = newValue
-        }
-        get {
-            return subtitleLabel.text
         }
     }
 

@@ -4,6 +4,7 @@
 
 import AVFoundation
 import UIKit
+import MediaService
 
 typealias MediaItemPreviewDependencies = HasMediaLibraryService
 
@@ -33,14 +34,19 @@ final class MediaItemPreviewPresenter {
 
     }
 
+    func stopPreviewEventTriggered() {
+        removeCurrentPlayerItemStateObserver()
+        player?.stop()
+        player?.replaceCurrentItem(with: nil)
+        player = nil
+    }
+
     // MARK: - Helpers
 
     private func updateContent() {
         guard let mediaItem = mediaItem else {
             view?.updateWithEmptyState()
-            removeCurrentPlayerItemStateObserver()
-            player?.pause()
-            player = nil
+            stopPreviewEventTriggered()
             return
         }
 
@@ -106,5 +112,4 @@ final class MediaItemPreviewPresenter {
 // MARK: - MediaItemPreviewModuleInput
 
 extension MediaItemPreviewPresenter: MediaItemPreviewModuleInput {
-	//
 }

@@ -2,6 +2,8 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
+import MediaService
+
 protocol MediaItemPreviewModuleInput: AnyObject {
     var mediaItem: MediaItem? { get set }
 }

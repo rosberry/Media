@@ -5,6 +5,7 @@
 import UIKit
 import Ion
 import Photos
+import MediaService
 
 public final class MediaCoordinator {
 
@@ -29,6 +30,8 @@ public final class MediaCoordinator {
 
     public let context: Context
 
+    public var mediaAppearance: MediaAppearance
+
     // MARK: - Modules
 
     private var mediaLibraryModule: MediaLibraryModule?
@@ -37,9 +40,17 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
+    public init(navigationViewController: UINavigationController, context: Context, mediaAppearance: MediaAppearance) {
+        self.navigationViewController = navigationViewController
+        self.context = context
+        self.mediaAppearance = mediaAppearance
+        setupPermissionsCollector()
+    }
+
     public init(navigationViewController: UINavigationController, context: Context) {
         self.navigationViewController = navigationViewController
         self.context = context
+        self.mediaAppearance = .init()
         setupPermissionsCollector()
     }
 
@@ -74,19 +85,22 @@ public final class MediaCoordinator {
     private func makeMediaLibraryModule() -> MediaLibraryModule {
         let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
                                         collectionsModule: makeCollectionsModule(),
-                                        mediaItemsModule: makeMediaItemsModule())
+                                        mediaItemsModule: makeMediaItemsModule(),
+                                        collectionAppearance: mediaAppearance.library)
         module.output = self
         return module
     }
 
     private func makeCollectionsModule() -> CollectionsModule {
-        let module = CollectionsModule()
+        let module = CollectionsModule(collectionViewAppearance: mediaAppearance.albums)
         module.output = self
         return module
     }
 
     private func makeMediaItemsModule() -> MediaItemsModule {
-        let module = MediaItemsModule(maxItemsCount: maxItemsCount, numberOfItemsInRow: numberOfItemsInRow)
+        let module = MediaItemsModule(maxItemsCount: maxItemsCount,
+                                      numberOfItemsInRow: numberOfItemsInRow,
+                                      collectionAppearance: mediaAppearance.list)
         module.output = self
         return module
     }
@@ -111,7 +125,7 @@ extension MediaCoordinator: MediaLibraryModuleOutput {
 // MARK: - CollectionsModuleOutput
 extension MediaCoordinator: CollectionsModuleOutput {
 
-    public func didSelect(_ collection: MediaItemCollection) {
+    public func didSelect(_ collection: MediaItemsCollection) {
         switch context {
             case .library:
                 mediaLibraryModule?.input.select(collection)
@@ -131,6 +145,7 @@ extension MediaCoordinator: MediaItemsModuleOutput {
 
     public func didStartPreview(item: MediaItem, from rect: CGRect) {
         let module = makeMediaItemPreviewModule()
+        module.input.mediaItem = item
         navigationViewController.present(module.viewController, animated: true, completion: nil)
     }
 
@@ -138,7 +153,7 @@ extension MediaCoordinator: MediaItemsModuleOutput {
         navigationViewController.dismiss(animated: true, completion: nil)
     }
 
-    public func didFinishLoading(_ collection: MediaItemCollection, isMixedContentCollection: Bool) {
+    public func didFinishLoading(_ collection: MediaItemsCollection, isMixedContentCollection: Bool) {
 
     }
 }

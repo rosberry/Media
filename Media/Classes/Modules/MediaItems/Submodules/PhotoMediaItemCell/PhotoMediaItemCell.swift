@@ -6,10 +6,10 @@ import UIKit
 
 final class PhotoMediaItemCell: MediaItemCell {
 
-    override func update(with viewModel: MediaItemCellModel) {
-        super.update(with: viewModel)
+    override func update(with viewModel: EmptyItemCellModel, cellAppearance: CellAppearance) {
+        super.update(with: viewModel, cellAppearance: cellAppearance)
 
-        if viewModel.item.type.isLivePhoto {
+        if viewModel.mediaItem.type.isLivePhoto {
             typeImageView.image = Asset.icLivePhotoXs.image
             infoLabel.text = L10n.MediaLibrary.Item.live
         }

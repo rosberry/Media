@@ -2,10 +2,12 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
+import MediaService
+
 public protocol MediaLibraryModuleInput: AnyObject {
 
     func update(isAuthorized: Bool)
-    func select(_ collection: MediaItemCollection)
+    func select(_ collection: MediaItemsCollection)
 }
 
 public protocol MediaLibraryModuleOutput: AnyObject {
@@ -33,11 +35,13 @@ public final class MediaLibraryModule {
 
     public init(maxItemsCount: Int,
                 collectionsModule: CollectionsModule,
-                mediaItemsModule: MediaItemsModule) {
+                mediaItemsModule: MediaItemsModule,
+                collectionAppearance: CollectionViewAppearance) {
         presenter = MediaLibraryPresenter(maxItemsCount: maxItemsCount,
                                           dependencies: Services,
                                           collectionsModule: collectionsModule,
-                                          mediaItemsModule: mediaItemsModule)
+                                          mediaItemsModule: mediaItemsModule,
+                                          collectionAppearance: collectionAppearance)
         viewController = MediaLibraryViewController(presenter: presenter)
         presenter.view = viewController
     }

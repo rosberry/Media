@@ -85,7 +85,33 @@ final class MainViewController: UIViewController {
         guard let navigationController = navigationController else {
             return
         }
-        coordinator = .init(navigationViewController: navigationController, context: context)
+
+        let cellAppearance = CellAppearance(contentViewCornerRadius: 5,
+                                           contentViewColor: .clear,
+                                           selectedColor: .green,
+                                           highlightedColor: .blue)
+        let sectionAppearance = SectionAppearance(minimumLineSpacing: 5,
+                                                 minimumInteritemSpacing: 5,
+                                                 insets: .init(top: 5, left: 5, bottom: 5, right: 5))
+
+        let library = CollectionViewAppearance(backgroundColor: .brown,
+                                               collectionViewBackgroundColor: .clear,
+                                               cellAppearance: cellAppearance,
+                                               sectionAppearance: sectionAppearance)
+
+        let albums = CollectionViewAppearance(backgroundColor: .yellow,
+                                              collectionViewBackgroundColor: .clear,
+                                              cellAppearance: cellAppearance,
+                                              sectionAppearance: sectionAppearance)
+
+        let list = CollectionViewAppearance(backgroundColor: .red,
+                                            collectionViewBackgroundColor: .yellow,
+                                            cellAppearance: cellAppearance,
+                                            sectionAppearance: sectionAppearance)
+
+        let mediaAppearance = MediaAppearance(library: library, albums: albums, list: list)
+        coordinator = .init(navigationViewController: navigationController, context: context, mediaAppearance: mediaAppearance)
+        coordinator?.numberOfItemsInRow = 3
         coordinator?.start()
     }
 }

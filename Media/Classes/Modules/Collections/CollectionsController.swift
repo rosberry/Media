@@ -5,6 +5,7 @@
 import UIKit
 import CollectionViewTools
 import Framezilla
+import MediaService
 
 public final class CollectionsController: UIViewController {
 
@@ -15,6 +16,7 @@ public final class CollectionsController: UIViewController {
     private lazy var factory: CollectionSectionsFactory = {
         let factory = CollectionSectionsFactory()
         factory.output = presenter
+        factory.cellAppearance = presenter.collectionViewAppearance.cellAppearance
         return factory
     }()
 
@@ -24,7 +26,7 @@ public final class CollectionsController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .gray
+        collectionView.backgroundColor = presenter.collectionViewAppearance.backgroundColor
         collectionView.alwaysBounceVertical = true
         return collectionView
     }()
@@ -66,7 +68,9 @@ public final class CollectionsController: UIViewController {
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        collectionView.frame = view.bounds
+        collectionView.configureFrame { maker in
+            maker.left().right().top(to: view.nui_safeArea.top).bottom(to: view.nui_safeArea.bottom)
+        }
     }
 
     // MARK: -
@@ -75,8 +79,8 @@ public final class CollectionsController: UIViewController {
         permissionsPlaceholderView.isHidden = false
     }
 
-    func update(with mediaItemCollections: [MediaItemCollection]) {
-        collectionView.contentOffset = .zero
+    func update(with mediaItemCollections: [MediaItemsCollection]) {
+        view.setNeedsLayout()
         collectionViewManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
         collectionView.isUserInteractionEnabled = true
     }
