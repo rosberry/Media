@@ -3,32 +3,31 @@
 
 import Foundation
 
-// swiftlint:disable superfluous_disable_command
-// swiftlint:disable file_length
+// swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Strings
 
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:disable nesting type_body_length type_name
+// swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
   /// dummy
   internal static let dummy = L10n.tr("Localizable", "dummy")
 
   internal enum MediaLibrary {
-    /// All videos & photos
-    internal static let allItems = L10n.tr("Localizable", "mediaLibrary.allItems")
-    /// No media items
-    internal static let empty = L10n.tr("Localizable", "mediaLibrary.empty")
-    /// Done
-    internal static let done = L10n.tr("Localizable", "mediaLibrary.done")
-    /// Favorite videos & photos
-    internal static let favoriteItems = L10n.tr("Localizable", "mediaLibrary.favoriteItems")
-    /// Library
-    internal static let title = L10n.tr("Localizable", "mediaLibrary.title")
     /// Albums
     internal static let albums = L10n.tr("Localizable", "mediaLibrary.albums")
+    /// All videos & photos
+    internal static let allItems = L10n.tr("Localizable", "mediaLibrary.allItems")
+    /// Done
+    internal static let done = L10n.tr("Localizable", "mediaLibrary.done")
+    /// No media items
+    internal static let empty = L10n.tr("Localizable", "mediaLibrary.empty")
+    /// Favorite videos & photos
+    internal static let favoriteItems = L10n.tr("Localizable", "mediaLibrary.favoriteItems")
     /// List
     internal static let list = L10n.tr("Localizable", "mediaLibrary.list")
+    /// Library
+    internal static let title = L10n.tr("Localizable", "mediaLibrary.title")
     /// Unknown
     internal static let unknown = L10n.tr("Localizable", "mediaLibrary.unknown")
     internal enum Filter {
@@ -42,29 +41,40 @@ internal enum L10n {
       internal static let live = L10n.tr("Localizable", "mediaLibrary.item.live")
     }
     internal enum Permissions {
-      /// This will allow Template to use video and photos from your library and save videos to your camera roll
-      internal static let subtitle = L10n.tr("Localizable", "mediaLibrary.permissions.subtitle")
-      /// Please allow access to your videos and photos
+      /// To share photos and videos, %@ needs access to storage on your device
+      internal static func subtitle(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "mediaLibrary.permissions.subtitle", String(describing: p1))
+      }
+      /// Allow Access to Storage
       internal static let title = L10n.tr("Localizable", "mediaLibrary.permissions.title")
     }
   }
 
   internal enum Permissions {
-    /// Open Settings
+    /// Allow Access
     internal static let action = L10n.tr("Localizable", "permissions.action")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
-// swiftlint:enable nesting type_body_length type_name
+// swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
 
 // MARK: - Implementation Details
 
 extension L10n {
   private static func tr(_ table: String, _ key: String, _ args: CVarArg...) -> String {
-    // swiftlint:disable:next nslocalizedstring_key
-    let format = NSLocalizedString(key, tableName: table, bundle: Bundle(for: BundleToken.self), comment: "")
+    let format = BundleToken.bundle.localizedString(forKey: key, value: nil, table: table)
     return String(format: format, locale: Locale.current, arguments: args)
   }
 }
 
-private final class BundleToken {}
+// swiftlint:disable convenience_type
+private final class BundleToken {
+  static let bundle: Bundle = {
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
+  }()
+}
+// swiftlint:enable convenience_type
