@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Texstyle
 import Framezilla
 
 final class PermissionsPlaceholderView: UIView {
@@ -12,7 +13,7 @@ final class PermissionsPlaceholderView: UIView {
             titleLabel.text
         }
         set {
-            titleLabel.text = newValue
+            titleLabel.attributedText = newValue?.text(with: .title2A).attributed
         }
     }
 
@@ -21,33 +22,27 @@ final class PermissionsPlaceholderView: UIView {
             subtitleLabel.text
         }
         set {
-            subtitleLabel.text = newValue
+            subtitleLabel.attributedText = newValue?.text(with: .body1A).attributed
         }
     }
 
     // MARK: - Subviews
 
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.numberOfLines = 0
-        return label
-    }()
+    private lazy var titleLabel: UILabel = .init()
 
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.black
         label.numberOfLines = 0
         return label
     }()
 
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .system)
+        button.layer.cornerRadius = 10
         button.clipsToBounds = true
-        button.backgroundColor = UIColor.black
-        button.contentEdgeInsets = UIEdgeInsets(top: 14, left: 24, bottom: 14, right: 24)
+        button.backgroundColor = .button1A
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitle(L10n.Permissions.action.uppercased(), for: .normal)
+        button.setAttributedTitle(L10n.Permissions.action.text(with: .title4B).attributed, for: .normal)
         button.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -77,13 +72,13 @@ final class PermissionsPlaceholderView: UIView {
         super.layoutSubviews()
 
         subtitleLabel.configureFrame { maker in
-            maker.left(inset: 40).right(inset: 40)
+            maker.left(inset: 16).right(inset: 16)
             maker.centerY()
             maker.heightToFit()
         }
 
         titleLabel.configureFrame { maker in
-            maker.left(inset: 40).right(inset: 40)
+            maker.left(inset: 16).right(inset: 16)
             maker.bottom(to: subtitleLabel.nui_top, inset: 8)
             maker.heightToFit()
         }
@@ -91,8 +86,8 @@ final class PermissionsPlaceholderView: UIView {
         settingsButton.configureFrame { maker in
             maker.top(to: subtitleLabel.nui_bottom, inset: 24)
             maker.centerX()
-            maker.sizeToFit()
-            maker.cornerRadius(byHalf: .height)
+            maker.left(inset: 68).right(inset: 68)
+            maker.height(50)
         }
     }
 

@@ -2,7 +2,7 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public struct CellAppearance {
     public var contentViewCornerRadius: Double
@@ -13,11 +13,11 @@ public struct CellAppearance {
     public var selectedColor: UIColor
     public var highlightedColor: UIColor
 
-    public init(contentViewCornerRadius: Double = 5,
-                contentViewColor: UIColor = .clear,
-                infoViewCornerRadius: Double = 3,
-                infoViewAlpha: Double = 0.5,
-                infoViewBackgroundColor: UIColor = .gray,
+    public init(contentViewCornerRadius: Double = 0,
+                contentViewColor: UIColor = .main3A,
+                infoViewCornerRadius: Double = 0,
+                infoViewAlpha: Double = 1,
+                infoViewBackgroundColor: UIColor = .clear,
                 selectedColor: UIColor = .white,
                 highlightedColor: UIColor = .clear) {
         self.contentViewCornerRadius = contentViewCornerRadius

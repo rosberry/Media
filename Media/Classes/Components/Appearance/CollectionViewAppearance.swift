@@ -10,8 +10,8 @@ public struct CollectionViewAppearance {
     public var cellAppearance: CellAppearance
     public var sectionAppearance: SectionAppearance
 
-    public init(backgroundColor: UIColor = .black,
-                collectionViewBackgroundColor: UIColor = .clear,
+    public init(backgroundColor: UIColor = .white,
+                collectionViewBackgroundColor: UIColor = .white,
                 cellAppearance: CellAppearance = .init(),
                 sectionAppearance: SectionAppearance = .init()) {
         self.backgroundColor = backgroundColor

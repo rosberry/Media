@@ -9,7 +9,9 @@ public struct MediaAppearance {
     public var albums: CollectionViewAppearance
     public var list: CollectionViewAppearance
 
-    public init(library: CollectionViewAppearance = .init(), albums: CollectionViewAppearance = .init(), list: CollectionViewAppearance = .init()) {
+    public init(library: CollectionViewAppearance = .init(),
+                albums: CollectionViewAppearance = .init(),
+                list: CollectionViewAppearance = .init()) {
         self.library = library
         self.albums = albums
         self.list = list

@@ -9,12 +9,6 @@ import MediaService
 
 public final class MediaCoordinator {
 
-     public enum Context {
-        case library
-        case albums
-        case items
-    }
-
     typealias Dependencies = HasMediaLibraryService
 
     private lazy var dependencies: Dependencies = Services
@@ -28,47 +22,29 @@ public final class MediaCoordinator {
     public var maxItemsCount: Int = 2
     public var numberOfItemsInRow: Int = 4
 
-    public let context: Context
-
     public var mediaAppearance: MediaAppearance
 
     // MARK: - Modules
-
-    private var mediaLibraryModule: MediaLibraryModule?
-    private var collectionsModule: CollectionsModule?
-    private var mediaItemsModule: MediaItemsModule?
+    private var galleryModule: GalleryModule?
 
     // MARK: - Lifecycle
 
-    public init(navigationViewController: UINavigationController, context: Context, mediaAppearance: MediaAppearance) {
+    public init(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance) {
         self.navigationViewController = navigationViewController
-        self.context = context
         self.mediaAppearance = mediaAppearance
         setupPermissionsCollector()
     }
 
-    public init(navigationViewController: UINavigationController, context: Context) {
+    public init(navigationViewController: UINavigationController) {
         self.navigationViewController = navigationViewController
-        self.context = context
         self.mediaAppearance = .init()
         setupPermissionsCollector()
     }
 
-    public func start() {
-        switch context {
-            case .library:
-                let module = makeMediaLibraryModule()
-                mediaLibraryModule = module
-                navigationViewController.pushViewController(module.viewController, animated: true)
-            case .albums:
-                let module = makeCollectionsModule()
-                collectionsModule = module
-                navigationViewController.pushViewController(module.viewController, animated: true)
-            case .items:
-                let module = makeMediaItemsModule()
-                mediaItemsModule = module
-                navigationViewController.pushViewController(module.viewController, animated: true)
-        }
+    public func start(bundleName: String) {
+        let module = makeGalleryModule(bundleName: bundleName)
+        galleryModule = module
+        navigationViewController.pushViewController(module.viewController, animated: true)
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
@@ -76,31 +52,16 @@ public final class MediaCoordinator {
 
     private func setupPermissionsCollector() {
         permissionsCollector.subscribe { [weak self] status in
-            self?.mediaLibraryModule?.input.update(isAuthorized: status == .authorized)
-            self?.collectionsModule?.input.update(isAuthorized: status == .authorized)
-            self?.mediaItemsModule?.input.update(isAuthorized: status == .authorized)
+            self?.galleryModule?.input.update(isAuthorized: status == .authorized)
         }
     }
 
-    private func makeMediaLibraryModule() -> MediaLibraryModule {
-        let module = MediaLibraryModule(maxItemsCount: maxItemsCount,
-                                        collectionsModule: makeCollectionsModule(),
-                                        mediaItemsModule: makeMediaItemsModule(),
-                                        collectionAppearance: mediaAppearance.library)
-        module.output = self
-        return module
-    }
 
-    private func makeCollectionsModule() -> CollectionsModule {
-        let module = CollectionsModule(collectionViewAppearance: mediaAppearance.albums)
-        module.output = self
-        return module
-    }
-
-    private func makeMediaItemsModule() -> MediaItemsModule {
-        let module = MediaItemsModule(maxItemsCount: maxItemsCount,
-                                      numberOfItemsInRow: numberOfItemsInRow,
-                                      collectionAppearance: mediaAppearance.list)
+    private func makeGalleryModule(bundleName: String) -> GalleryModule {
+        let module = GalleryModule(bundleName: bundleName,
+                                   maxItemsCount: maxItemsCount,
+                                   numberOfItemsInRow: numberOfItemsInRow,
+                                   collectionAppearance: mediaAppearance.list)
         module.output = self
         return module
     }
@@ -114,34 +75,8 @@ public final class MediaCoordinator {
     }
 }
 
-// MARK: - MediaLibraryModuleOutput
-extension MediaCoordinator: MediaLibraryModuleOutput {
-
-    public func mediaLibraryModuleDidFinish(_ moduleInput: MediaLibraryModuleInput, with items: [MediaItem]) {
-        navigationViewController.popViewController(animated: true)
-    }
-}
-
-// MARK: - CollectionsModuleOutput
-extension MediaCoordinator: CollectionsModuleOutput {
-
-    public func didSelect(_ collection: MediaItemsCollection) {
-        switch context {
-            case .library:
-                mediaLibraryModule?.input.select(collection)
-            case .albums:
-                let module = makeMediaItemsModule()
-                mediaItemsModule = module
-                module.input.collection = collection
-                navigationViewController.pushViewController(module.viewController, animated: true)
-            case .items:
-                break
-        }
-    }
-}
-
 // MARK: - MediaItemsModuleOutput
-extension MediaCoordinator: MediaItemsModuleOutput {
+extension MediaCoordinator: GalleryModuleOutput {
 
     public func didStartPreview(item: MediaItem, from rect: CGRect) {
         let module = makeMediaItemPreviewModule()
@@ -155,5 +90,9 @@ extension MediaCoordinator: MediaItemsModuleOutput {
 
     public func didFinishLoading(_ collection: MediaItemsCollection, isMixedContentCollection: Bool) {
 
+    }
+
+    public func closeEventTriggered() {
+        navigationViewController.popViewController(animated: true)
     }
 }
