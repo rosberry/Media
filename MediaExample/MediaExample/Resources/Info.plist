@@ -41,5 +41,7 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>It will allow you to use photos &amp; videos from Photo Library in your projects</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to your camera so to capture your photos and enhance them</string>
 </dict>
 </plist>
