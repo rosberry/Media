@@ -4,6 +4,7 @@
 
 import UIKit
 import Media
+import MediaService
 
 final class MainViewController: UIViewController {
 
@@ -30,6 +31,8 @@ final class MainViewController: UIViewController {
         return view
     }()
 
+    private lazy var imageView: UIImageView = .init()
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -37,13 +40,18 @@ final class MainViewController: UIViewController {
         title = "Menu"
         view.backgroundColor = .white
         view.addSubview(stackView)
+        view.addSubview(imageView)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         stackView.configureFrame { maker in
-            maker.size(width: 200, height: 166).center()
+            maker.size(width: 200, height: 166).top(to: view.nui_safeArea.top, inset: 20).centerX()
+        }
+
+        imageView.configureFrame { maker in
+            maker.center().size(.init(width: 250, height: 250))
         }
     }
 
@@ -58,5 +66,22 @@ final class MainViewController: UIViewController {
 
         coordinator = .init(navigationViewController: navigationController)
         coordinator?.start(bundleName: "Whats Up")
+        coordinator?.delegate = self
+    }
+
+}
+
+extension MainViewController: MediaCoordinatorDelegate {
+    func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
+        guard let mediaItem = mediaItems.first else {
+            return
+        }
+        MediaLibraryServiceImp().fetchImage(for: mediaItem) { [weak self] image in
+            self?.imageView.image = image
+        }
+    }
+
+    func photoEventTriggered(_ image: UIImage) {
+        imageView.image = image
     }
 }
