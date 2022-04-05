@@ -108,17 +108,17 @@ public final class GalleryPresenter {
 
     func albumsEventTriggered() {
         switch shevronePosition {
-        case .up:
-            shevronePosition = .down
-            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
-            view?.changeCollectionView(assetsIsHidden: false)
-        case .down:
-            shevronePosition = .up
-            if collections.isEmpty {
-                setupCollections()
-            }
-            view?.update(with: collections)
-            view?.changeCollectionView(assetsIsHidden: true)
+           case .up:
+              shevronePosition = .down
+              dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+              view?.changeCollectionView(assetsIsHidden: false)
+           case .down:
+              shevronePosition = .up
+              if collections.isEmpty {
+                  setupCollections()
+              }
+              view?.update(with: collections)
+              view?.changeCollectionView(assetsIsHidden: true)
         }
         view?.updateTitleView(with: shevronePosition)
     }
@@ -230,10 +230,10 @@ public final class GalleryPresenter {
     private func setupPermissionsCollector() {
         permissionsCollector.subscribe { [weak self] status in
             switch status {
-            case .denied, .notDetermined:
-                self?.view?.showMediaLibraryDeniedPermissionsPlaceholder()
-            default:
-                return
+               case .denied, .notDetermined:
+                  self?.view?.showMediaLibraryDeniedPermissionsPlaceholder()
+               default:
+                  return
             }
         }
     }

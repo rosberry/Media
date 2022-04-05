@@ -8,7 +8,6 @@ import UIKit
 final class AlbumsShevroneView: UIView {
 
     enum ShevronePosition {
-        // swiftlint:disable:next  identifier_name
         case up
         case down
     }
@@ -75,10 +74,10 @@ final class AlbumsShevroneView: UIView {
         }
         let transform: CGAffineTransform
         switch shevronePosition {
-        case .up:
-            transform = .init(rotationAngle: CGFloat.pi)
-        case .down:
-            transform = .identity
+           case .up:
+              transform = .init(rotationAngle: CGFloat.pi)
+           case .down:
+              transform = .identity
         }
         state = shevronePosition
         UIView.animate(withDuration: 0.1) {

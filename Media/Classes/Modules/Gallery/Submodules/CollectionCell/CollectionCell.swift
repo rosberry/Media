@@ -84,17 +84,17 @@ class CollectionCell: UICollectionViewCell {
 
         var itemCountLabelString: String?
         switch viewModel.estimatedMediaItemsCount {
-        case .none:
-            itemCountLabelString = L10n.MediaLibrary.unknown
-        case .max?:
-            if viewModel.isFavorite {
-                itemCountLabelString = L10n.MediaLibrary.favoriteItems
-            }
-            else {
-                itemCountLabelString = L10n.MediaLibrary.allItems
-            }
-        case .some(let count):
-            itemCountLabelString = "\(count)"
+           case .none:
+              itemCountLabelString = L10n.MediaLibrary.unknown
+           case .max?:
+              if viewModel.isFavorite {
+                  itemCountLabelString = L10n.MediaLibrary.favoriteItems
+              }
+              else {
+                  itemCountLabelString = L10n.MediaLibrary.allItems
+              }
+           case .some(let count):
+              itemCountLabelString = "\(count)"
         }
         itemCountLabel.attributedText = itemCountLabelString?.text(with: .subtitle2C).attributed
         setNeedsLayout()

@@ -7,7 +7,7 @@ import Ion
 import Photos
 import MediaService
 
-public protocol MediaCoordinatorDelegate {
+public protocol MediaCoordinatorDelegate: AnyObject {
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
 }
@@ -19,7 +19,7 @@ public final class MediaCoordinator {
     private lazy var dependencies: Dependencies = Services
 
     let navigationViewController: UINavigationController
-    public var delegate: MediaCoordinatorDelegate?
+    public weak var delegate: MediaCoordinatorDelegate?
 
     private lazy var permissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)

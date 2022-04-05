@@ -13,15 +13,11 @@ open class ATRButton: UIButton {
         bounds.inset(by: -touchRadiusInsets).contains(point)
     }
 
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-
     public init() {
         super.init(frame: .zero)
     }
 
-    required public init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
