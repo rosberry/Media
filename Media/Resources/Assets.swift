@@ -26,7 +26,6 @@ internal enum Asset {
   internal static let ic24More = ImageAsset(name: "ic24More")
   internal static let icShevroneDown24 = ImageAsset(name: "icShevroneDown24")
   internal static let icShevroneUp24 = ImageAsset(name: "icShevroneUp24")
-  internal static let icSloMoXs = ImageAsset(name: "icSloMoXs")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

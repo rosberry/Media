@@ -14,7 +14,5 @@ final class VideoMediaItemCell: MediaItemCell {
 
         let minutes = Int(duration / 60)
         let seconds = Int(duration) % 60
-        infoLabel.attributedText = String(format: "%01d:%02d", minutes, seconds).text(with: .subtitle1B).attributed
-        typeImageView.image = viewModel.mediaItem.type.isSloMoVideo ? Asset.icSloMoXs.image : nil
     }
 }

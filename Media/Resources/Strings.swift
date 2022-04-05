@@ -45,10 +45,6 @@ internal enum L10n {
       /// Videos
       internal static let videos = L10n.tr("Localizable", "mediaLibrary.filter.videos")
     }
-    internal enum Item {
-      /// LIVE
-      internal static let live = L10n.tr("Localizable", "mediaLibrary.item.live")
-    }
     internal enum Permissions {
       /// To share photos and videos, %@ needs access to storage on your device
       internal static func subtitle(_ p1: Any) -> String {
