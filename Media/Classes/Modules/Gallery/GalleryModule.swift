@@ -48,15 +48,17 @@ public final class GalleryModule {
     private let presenter: GalleryPresenter
 
     public init(bundleName: String,
+                filter: MediaItemsFilter,
                 maxItemsCount: Int,
                 numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
-                collectionAppearance: CollectionViewAppearance) {
+                mediaAppearance: MediaAppearance) {
         presenter = GalleryPresenter(bundleName: bundleName,
+                                     filter: filter,
                                      maxItemsCount: maxItemsCount,
                                      numberOfItemsInRow: numberOfItemsInRow,
                                      dependencies: Services,
-                                     collectionAppearance: collectionAppearance)
+                                     mediaAppearance: mediaAppearance)
         viewController = GalleryViewController(presenter: presenter)
         presenter.view = viewController
         input.collection = collection

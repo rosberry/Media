@@ -5,15 +5,15 @@
 import Foundation
 
 public struct MediaAppearance {
-    public var library: CollectionViewAppearance
-    public var albums: CollectionViewAppearance
-    public var list: CollectionViewAppearance
+    public var gallery: CollectionViewAppearance
+    public var navigation: NavigationAppearance
+    public var permission: PermissionAppearance
 
-    public init(library: CollectionViewAppearance = .init(),
-                albums: CollectionViewAppearance = .init(),
-                list: CollectionViewAppearance = .init()) {
-        self.library = library
-        self.albums = albums
-        self.list = list
+    public init(gallery: CollectionViewAppearance = .init(),
+                navigation: NavigationAppearance = .init(),
+                permission: PermissionAppearance = .init()) {
+        self.gallery = gallery
+        self.navigation = navigation
+        self.permission = permission
     }
 }

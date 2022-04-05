@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct SectionAppearance {
+public struct AssetSectionAppearance {
     public var minimumLineSpacing: CGFloat
     public var minimumInteritemSpacing: CGFloat
     public var insets: UIEdgeInsets

@@ -16,10 +16,18 @@ public final class GalleryViewController: UIViewController {
 
     private let presenter: GalleryPresenter
 
+    private var mediaAppearance: MediaAppearance {
+        presenter.mediaAppearance
+    }
+
+    private var assetCellAppearance: CellAppearance {
+        presenter.mediaAppearance.gallery.assetCellAppearance
+    }
+
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
-                                                      dependencies: Services,
-                                                      collectionAppearance: presenter.collectionAppearance)
+                                             dependencies: Services,
+                                             mediaAppearance: mediaAppearance)
         factory.output = presenter
         return factory
     }()
@@ -35,7 +43,7 @@ public final class GalleryViewController: UIViewController {
     // MARK: - Subviews
 
     private lazy var titleView: AlbumsShevroneView = {
-        let view = AlbumsShevroneView()
+        let view = AlbumsShevroneView(titleImage: mediaAppearance.navigation.titleImage)
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
@@ -50,7 +58,7 @@ public final class GalleryViewController: UIViewController {
     }()
 
     private lazy var permissionsPlaceholderView: PermissionsPlaceholderView = {
-        let view = PermissionsPlaceholderView()
+        let view = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
         view.title = L10n.MediaLibrary.Permissions.title
         view.subtitle = L10n.MediaLibrary.Permissions.subtitle(presenter.bundleName)
         view.isHidden = true
@@ -69,7 +77,7 @@ public final class GalleryViewController: UIViewController {
         layout.scrollDirection = .vertical
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = presenter.collectionAppearance.collectionViewBackgroundColor
+        collectionView.backgroundColor = mediaAppearance.gallery.collectionViewBackgroundColor
         collectionView.alwaysBounceVertical = true
         collectionView.contentInsetAdjustmentBehavior = .never
         return collectionView
@@ -79,7 +87,7 @@ public final class GalleryViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = mediaAppearance.gallery.collectionViewBackgroundColor
         collectionView.alwaysBounceVertical = true
         return collectionView
     }()
@@ -98,7 +106,7 @@ public final class GalleryViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = presenter.collectionAppearance.backgroundColor
+        view.backgroundColor = mediaAppearance.gallery.backgroundColor
         view.addSubview(albumsCollectionView)
         view.addSubview(assetsCollectionView)
         placeholderView.addSubview(placeholderLabel)
@@ -155,7 +163,7 @@ public final class GalleryViewController: UIViewController {
         camera.zoomRangeLimits = 1.0...5.0
         let cameraViewController = CameraViewController(cameraService: camera)
 
-        let placeholderPermissionView = PermissionsPlaceholderView()
+        let placeholderPermissionView = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
         placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
         placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
 
@@ -211,14 +219,14 @@ public final class GalleryViewController: UIViewController {
                     guard let cell = photoCellItem.cell as? MediaItemCell else {
                         return
                     }
-                    cell.update(with: photoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
+                    cell.update(with: photoCellItem.object, cellAppearance: assetCellAppearance)
                 }
                 else if let videoCellItem = cellItem as? VideoCellItem {
                     videoCellItem.object.selectionIndex = handler(videoCellItem.object.mediaItem)
                     guard let cell = videoCellItem.cell as? MediaItemCell else {
                         return
                     }
-                    cell.update(with: videoCellItem.object, cellAppearance: presenter.collectionAppearance.cellAppearance)
+                    cell.update(with: videoCellItem.object, cellAppearance: assetCellAppearance)
                 }
             }
         }

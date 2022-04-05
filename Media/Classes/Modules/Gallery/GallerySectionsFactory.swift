@@ -18,8 +18,32 @@ protocol GallerySectionsFactoryOutput: AnyObject {
 final class GallerySectionsFactory {
 
     typealias Dependencies = HasMediaLibraryService
-    
-    var cellAppearance: CellAppearance = .init()
+
+    private enum Kind {
+        case video
+        case photo
+    }
+
+    private var albumsCellAppearance: CellAppearance = .init()
+    private var assetsCellAppearance: CellAppearance = .init()
+    private var albumsSectionAppearance: AlbumSectionAppearance = .init()
+    private var assetsSectionAppearance: AssetSectionAppearance = .init()
+
+    weak var output: GallerySectionsFactoryOutput?
+
+    let numberOfItemsInRow: Int
+    private let mediaAppearance: MediaAppearance
+    private let dependencies: Dependencies
+    private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
+
+    init(numberOfItemsInRow: Int, dependencies: Dependencies, mediaAppearance: MediaAppearance) {
+        self.numberOfItemsInRow = numberOfItemsInRow
+        self.dependencies = dependencies
+        self.mediaAppearance = mediaAppearance
+        self.albumsCellAppearance = mediaAppearance.gallery.albumCellAppearance
+        self.assetsCellAppearance = mediaAppearance.gallery.assetCellAppearance
+        self.assetsSectionAppearance = mediaAppearance.gallery.assetSectionAppearance
+    }
 
     private(set) lazy var complexFactory: ComplexCellItemsFactory = {
         let complexFactory = ComplexCellItemsFactory()
@@ -39,11 +63,6 @@ final class GallerySectionsFactory {
         return factory
     }()
 
-    private enum Kind {
-        case video
-        case photo
-    }
-
     private(set) lazy var photoCellItemsFactory: CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell> = {
         let factory = CellItemsFactory<PhotoItemCellModel, PhotoMediaItemCell>()
         configureFactory(factory: factory)
@@ -56,19 +75,6 @@ final class GallerySectionsFactory {
         return factory
     }()
 
-    weak var output: GallerySectionsFactoryOutput?
-
-    let numberOfItemsInRow: Int
-    private let collectionAppearance: CollectionViewAppearance
-    private let dependencies: Dependencies
-    private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
-
-    init(numberOfItemsInRow: Int, dependencies: Dependencies, collectionAppearance: CollectionViewAppearance) {
-        self.numberOfItemsInRow = numberOfItemsInRow
-        self.dependencies = dependencies
-        self.collectionAppearance = collectionAppearance
-    }
-
     // MARK: - Placeholders
 
     func placeholderSectionItems(placeholderCount: Int) -> [CollectionViewSectionItem] {
@@ -77,6 +83,9 @@ final class GallerySectionsFactory {
 
     func makeSectionItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))
+        sectionItem.minimumLineSpacing = albumsSectionAppearance.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = albumsSectionAppearance.minimumInteritemSpacing
+        sectionItem.insets = albumsSectionAppearance.insets
         return [sectionItem]
     }
 
@@ -87,7 +96,7 @@ final class GallerySectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
-        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: cellAppearance)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: albumsCellAppearance)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }
@@ -110,7 +119,7 @@ final class GallerySectionsFactory {
                     return
                 }
 
-                cell.update(with: cellItem.object, cellAppearance: self.collectionAppearance.cellAppearance)
+                cell.update(with: cellItem.object, cellAppearance: self.assetsCellAppearance)
             }
 
             cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
@@ -133,9 +142,9 @@ final class GallerySectionsFactory {
 
     private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems)
-        sectionItem.minimumLineSpacing = collectionAppearance.sectionAppearance.minimumLineSpacing
-        sectionItem.minimumInteritemSpacing = collectionAppearance.sectionAppearance.minimumInteritemSpacing
-        sectionItem.insets = collectionAppearance.sectionAppearance.insets
+        sectionItem.minimumLineSpacing = assetsSectionAppearance.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = assetsSectionAppearance.minimumInteritemSpacing
+        sectionItem.insets = assetsSectionAppearance.insets
         return sectionItem
     }
 

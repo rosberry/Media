@@ -63,8 +63,8 @@ public final class GalleryPresenter {
 
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
-                                                      dependencies: Services,
-                                                      collectionAppearance: collectionAppearance)
+                                             dependencies: Services,
+                                             mediaAppearance: mediaAppearance)
         factory.output = self
         return factory
     }()
@@ -73,26 +73,26 @@ public final class GalleryPresenter {
     private var shevronePosition: ShevronePosition
     public var numberOfItemsInRow: Int
     public var bundleName: String
-    public var collectionAppearance: CollectionViewAppearance
+    public var mediaAppearance: MediaAppearance
 
     // MARK: - Lifecycle
 
     init(bundleName: String,
+         filter: MediaItemsFilter,
          maxItemsCount: Int,
          numberOfItemsInRow: Int,
          dependencies: Dependencies,
-         collectionAppearance: CollectionViewAppearance) {
+         mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
         self.bundleName = bundleName
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
-        self.collectionAppearance = collectionAppearance
+        self.mediaAppearance = mediaAppearance
+        self.filter = filter
         self.shevronePosition = .down
     }
 
     func viewReadyEventTriggered() {
-        filter = .all
-
         setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
@@ -175,7 +175,7 @@ public final class GalleryPresenter {
 
     private func sectionItemsProvider(for result: PHFetchResult<PHAsset>) -> LazySectionItemsProvider {
         let count = result.count
-        let sectionAppearance = collectionAppearance.sectionAppearance
+        let sectionAppearance = mediaAppearance.gallery.assetSectionAppearance
 
         let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
             count

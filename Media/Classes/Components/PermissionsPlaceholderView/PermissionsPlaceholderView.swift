@@ -13,7 +13,7 @@ final class PermissionsPlaceholderView: UIView {
             titleLabel.text
         }
         set {
-            titleLabel.attributedText = newValue?.text(with: .title2A).attributed
+            titleLabel.attributedText = newValue?.text(with: permissionAppearance.titleStyle).attributed
         }
     }
 
@@ -22,9 +22,11 @@ final class PermissionsPlaceholderView: UIView {
             subtitleLabel.text
         }
         set {
-            subtitleLabel.attributedText = newValue?.text(with: .body1A).attributed
+            subtitleLabel.attributedText = newValue?.text(with: permissionAppearance.subtitleStyle).attributed
         }
     }
+
+    private let permissionAppearance: PermissionAppearance
 
     // MARK: - Subviews
 
@@ -40,17 +42,18 @@ final class PermissionsPlaceholderView: UIView {
         let button = UIButton(type: .system)
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
-        button.backgroundColor = .button1A
+        button.backgroundColor = permissionAppearance.buttonBackgroundColor
         button.setTitleColor(UIColor.white, for: .normal)
-        button.setAttributedTitle(L10n.Permissions.action.text(with: .title4B).attributed, for: .normal)
+        button.setAttributedTitle(L10n.Permissions.action.text(with: permissionAppearance.buttonStyle).attributed, for: .normal)
         button.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
         return button
     }()
 
     // MARK: - Lifecycle
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(permissionAppearance: PermissionAppearance) {
+        self.permissionAppearance = permissionAppearance
+        super.init(frame: .zero)
         setup()
     }
 
@@ -59,7 +62,7 @@ final class PermissionsPlaceholderView: UIView {
     }
 
     private func setup() {
-        backgroundColor = UIColor.white
+        backgroundColor = permissionAppearance.backgroundColor
 
         addSubview(titleLabel)
         addSubview(subtitleLabel)

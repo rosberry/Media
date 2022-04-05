@@ -64,11 +64,10 @@ final class MainViewController: UIViewController {
             return
         }
 
-        coordinator = .init(navigationViewController: navigationController)
+        coordinator = .init(navigationViewController: navigationController, filter: .photo)
         coordinator?.start(bundleName: "Whats Up")
         coordinator?.delegate = self
     }
-
 }
 
 extension MainViewController: MediaCoordinatorDelegate {

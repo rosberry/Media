@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class AlbumsShevroneView: UIView {
 
@@ -17,19 +18,20 @@ final class AlbumsShevroneView: UIView {
 
     private var state: ShevronePosition = .down
     private let betweenInset: CGFloat = 3
+    private let titleImage: UIImage?
 
     private(set) lazy var titleLabel: UILabel = .init()
 
     private(set) lazy var imageView: UIImageView = .init()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(titleImage: UIImage?) {
+        self.titleImage = titleImage
+        super.init(frame: .zero)
         setup()
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func layoutSubviews() {
@@ -60,7 +62,7 @@ final class AlbumsShevroneView: UIView {
         isUserInteractionEnabled = true
         clipsToBounds = true
 
-        imageView.image = Asset.icShevroneDown24.image.withRenderingMode(.alwaysOriginal)
+        imageView.image = titleImage?.withRenderingMode(.alwaysOriginal)
         innerInset = 6
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selfPressed))

@@ -57,7 +57,7 @@ class CollectionCell: UICollectionViewCell {
         imageView.configureFrame { maker in
             maker.left(inset: 12.0)
             maker.centerY()
-            maker.size(width: contentView.bounds.height - 8.0, height: contentView.bounds.height - 8.0)
+            maker.size(width: 72, height: 72)
         }
 
         titleLabel.configureFrame { maker in

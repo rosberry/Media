@@ -29,6 +29,7 @@ public final class MediaCoordinator {
     public var numberOfItemsInRow: Int = 4
 
     public var mediaAppearance: MediaAppearance
+    public var filter: MediaItemsFilter
 
     // MARK: - Modules
 
@@ -36,15 +37,17 @@ public final class MediaCoordinator {
 
     // MARK: - Lifecycle
 
-    public init(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance) {
+    public init(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter = .all) {
         self.navigationViewController = navigationViewController
         self.mediaAppearance = mediaAppearance
+        self.filter = filter
         setupPermissionsCollector()
     }
 
-    public init(navigationViewController: UINavigationController) {
+    public init(navigationViewController: UINavigationController, filter: MediaItemsFilter = .all) {
         self.navigationViewController = navigationViewController
         self.mediaAppearance = .init()
+        self.filter = filter
         setupPermissionsCollector()
     }
 
@@ -63,12 +66,12 @@ public final class MediaCoordinator {
         }
     }
 
-
     private func makeGalleryModule(bundleName: String) -> GalleryModule {
         let module = GalleryModule(bundleName: bundleName,
+                                   filter: filter,
                                    maxItemsCount: maxItemsCount,
                                    numberOfItemsInRow: numberOfItemsInRow,
-                                   collectionAppearance: mediaAppearance.list)
+                                   mediaAppearance: mediaAppearance)
         module.output = self
         return module
     }
