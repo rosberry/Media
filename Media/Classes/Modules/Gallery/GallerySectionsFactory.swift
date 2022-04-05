@@ -24,10 +24,10 @@ final class GallerySectionsFactory {
         case photo
     }
 
-    private var albumsCellAppearance: AlbumCellAppearance = .init()
-    private var assetsCellAppearance: AssetCellAppearance = .init()
-    private var albumsSectionAppearance: AlbumSectionAppearance = .init()
-    private var assetsSectionAppearance: AssetSectionAppearance = .init()
+    private var albumCellAppearance: AlbumCellAppearance = .init()
+    private var assetCellAppearance: AssetCellAppearance = .init()
+    private var albumSectionAppearance: AlbumSectionAppearance = .init()
+    private var assetSectionAppearance: AssetSectionAppearance = .init()
 
     weak var output: GallerySectionsFactoryOutput?
 
@@ -40,9 +40,10 @@ final class GallerySectionsFactory {
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
-        self.albumsCellAppearance = mediaAppearance.gallery.albumCellAppearance
-        self.assetsCellAppearance = mediaAppearance.gallery.assetCellAppearance
-        self.assetsSectionAppearance = mediaAppearance.gallery.assetSectionAppearance
+        self.albumCellAppearance = mediaAppearance.gallery.albumCellAppearance
+        self.assetCellAppearance = mediaAppearance.gallery.assetCellAppearance
+        self.albumSectionAppearance = mediaAppearance.gallery.albumSectionAppearance
+        self.assetSectionAppearance = mediaAppearance.gallery.assetSectionAppearance
     }
 
     private(set) lazy var complexFactory: ComplexCellItemsFactory = {
