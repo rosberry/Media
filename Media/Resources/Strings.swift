@@ -13,6 +13,15 @@ internal enum L10n {
   /// dummy
   internal static let dummy = L10n.tr("Localizable", "dummy")
 
+  internal enum Camera {
+    internal enum PermissionsPlaceholder {
+      /// Give access to your camera\nto take a shot
+      internal static let body = L10n.tr("Localizable", "camera.permissions_placeholder.body")
+      /// Camera
+      internal static let title = L10n.tr("Localizable", "camera.permissions_placeholder.title")
+    }
+  }
+
   internal enum MediaLibrary {
     /// Albums
     internal static let albums = L10n.tr("Localizable", "mediaLibrary.albums")

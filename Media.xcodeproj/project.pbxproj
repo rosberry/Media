@@ -50,7 +50,6 @@
 		A98FCDE027F5A35100B1854F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A98FCDDF27F5A35100B1854F /* Assets.xcassets */; };
 		A98FCDE427F5A35A00B1854F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A98FCDE227F5A35A00B1854F /* Localizable.strings */; };
 		A98FCDE627F5AD2900B1854F /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDE527F5AD2900B1854F /* TextStyles.swift */; };
-		A98FCDEA27F5BDDF00B1854F /* TitleImageVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDE927F5BDDF00B1854F /* TitleImageVIew.swift */; };
 		A98FCDEC27F5BDE500B1854F /* AlbumsShevroneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDEB27F5BDE500B1854F /* AlbumsShevroneView.swift */; };
 		A98FCDF027F5C12B00B1854F /* UIEdgeInsets+Sum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDEF27F5C12B00B1854F /* UIEdgeInsets+Sum.swift */; };
 		A98FCDF927F6B27700B1854F /* ATRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDF827F6B27700B1854F /* ATRButton.swift */; };
@@ -117,7 +116,6 @@
 		A98FCDDF27F5A35100B1854F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A98FCDE327F5A35A00B1854F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		A98FCDE527F5AD2900B1854F /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
-		A98FCDE927F5BDDF00B1854F /* TitleImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleImageVIew.swift; sourceTree = "<group>"; };
 		A98FCDEB27F5BDE500B1854F /* AlbumsShevroneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsShevroneView.swift; sourceTree = "<group>"; };
 		A98FCDEF27F5C12B00B1854F /* UIEdgeInsets+Sum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Sum.swift"; sourceTree = "<group>"; };
 		A98FCDF827F6B27700B1854F /* ATRButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATRButton.swift; sourceTree = "<group>"; };
@@ -399,7 +397,6 @@
 		A98FCDE827F5BDC100B1854F /* AlbumsShevroneView */ = {
 			isa = PBXGroup;
 			children = (
-				A98FCDE927F5BDDF00B1854F /* TitleImageVIew.swift */,
 				A98FCDEB27F5BDE500B1854F /* AlbumsShevroneView.swift */,
 			);
 			path = AlbumsShevroneView;
@@ -580,7 +577,6 @@
 				1373B09622DC237700F28EF0 /* CollectionCell.swift in Sources */,
 				1373B08D22DC237700F28EF0 /* DropdownButton.swift in Sources */,
 				0642778D2421E0B30036D878 /* MediaCoordinator.swift in Sources */,
-				A98FCDEA27F5BDDF00B1854F /* TitleImageVIew.swift in Sources */,
 				A9FF44092743B967001D7559 /* MediaAppearance.swift in Sources */,
 				A98FCDEC27F5BDE500B1854F /* AlbumsShevroneView.swift in Sources */,
 				1373B09822DC237700F28EF0 /* GalleryViewController.swift in Sources */,
@@ -750,7 +746,7 @@
 				);
 				INFOPLIST_FILE = Media/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -781,7 +777,7 @@
 				);
 				INFOPLIST_FILE = Media/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
