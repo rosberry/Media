@@ -7,6 +7,11 @@ import Ion
 import Photos
 import MediaService
 
+public protocol MediaCoordinatorDelegate {
+    func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
+    func photoEventTriggered(_ image: UIImage)
+}
+
 public final class MediaCoordinator {
 
     typealias Dependencies = HasMediaLibraryService
@@ -14,6 +19,7 @@ public final class MediaCoordinator {
     private lazy var dependencies: Dependencies = Services
 
     let navigationViewController: UINavigationController
+    public var delegate: MediaCoordinatorDelegate?
 
     private lazy var permissionsCollector: Collector<PHAuthorizationStatus> = {
         return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
@@ -25,6 +31,7 @@ public final class MediaCoordinator {
     public var mediaAppearance: MediaAppearance
 
     // MARK: - Modules
+
     private var galleryModule: GalleryModule?
 
     // MARK: - Lifecycle
@@ -77,7 +84,6 @@ public final class MediaCoordinator {
 
 // MARK: - MediaItemsModuleOutput
 extension MediaCoordinator: GalleryModuleOutput {
-
     public func didStartPreview(item: MediaItem, from rect: CGRect) {
         let module = makeMediaItemPreviewModule()
         module.input.mediaItem = item
@@ -94,5 +100,15 @@ extension MediaCoordinator: GalleryModuleOutput {
 
     public func closeEventTriggered() {
         navigationViewController.popViewController(animated: true)
+    }
+
+    public func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
+        navigationViewController.popViewController(animated: true)
+        delegate?.selectMediaItemsEventTriggered(mediaItems)
+    }
+
+    public func photoEventTriggered(_ image: UIImage) {
+        navigationViewController.popViewController(animated: true)
+        delegate?.photoEventTriggered(image)
     }
 }
