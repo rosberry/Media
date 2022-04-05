@@ -7,16 +7,16 @@ import Foundation
 public struct CollectionViewAppearance {
     public var backgroundColor: UIColor
     public var collectionViewBackgroundColor: UIColor
-    public var albumCellAppearance: CellAppearance
+    public var albumCellAppearance: AlbumCellAppearance
     public var albumSectionAppearance: AlbumSectionAppearance
-    public var assetCellAppearance: CellAppearance
+    public var assetCellAppearance: AssetCellAppearance
     public var assetSectionAppearance: AssetSectionAppearance
 
     public init(backgroundColor: UIColor = .white,
                 collectionViewBackgroundColor: UIColor = .white,
-                albumCellAppearance: CellAppearance = .init(),
+                albumCellAppearance: AlbumCellAppearance = .init(),
                 albumSectionAppearance: AlbumSectionAppearance = .init(),
-                assetCellAppearance: CellAppearance = .init(),
+                assetCellAppearance: AssetCellAppearance = .init(),
                 assetSectionAppearance: AssetSectionAppearance = .init()) {
         self.backgroundColor = backgroundColor
         self.collectionViewBackgroundColor = collectionViewBackgroundColor

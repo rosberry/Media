@@ -64,8 +64,8 @@ final class MainViewController: UIViewController {
             return
         }
 
-        coordinator = .init(navigationViewController: navigationController, filter: .photo)
-        coordinator?.start(bundleName: "Whats Up")
+        coordinator = .init(navigationViewController: navigationController)
+        coordinator?.start(bundleName: "Media Example")
         coordinator?.delegate = self
     }
 }

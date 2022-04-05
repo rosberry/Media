@@ -4,26 +4,23 @@
 
 import UIKit
 
-public struct CellAppearance {
+public struct AssetCellAppearance {
     public var contentViewCornerRadius: Double
     public var contentViewColor: UIColor
     public var infoViewCornerRadius: Double
-    public var infoViewAlpha: Double
     public var infoViewBackgroundColor: UIColor
     public var selectedColor: UIColor
     public var highlightedColor: UIColor
 
     public init(contentViewCornerRadius: Double = 0,
-                contentViewColor: UIColor = .main3A,
-                infoViewCornerRadius: Double = 0,
-                infoViewAlpha: Double = 1,
-                infoViewBackgroundColor: UIColor = .clear,
-                selectedColor: UIColor = .white,
+                contentViewColor: UIColor = .clear,
+                infoViewCornerRadius: Double = 4,
+                infoViewBackgroundColor: UIColor = .main1A,
+                selectedColor: UIColor = .clear,
                 highlightedColor: UIColor = .clear) {
         self.contentViewCornerRadius = contentViewCornerRadius
         self.contentViewColor = contentViewColor
         self.infoViewCornerRadius = infoViewCornerRadius
-        self.infoViewAlpha = infoViewAlpha
         self.infoViewBackgroundColor = infoViewBackgroundColor
         self.selectedColor = selectedColor
         self.highlightedColor = highlightedColor

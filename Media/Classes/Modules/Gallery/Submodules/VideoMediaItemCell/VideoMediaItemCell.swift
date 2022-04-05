@@ -6,7 +6,7 @@ import UIKit
 
 final class VideoMediaItemCell: MediaItemCell {
 
-    override func update(with viewModel: EmptyItemCellModel, cellAppearance: CellAppearance) {
+    override func update(with viewModel: EmptyItemCellModel, cellAppearance: AssetCellAppearance) {
         super.update(with: viewModel, cellAppearance: cellAppearance)
         guard let duration = viewModel.mediaItem.duration else {
             return

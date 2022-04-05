@@ -24,8 +24,8 @@ final class GallerySectionsFactory {
         case photo
     }
 
-    private var albumsCellAppearance: CellAppearance = .init()
-    private var assetsCellAppearance: CellAppearance = .init()
+    private var albumsCellAppearance: AlbumCellAppearance = .init()
+    private var assetsCellAppearance: AssetCellAppearance = .init()
     private var albumsSectionAppearance: AlbumSectionAppearance = .init()
     private var assetsSectionAppearance: AssetSectionAppearance = .init()
 

@@ -8,7 +8,7 @@ import Texstyle
 
 class CollectionCell: UICollectionViewCell {
 
-    private var cellAppearance: CellAppearance = .init()
+    private var cellAppearance: AlbumCellAppearance = .init()
 
     override var isHighlighted: Bool {
         didSet {
@@ -29,8 +29,7 @@ class CollectionCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8.0
-        imageView.backgroundColor = cellAppearance.infoViewBackgroundColor
+        imageView.layer.cornerRadius = cellAppearance.imageCornerRadius
         return imageView
     }()
 
@@ -43,6 +42,8 @@ class CollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
+        contentView.backgroundColor = cellAppearance.contentViewColor
+        contentView.layer.cornerRadius = cellAppearance.contentViewCornerRadius
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -77,10 +78,10 @@ class CollectionCell: UICollectionViewCell {
         UIView.setAnimationsEnabled(true)
     }
 
-    func update(with viewModel: CollectionCellModel, cellAppearance: CellAppearance) {
+    func update(with viewModel: CollectionCellModel, cellAppearance: AlbumCellAppearance) {
         self.cellAppearance = cellAppearance
         imageView.image = viewModel.thumbnail
-        titleLabel.attributedText = viewModel.title?.text(with: .title4A).attributed
+        titleLabel.attributedText = viewModel.title?.text(with: cellAppearance.titleStyle).attributed
 
         var itemCountLabelString: String?
         switch viewModel.estimatedMediaItemsCount {
@@ -96,7 +97,7 @@ class CollectionCell: UICollectionViewCell {
            case .some(let count):
               itemCountLabelString = "\(count)"
         }
-        itemCountLabel.attributedText = itemCountLabelString?.text(with: .subtitle2C).attributed
+        itemCountLabel.attributedText = itemCountLabelString?.text(with: cellAppearance.subtitleStyle).attributed
         setNeedsLayout()
         layoutIfNeeded()
     }

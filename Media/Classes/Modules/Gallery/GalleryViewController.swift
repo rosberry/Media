@@ -20,7 +20,7 @@ public final class GalleryViewController: UIViewController {
         presenter.mediaAppearance
     }
 
-    private var assetCellAppearance: CellAppearance {
+    private var assetCellAppearance: AssetCellAppearance {
         presenter.mediaAppearance.gallery.assetCellAppearance
     }
 

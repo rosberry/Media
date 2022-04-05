@@ -18,7 +18,7 @@ class MediaItemCell: UICollectionViewCell {
 
     var modelIdentifier: String?
 
-    private var cellAppearance: CellAppearance = .init()
+    private var cellAppearance: AssetCellAppearance = .init()
 
     // MARK: - Subviews
 
@@ -32,7 +32,6 @@ class MediaItemCell: UICollectionViewCell {
     private(set) lazy var infoView: UIView = {
         let view = UIView()
         view.backgroundColor = cellAppearance.infoViewBackgroundColor
-        view.alpha = CGFloat(cellAppearance.infoViewAlpha)
         view.layer.cornerRadius = CGFloat(cellAppearance.infoViewCornerRadius)
         view.clipsToBounds = true
         return view
@@ -65,10 +64,10 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        backgroundColor = cellAppearance.contentViewColor
-
+        contentView.backgroundColor = cellAppearance.contentViewColor
         contentView.layer.cornerRadius = CGFloat(cellAppearance.contentViewCornerRadius)
         contentView.clipsToBounds = true
+
         contentView.addSubview(imageView)
 
         contentView.addSubview(selectionView)
@@ -96,12 +95,12 @@ class MediaItemCell: UICollectionViewCell {
             maker.sizeToFit()
         }
         infoLabel.configureFrame { maker in
-            maker.left(inset: 5.5)
-            maker.bottom(inset: 2.5)
+            maker.left(inset: 1.5)
+            maker.centerY()
             maker.sizeToFit()
         }
         infoView.configureFrame { maker in
-            maker.width(infoLabel.frame.maxX + 4)
+            maker.width(infoLabel.frame.maxX + 3)
             maker.right(inset: 2)
         }
         infoView.isHidden = (infoLabel.text == nil) && (typeImageView.image == nil)
@@ -120,7 +119,7 @@ class MediaItemCell: UICollectionViewCell {
 
     // MARK: -
 
-    func update(with viewModel: EmptyItemCellModel, cellAppearance: CellAppearance) {
+    func update(with viewModel: EmptyItemCellModel, cellAppearance: AssetCellAppearance) {
         self.cellAppearance = cellAppearance
         imageView.image = viewModel.mediaItem.thumbnail
         if let selectionIndex = viewModel.selectionIndex {
