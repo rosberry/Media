@@ -84,9 +84,9 @@ final class GallerySectionsFactory {
 
     func makeSectionItems(mediaItemCollections: [MediaItemsCollection]) -> [CollectionViewSectionItem] {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: makeCellItems(mediaItemCollections: mediaItemCollections))
-        sectionItem.minimumLineSpacing = albumsSectionAppearance.minimumLineSpacing
-        sectionItem.minimumInteritemSpacing = albumsSectionAppearance.minimumInteritemSpacing
-        sectionItem.insets = albumsSectionAppearance.insets
+        sectionItem.minimumLineSpacing = albumSectionAppearance.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = albumSectionAppearance.minimumInteritemSpacing
+        sectionItem.insets = albumSectionAppearance.insets
         return [sectionItem]
     }
 
@@ -97,7 +97,7 @@ final class GallerySectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
-        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: albumsCellAppearance)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: albumCellAppearance)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }
@@ -120,7 +120,7 @@ final class GallerySectionsFactory {
                     return
                 }
 
-                cell.update(with: cellItem.object, cellAppearance: self.assetsCellAppearance)
+                cell.update(with: cellItem.object, cellAppearance: self.assetCellAppearance)
             }
 
             cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
@@ -143,9 +143,9 @@ final class GallerySectionsFactory {
 
     private func makeSectionItem(cellItems: [CollectionViewCellItem]) -> CollectionViewSectionItem {
         let sectionItem = GeneralCollectionViewSectionItem(cellItems: cellItems)
-        sectionItem.minimumLineSpacing = assetsSectionAppearance.minimumLineSpacing
-        sectionItem.minimumInteritemSpacing = assetsSectionAppearance.minimumInteritemSpacing
-        sectionItem.insets = assetsSectionAppearance.insets
+        sectionItem.minimumLineSpacing = assetSectionAppearance.minimumLineSpacing
+        sectionItem.minimumInteritemSpacing = assetSectionAppearance.minimumInteritemSpacing
+        sectionItem.insets = assetSectionAppearance.insets
         return sectionItem
     }
 
