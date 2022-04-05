@@ -40,7 +40,7 @@ final class PermissionsPlaceholderView: UIView {
 
     private lazy var settingsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = permissionAppearance.buttonCornerRadius
         button.clipsToBounds = true
         button.backgroundColor = permissionAppearance.buttonBackgroundColor
         button.setTitleColor(UIColor.white, for: .normal)
