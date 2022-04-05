@@ -41,7 +41,6 @@ class MediaItemCell: UICollectionViewCell {
 
     private(set) lazy var typeImageView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .center
         view.tintColor = .white
         return view
     }()
@@ -72,8 +71,9 @@ class MediaItemCell: UICollectionViewCell {
 
         contentView.addSubview(selectionView)
 
+        contentView.addSubview(typeImageView)
+
         infoView.addSubview(infoLabel)
-        infoView.addSubview(typeImageView)
         contentView.addSubview(infoView)
 
         contentView.isExclusiveTouch = true
@@ -90,8 +90,8 @@ class MediaItemCell: UICollectionViewCell {
             maker.height(18).bottom(inset: 2)
         }
         typeImageView.configureFrame { maker in
-            maker.left(inset: 2)
-            maker.centerY()
+            maker.left(inset: 4)
+            maker.top(inset: 4)
             maker.sizeToFit()
         }
         infoLabel.configureFrame { maker in

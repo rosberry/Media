@@ -10,8 +10,8 @@ final class PhotoMediaItemCell: MediaItemCell {
         super.update(with: viewModel, cellAppearance: cellAppearance)
 
         if viewModel.mediaItem.type.isLivePhoto {
-            typeImageView.image = Asset.ic16Livephoto.image
-            infoLabel.text = L10n.MediaLibrary.Item.live
+            typeImageView.image = Asset.ic16Livephoto.image.withRenderingMode(.alwaysTemplate)
+            infoView.isHidden = true
         }
         else {
             typeImageView.image = nil

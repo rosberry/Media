@@ -10,7 +10,6 @@
 "mediaLibrary.favoriteItems" = "Favorite videos & photos";
 "mediaLibrary.empty" = "No media items";
 "mediaLibrary.done" = "Done";
-"mediaLibrary.item.live" = "LIVE";
 "mediaLibrary.filter.videos" = "Videos";
 "mediaLibrary.filter.all" = "All";
 "mediaLibrary.permissions.title" = "Allow Access to Storage";
