@@ -25,6 +25,8 @@ public protocol GalleryModuleOutput: AnyObject {
     func didStopPreview(item: MediaItem)
     func didFinishLoading(_ collection: MediaItemsCollection, isMixedContentCollection: Bool)
     func closeEventTriggered()
+    func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
+    func photoEventTriggered(_ image: UIImage)
 }
 
 public final class GalleryModule {

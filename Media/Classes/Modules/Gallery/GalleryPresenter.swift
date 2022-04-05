@@ -57,6 +57,10 @@ public final class GalleryPresenter {
         return .init(source: dependencies.mediaLibraryService.collectionsEventSource)
     }()
 
+    private lazy var permissionsCollector: Collector<PHAuthorizationStatus> = {
+        return .init(source: dependencies.mediaLibraryService.permissionStatusEventSource)
+    }()
+
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
                                                       dependencies: Services,
@@ -123,7 +127,24 @@ public final class GalleryPresenter {
         output?.closeEventTriggered()
     }
 
+    func permissionEventTriggered() {
+        dependencies.mediaLibraryService.requestMediaLibraryPermissions()
+        setupPermissionsCollector()
+    }
+
+    func makePhotoEventTriggered(_ image: UIImage) {
+        output?.photoEventTriggered(image)
+    }
+
     // MARK: - Helpers
+
+    func updateSelection() {
+        view?.updateSelection { item -> Int? in
+            selectedItems.firstIndex(of: item)
+        }
+    }
+
+    // MARK: - Private
 
     private func setupCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
@@ -206,9 +227,14 @@ public final class GalleryPresenter {
         dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
     }
 
-    func updateSelection() {
-        view?.updateSelection { item -> Int? in
-            selectedItems.firstIndex(of: item)
+    private func setupPermissionsCollector() {
+        permissionsCollector.subscribe { [weak self] status in
+            switch status {
+            case .denied, .notDetermined:
+                self?.view?.showMediaLibraryDeniedPermissionsPlaceholder()
+            default:
+                return
+            }
         }
     }
 }
@@ -223,14 +249,15 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
     }
 
     func didSelect(_ item: MediaItem) {
-        var selectedItems = self.selectedItems
-        if let index = selectedItems.firstIndex(of: item) {
-            selectedItems.remove(at: index)
-        }
-        else if selectedItems.count < maxItemsCount {
-            selectedItems.append(item)
-        }
-        self.selectedItems = selectedItems
+        output?.selectMediaItemsEventTriggered([item])
+//        var selectedItems = self.selectedItems
+//        if let index = selectedItems.firstIndex(of: item) {
+//            selectedItems.remove(at: index)
+//        }
+//        else if selectedItems.count < maxItemsCount {
+//            selectedItems.append(item)
+//        }
+//        self.selectedItems = selectedItems
     }
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect) {

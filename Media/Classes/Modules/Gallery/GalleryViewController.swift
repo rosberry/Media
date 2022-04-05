@@ -7,6 +7,7 @@ import CollectionViewTools
 import Framezilla
 import MediaService
 import AVFoundation
+import RCam
 
 public final class GalleryViewController: UIViewController {
 
@@ -35,7 +36,8 @@ public final class GalleryViewController: UIViewController {
 
     private lazy var titleView: AlbumsShevroneView = {
         let view = AlbumsShevroneView()
-        view.tapEventHandler = { [weak self] in
+        view.tapEventHandler = { [weak self] state in
+            self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
         }
         return view
@@ -125,11 +127,6 @@ public final class GalleryViewController: UIViewController {
             maker.top(to: view.nui_safeArea.top).left().right().bottom()
         }
 
-        permissionsPlaceholderView.configureFrame { maker in
-            maker.top().left().right()
-            maker.bottom(inset: view.safeAreaInsets.bottom)
-        }
-
         placeholderLabel.configureFrame { maker in
             maker.left().right()
             maker.centerY()
@@ -151,6 +148,21 @@ public final class GalleryViewController: UIViewController {
         assetsCollectionManager.sectionItems = factory.placeholderSectionItems(placeholderCount: estimatedItemCount)
 
         placeholderView.isHidden = true
+    }
+
+    private func showCamera() {
+        let camera = CameraImpl()
+        camera.zoomRangeLimits = 1.0...5.0
+        let cameraViewController = CameraViewController(cameraService: camera)
+
+        let placeholderPermissionView = PermissionsPlaceholderView()
+        placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
+        placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
+
+        cameraViewController.permissionsPlaceholderView = placeholderPermissionView
+        cameraViewController.modalPresentationStyle = .overCurrentContext
+        cameraViewController.delegate = self
+        present(cameraViewController, animated: true)
     }
 
     func update(with mediaItemCollections: [MediaItemsCollection]) {
@@ -214,7 +226,7 @@ public final class GalleryViewController: UIViewController {
 
     func showMediaLibraryDeniedPermissionsPlaceholder() {
         permissionsPlaceholderView.isHidden = false
-        navigationItem.titleView?.isHidden = true
+        titleView.isHidden = true
         view.setNeedsLayout()
         view.layoutIfNeeded()
     }
@@ -252,8 +264,18 @@ public final class GalleryViewController: UIViewController {
                                                            action: #selector(closeButtonPressed))
     }
 
+    private func stopScrolling(_ state: AlbumsShevroneView.ShevronePosition) {
+        state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
+    }
+
+    private func updateCollectionView(_ collectionView: UICollectionView) {
+        if collectionView.numberOfItems(inSection: 0) != 0 {
+            collectionView.scrollToItem(at: .init(row: 0, section: 0), at: .top, animated: false)
+        }
+    }
+
     @objc private func cameraButtonPressed() {
-        print(#function)
+        showCamera()
     }
 
     @objc private func closeButtonPressed() {
@@ -273,5 +295,17 @@ extension GalleryViewController: UIScrollViewDelegate {
         let delta = scrollView.panGestureRecognizer.translation(in: scrollView).y
         let direction: GalleryPresenter.FocusDirection = (delta > 0.0) ? .down : .up
         presenter.scrollEventTriggered(direction: direction)
+    }
+}
+
+extension GalleryViewController: CameraViewControllerDelegate {
+    public func cameraViewController(_ viewController: CameraViewController, imageCaptured image: UIImage, orientationApplied: Bool) {
+        presenter.makePhotoEventTriggered(image)
+        viewController.dismiss(animated: true)
+    }
+
+    public func cameraViewControllerCloseEventTriggered(_ viewController: CameraViewController) {
+        presenter.permissionEventTriggered()
+        viewController.dismiss(animated: true)
     }
 }
