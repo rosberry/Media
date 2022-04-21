@@ -1,8 +1,4 @@
-/* 
-  Localizable.strings
-  Template
-
-  Created by Egor Reshetov on 10/07/2019.
+/*
   Copyright © 2019 Rosberry. All rights reserved.
 */
 
@@ -14,12 +10,13 @@
 "mediaLibrary.favoriteItems" = "Favorite videos & photos";
 "mediaLibrary.empty" = "No media items";
 "mediaLibrary.done" = "Done";
-"mediaLibrary.item.live" = "LIVE";
 "mediaLibrary.filter.videos" = "Videos";
 "mediaLibrary.filter.all" = "All";
-"mediaLibrary.permissions.title" = "Please allow access to your videos and photos";
-"mediaLibrary.permissions.subtitle" = "This will allow Template to use video and photos from your library and save videos to your camera roll";
+"mediaLibrary.permissions.title" = "Allow Access to Storage";
+"mediaLibrary.permissions.subtitle" = "To share photos and videos, %@ needs access to storage on your device";
+"camera.permissions_placeholder.title" = "Camera";
+"camera.permissions_placeholder.body" = "Give access to your camera\nto take a shot";
 
-"permissions.action" = "Open Settings";
+"permissions.action" = "Allow Access";
 
 "dummy" = "dummy";

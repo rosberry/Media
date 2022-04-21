@@ -9,6 +9,7 @@ protocol MediaItemPreviewModuleInput: AnyObject {
 }
 
 protocol MediaItemPreviewModuleOutput: AnyObject {
+    func closeEventTriggered()
 }
 
 final class MediaItemPreviewModule {

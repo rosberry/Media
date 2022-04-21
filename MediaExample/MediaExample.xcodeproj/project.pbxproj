@@ -13,14 +13,22 @@
 		1373B13D22DC663900F28EF0 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B13C22DC663900F28EF0 /* AppCoordinator.swift */; };
 		1373B14722DC686300F28EF0 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B14622DC686300F28EF0 /* Coordinator.swift */; };
 		1373B16622DC789A00F28EF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1373B16522DC789A00F28EF0 /* MainViewController.swift */; };
-		A93A905F2706E85200DB8FC1 /* MediaService.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A905E2706E85200DB8FC1 /* MediaService.xcframework */; };
-		A93A90612706E85200DB8FC1 /* Texstyle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90602706E85200DB8FC1 /* Texstyle.xcframework */; };
-		A93A90632706E85700DB8FC1 /* CollectionViewTools.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90622706E85700DB8FC1 /* CollectionViewTools.xcframework */; };
-		A93A90652706E85700DB8FC1 /* DeepDiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90642706E85700DB8FC1 /* DeepDiff.xcframework */; };
-		A93A90672706E85700DB8FC1 /* Framezilla.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90662706E85700DB8FC1 /* Framezilla.xcframework */; };
-		A93A90692706E85700DB8FC1 /* Ion.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90682706E85700DB8FC1 /* Ion.xcframework */; };
 		A94FF53D27635B410029C3A5 /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94FF53C27635B410029C3A5 /* Media.framework */; };
 		A94FF53E27635B410029C3A5 /* Media.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94FF53C27635B410029C3A5 /* Media.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A9573E7C27FAF73900383B00 /* RCam.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9573E7427FAF19E00383B00 /* RCam.xcframework */; };
+		A9573E7D27FAF73900383B00 /* RCam.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A9573E7427FAF19E00383B00 /* RCam.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDCE27F5990C00B1854F /* CollectionViewTools.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90622706E85700DB8FC1 /* CollectionViewTools.xcframework */; };
+		A98FCDCF27F5990C00B1854F /* CollectionViewTools.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90622706E85700DB8FC1 /* CollectionViewTools.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDD027F5990C00B1854F /* DeepDiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90642706E85700DB8FC1 /* DeepDiff.xcframework */; };
+		A98FCDD127F5990C00B1854F /* DeepDiff.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90642706E85700DB8FC1 /* DeepDiff.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDD227F5990C00B1854F /* Framezilla.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90662706E85700DB8FC1 /* Framezilla.xcframework */; };
+		A98FCDD327F5990C00B1854F /* Framezilla.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90662706E85700DB8FC1 /* Framezilla.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDD427F5990C00B1854F /* Ion.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90682706E85700DB8FC1 /* Ion.xcframework */; };
+		A98FCDD527F5990C00B1854F /* Ion.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90682706E85700DB8FC1 /* Ion.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDD627F5990C00B1854F /* MediaService.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A905E2706E85200DB8FC1 /* MediaService.xcframework */; };
+		A98FCDD727F5990C00B1854F /* MediaService.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A905E2706E85200DB8FC1 /* MediaService.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A98FCDD827F5990C00B1854F /* Texstyle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90602706E85200DB8FC1 /* Texstyle.xcframework */; };
+		A98FCDD927F5990C00B1854F /* Texstyle.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A93A90602706E85200DB8FC1 /* Texstyle.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -30,6 +38,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				A98FCDD727F5990C00B1854F /* MediaService.xcframework in Embed Frameworks */,
+				A98FCDD327F5990C00B1854F /* Framezilla.xcframework in Embed Frameworks */,
+				A9573E7D27FAF73900383B00 /* RCam.xcframework in Embed Frameworks */,
+				A98FCDCF27F5990C00B1854F /* CollectionViewTools.xcframework in Embed Frameworks */,
+				A98FCDD927F5990C00B1854F /* Texstyle.xcframework in Embed Frameworks */,
+				A98FCDD527F5990C00B1854F /* Ion.xcframework in Embed Frameworks */,
+				A98FCDD127F5990C00B1854F /* DeepDiff.xcframework in Embed Frameworks */,
 				A94FF53E27635B410029C3A5 /* Media.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -61,6 +76,7 @@
 		A93A906A2706E88500DB8FC1 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A94FF53827635A3F0029C3A5 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A94FF53C27635B410029C3A5 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9573E7427FAF19E00383B00 /* RCam.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = RCam.xcframework; path = ../Carthage/Build/RCam.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,13 +84,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A93A90632706E85700DB8FC1 /* CollectionViewTools.xcframework in Frameworks */,
 				A94FF53D27635B410029C3A5 /* Media.framework in Frameworks */,
-				A93A90652706E85700DB8FC1 /* DeepDiff.xcframework in Frameworks */,
-				A93A90672706E85700DB8FC1 /* Framezilla.xcframework in Frameworks */,
-				A93A90692706E85700DB8FC1 /* Ion.xcframework in Frameworks */,
-				A93A905F2706E85200DB8FC1 /* MediaService.xcframework in Frameworks */,
-				A93A90612706E85200DB8FC1 /* Texstyle.xcframework in Frameworks */,
+				A98FCDD427F5990C00B1854F /* Ion.xcframework in Frameworks */,
+				A9573E7C27FAF73900383B00 /* RCam.xcframework in Frameworks */,
+				A98FCDCE27F5990C00B1854F /* CollectionViewTools.xcframework in Frameworks */,
+				A98FCDD827F5990C00B1854F /* Texstyle.xcframework in Frameworks */,
+				A98FCDD027F5990C00B1854F /* DeepDiff.xcframework in Frameworks */,
+				A98FCDD627F5990C00B1854F /* MediaService.xcframework in Frameworks */,
+				A98FCDD227F5990C00B1854F /* Framezilla.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,6 +172,7 @@
 		1373B14022DC671B00F28EF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9573E7427FAF19E00383B00 /* RCam.xcframework */,
 				A94FF53C27635B410029C3A5 /* Media.framework */,
 				A94FF53827635A3F0029C3A5 /* Media.framework */,
 				A93A906A2706E88500DB8FC1 /* Media.framework */,
@@ -440,7 +458,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MediaExample/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,7 +482,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/MediaExample/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
