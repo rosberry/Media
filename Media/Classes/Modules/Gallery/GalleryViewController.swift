@@ -24,6 +24,10 @@ public final class GalleryViewController: UIViewController {
         presenter.mediaAppearance.gallery.assetCellAppearance
     }
 
+    private var navigationAppearance: NavigationAppearance {
+        presenter.mediaAppearance.navigation
+    }
+
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
                                              dependencies: Services,
@@ -242,7 +246,7 @@ public final class GalleryViewController: UIViewController {
     func updateTitleView(with title: String? = nil,
                          shevronePosition: AlbumsShevroneView.ShevronePosition) {
         if let title = title {
-            titleView.titleLabel.attributedText = title.text(with: mediaAppearance.navigation.titleStyle).attributed
+            titleView.titleLabel.attributedText = title.text(with: navigationAppearance.titleStyle).attributed
             titleView.sizeToFit()
             titleView.setNeedsLayout()
             titleView.layoutIfNeeded()
@@ -262,11 +266,11 @@ public final class GalleryViewController: UIViewController {
         navigationController?.view.backgroundColor = .white
 
         navigationItem.titleView = titleView
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: Asset.ic24Camera.image.withRenderingMode(.alwaysOriginal),
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: navigationAppearance.backImage?.withRenderingMode(.alwaysOriginal),
                                                             style: .plain,
                                                             target: self,
                                                             action: #selector(cameraButtonPressed))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: Asset.ic24Close.image.withRenderingMode(.alwaysOriginal),
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: navigationAppearance.cameraImage?.withRenderingMode(.alwaysOriginal),
                                                            style: .plain,
                                                            target: self,
                                                            action: #selector(closeButtonPressed))
