@@ -250,14 +250,6 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
 
     func didSelect(_ item: MediaItem) {
         output?.selectMediaItemsEventTriggered([item])
-//        var selectedItems = self.selectedItems
-//        if let index = selectedItems.firstIndex(of: item) {
-//            selectedItems.remove(at: index)
-//        }
-//        else if selectedItems.count < maxItemsCount {
-//            selectedItems.append(item)
-//        }
-//        self.selectedItems = selectedItems
     }
 
     func didRequestPreviewStart(item: MediaItem, from rect: CGRect) {
