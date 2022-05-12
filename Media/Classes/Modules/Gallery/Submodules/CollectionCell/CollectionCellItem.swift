@@ -13,16 +13,25 @@ class CollectionCellItem: CollectionViewCellItem {
     private let viewModel: CollectionCellModel
     private let dependencies: Dependencies
     private let cellAppearance: AlbumCellAppearance
+    private let sectionAppearance: AlbumSectionAppearance
     var reuseType = ReuseType.class(Cell.self)
 
-    init(viewModel: CollectionCellModel, dependencies: Dependencies, cellAppearance: AlbumCellAppearance) {
+    init(viewModel: CollectionCellModel, dependencies: Dependencies, cellAppearance: AlbumCellAppearance, sectionAppearance: AlbumSectionAppearance) {
         self.viewModel = viewModel
         self.dependencies = dependencies
         self.cellAppearance = cellAppearance
+        self.sectionAppearance = sectionAppearance
     }
 
     func size(in collectionView: UICollectionView, sectionItem: CollectionViewSectionItem) -> CGSize {
-        CGSize(width: collectionView.bounds.width, height: 88)
+        guard sectionAppearance.numberOfItemsInRow > 1 else {
+            return CGSize(width: collectionView.bounds.width, height: sectionAppearance.cellHeight)
+        }
+        let count = sectionAppearance.numberOfItemsInRow
+        let cellInset = sectionAppearance.minimumInteritemSpacing
+        let containerWidth = collectionView.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
+        let width = (containerWidth - CGFloat(count - 1) * cellInset) / CGFloat(count)
+        return .init(width: width, height: sectionAppearance.cellHeight)
     }
 
     func configure(_ cell: UICollectionViewCell) {

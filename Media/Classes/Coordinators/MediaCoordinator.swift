@@ -27,8 +27,6 @@ public final class MediaCoordinator {
     }()
 
     public var maxItemsCount: Int = 2
-    public var numberOfItemsInRow: Int = 4
-
     public var mediaAppearance: MediaAppearance
     public var filter: MediaItemsFilter
     public var needCloseBySelect: Bool = true
@@ -72,7 +70,6 @@ public final class MediaCoordinator {
         let module = GalleryModule(bundleName: bundleName,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
-                                   numberOfItemsInRow: numberOfItemsInRow,
                                    mediaAppearance: mediaAppearance)
         module.output = self
         return module

@@ -9,8 +9,6 @@ public protocol GalleryModuleInput: AnyObject {
 
     var collection: MediaItemsCollection? { get set }
 
-    var numberOfItemsInRow: Int { get set }
-
     var filter: MediaItemsFilter { get set }
 
     var selectedItems: [MediaItem] { get set }
@@ -52,13 +50,11 @@ public final class GalleryModule {
     public init(bundleName: String,
                 filter: MediaItemsFilter,
                 maxItemsCount: Int,
-                numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
                 mediaAppearance: MediaAppearance) {
         presenter = GalleryPresenter(bundleName: bundleName,
                                      filter: filter,
                                      maxItemsCount: maxItemsCount,
-                                     numberOfItemsInRow: numberOfItemsInRow,
                                      dependencies: Services,
                                      mediaAppearance: mediaAppearance)
         viewController = GalleryViewController(presenter: presenter)

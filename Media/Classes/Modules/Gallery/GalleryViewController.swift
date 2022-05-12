@@ -29,8 +29,7 @@ public final class GalleryViewController: UIViewController {
     }
 
     private lazy var factory: GallerySectionsFactory = {
-        let factory = GallerySectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
-                                             dependencies: Services,
+        let factory = GallerySectionsFactory(dependencies: Services,
                                              mediaAppearance: mediaAppearance)
         factory.output = presenter
         return factory

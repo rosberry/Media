@@ -62,8 +62,7 @@ public final class GalleryPresenter {
     }()
 
     private lazy var factory: GallerySectionsFactory = {
-        let factory = GallerySectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
-                                             dependencies: Services,
+        let factory = GallerySectionsFactory(dependencies: Services,
                                              mediaAppearance: mediaAppearance)
         factory.output = self
         return factory
@@ -71,7 +70,6 @@ public final class GalleryPresenter {
 
     private let maxItemsCount: Int
     private var shevronePosition: ShevronePosition
-    public var numberOfItemsInRow: Int
     public var bundleName: String
     public var mediaAppearance: MediaAppearance
 
@@ -80,12 +78,10 @@ public final class GalleryPresenter {
     init(bundleName: String,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
-         numberOfItemsInRow: Int,
          dependencies: Dependencies,
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
         self.bundleName = bundleName
-        self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.filter = filter
@@ -191,7 +187,7 @@ public final class GalleryPresenter {
             sectionItem.insets = sectionAppearance.insets
             return sectionItem
         } sizeHandler: { [weak self] _, collection in
-            let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
+            let numberOfItemsInRow = CGFloat(self?.mediaAppearance.gallery.assetSectionAppearance.numberOfItemsInRow ?? 0)
             let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
             let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)

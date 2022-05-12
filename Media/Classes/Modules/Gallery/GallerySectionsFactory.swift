@@ -30,14 +30,11 @@ final class GallerySectionsFactory {
     private var assetSectionAppearance: AssetSectionAppearance = .init()
 
     weak var output: GallerySectionsFactoryOutput?
-
-    let numberOfItemsInRow: Int
     private let mediaAppearance: MediaAppearance
     private let dependencies: Dependencies
     private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int, dependencies: Dependencies, mediaAppearance: MediaAppearance) {
-        self.numberOfItemsInRow = numberOfItemsInRow
+    init(dependencies: Dependencies, mediaAppearance: MediaAppearance) {
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.albumCellAppearance = mediaAppearance.gallery.albumCellAppearance
@@ -97,7 +94,10 @@ final class GallerySectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
-        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: albumCellAppearance)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection,
+                                          dependencies: Services,
+                                          cellAppearance: albumCellAppearance,
+                                          sectionAppearance: albumSectionAppearance)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }
@@ -150,7 +150,7 @@ final class GallerySectionsFactory {
     private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
         return (0..<count).map { _ in
             let cellItem = PlaceholderCellItem()
-            cellItem.numberOfItemsInRow = numberOfItemsInRow
+            cellItem.numberOfItemsInRow = self.assetSectionAppearance.numberOfItemsInRow
             return cellItem
         }
     }
