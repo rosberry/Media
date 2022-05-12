@@ -34,7 +34,7 @@ public final class MediaCoordinator {
 
     // MARK: - Modules
 
-    private var galleryModule: GalleryModule?
+    public var galleryModule: GalleryModule?
 
     // MARK: - Lifecycle
 
