@@ -150,8 +150,11 @@ public final class GalleryPresenter {
 
     private func setupCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
-        collectionsCollector.subscribe { (collections: [MediaItemsCollection]) in
-            self.collections = collections
+        collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
+            self?.collections = collections
+            if self?.collection == nil {
+                self?.collection = collections.first
+            }
         }
     }
 
