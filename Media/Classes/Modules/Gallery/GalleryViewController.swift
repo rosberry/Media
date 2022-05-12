@@ -43,6 +43,7 @@ public final class GalleryViewController: UIViewController {
 
     private lazy var albumsCollectionManager: CollectionViewManager = .init(collectionView: albumsCollectionView)
 
+    private var assetsIsHidden: Bool = false
     // MARK: - Subviews
 
     public private(set) lazy var titleView: AlbumsShevroneView = {
@@ -131,7 +132,8 @@ public final class GalleryViewController: UIViewController {
         }
 
         assetsCollectionView.configureFrame { maker in
-            maker.top(to: view.nui_safeArea.top).left().right().bottom()
+            let inset = self.assetsIsHidden ? self.view.frame.height : 0
+            maker.top(to: view.nui_safeArea.top, inset: inset).left().right().bottom()
         }
 
         albumsCollectionView.configureFrame { maker in
@@ -148,6 +150,7 @@ public final class GalleryViewController: UIViewController {
     // MARK: -
 
     func changeCollectionView(assetsIsHidden: Bool) {
+        self.assetsIsHidden = assetsIsHidden
         UIView.animate(withDuration: 0.3) {
             self.assetsCollectionView.frame.origin.y += assetsIsHidden ? self.view.frame.height : -self.view.frame.height
         }
