@@ -16,7 +16,7 @@ open class AssetCellAppearance {
     public init() {
     }
 
-    public func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    open func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
         guard let selectionView = cell.selectionView as? SelectionView else {
             return
         }
@@ -32,11 +32,11 @@ open class AssetCellAppearance {
         }
     }
 
-    public func layout(cell: MediaItemCell) {
+    open func layout(cell: MediaItemCell) {
         cell.bringSubviewToFront(cell.infoView)
     }
 
-    public func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    open func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
     }
 }
 
