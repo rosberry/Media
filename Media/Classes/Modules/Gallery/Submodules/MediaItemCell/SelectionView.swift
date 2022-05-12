@@ -5,7 +5,7 @@
 import UIKit
 import Framezilla
 
-final class SelectionView: UIView {
+public final class SelectionView: UIView {
 
     private(set) lazy var selectionInfoLabel: UILabel = .init()
 
@@ -22,7 +22,7 @@ final class SelectionView: UIView {
         setup()
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         selectionInfoLabel.configureFrame { (maker: Maker) in
             maker.right().top()

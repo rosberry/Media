@@ -24,7 +24,7 @@ final class GallerySectionsFactory {
         case photo
     }
 
-    private var albumCellAppearance: AlbumCellAppearance = .init()
+    private var albumCellAppearance: AlbumCellAppearance = DefaultAlbumCellAppearance()
     private var assetCellAppearance: AssetCellAppearance = .init()
     private var albumSectionAppearance: AlbumSectionAppearance = .init()
     private var assetSectionAppearance: AssetSectionAppearance = .init()
@@ -122,8 +122,6 @@ final class GallerySectionsFactory {
 
                 cell.update(with: cellItem.object, cellAppearance: self.assetCellAppearance)
             }
-
-            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
 
             cell.didRequestPreviewStartHandler = { [weak self] sender in
                 self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)

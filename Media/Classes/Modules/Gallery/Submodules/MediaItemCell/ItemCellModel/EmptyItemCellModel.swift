@@ -5,8 +5,8 @@
 import CollectionViewTools
 import MediaService
 
-class EmptyItemCellModel: DiffCompatible {
-    var diffIdentifier: String {
+public class EmptyItemCellModel: DiffCompatible {
+    public var diffIdentifier: String {
         UUID().uuidString
     }
 
@@ -26,7 +26,7 @@ class EmptyItemCellModel: DiffCompatible {
         self.isSelectionInfoLabelHidden = isSelectionInfoLabelHidden
     }
 
-    func makeDiffComparator() -> Bool {
+    public func makeDiffComparator() -> Bool {
         true
     }
 }

@@ -8,12 +8,6 @@ final class VideoMediaItemCell: MediaItemCell {
 
     override func update(with viewModel: EmptyItemCellModel, cellAppearance: AssetCellAppearance) {
         super.update(with: viewModel, cellAppearance: cellAppearance)
-        guard let duration = viewModel.mediaItem.duration else {
-            return
-        }
-
-        let minutes = Int(duration / 60)
-        let seconds = Int(duration) % 60
-        infoLabel.attributedText = String(format: "%01d:%02d", minutes, seconds).text(with: cellAppearance.infoTitleStyle).attributed
+        cellAppearance.updateInfoLabelForVideoItem(cell: self, viewModel: viewModel)
     }
 }

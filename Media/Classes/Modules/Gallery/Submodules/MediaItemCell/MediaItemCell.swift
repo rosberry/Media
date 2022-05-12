@@ -5,7 +5,7 @@
 import UIKit
 import Framezilla
 
-class MediaItemCell: UICollectionViewCell {
+public class MediaItemCell: UICollectionViewCell {
 
     private lazy var longPressGestureRecognizer: UILongPressGestureRecognizer = {
         let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(viewPressed))
@@ -18,38 +18,32 @@ class MediaItemCell: UICollectionViewCell {
 
     var modelIdentifier: String?
 
-    private var cellAppearance: AssetCellAppearance = .init()
+    private var cellAppearance: AssetCellAppearance = DefaultAssetCellAppearance()
 
     // MARK: - Subviews
 
-    private(set) lazy var imageView: UIImageView = {
+    public private(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
 
-    private(set) lazy var infoView: UIView = {
+    public private(set) lazy var infoView: UIView = {
         let view = UIView()
-        view.backgroundColor = cellAppearance.infoViewBackgroundColor
-        view.layer.cornerRadius = CGFloat(cellAppearance.infoViewCornerRadius)
         view.clipsToBounds = true
         return view
     }()
 
-    private(set) lazy var infoLabel: UILabel = .init()
+    public private(set) lazy var infoLabel: UILabel = .init()
 
-    private(set) lazy var typeImageView: UIImageView = {
+    public  private(set) lazy var typeImageView: UIImageView = {
         let view = UIImageView()
         view.tintColor = .white
         return view
     }()
 
-    private(set) lazy var selectionView: SelectionView = {
-        let view = SelectionView(textColor: .white)
-        view.alpha = 0.0
-        return view
-    }()
+    public private(set) var selectionView: UIView?
 
     // MARK: - Lifecycle
 
@@ -63,13 +57,9 @@ class MediaItemCell: UICollectionViewCell {
     }
 
     private func setup() {
-        contentView.backgroundColor = cellAppearance.contentViewColor
-        contentView.layer.cornerRadius = CGFloat(cellAppearance.contentViewCornerRadius)
         contentView.clipsToBounds = true
 
         contentView.addSubview(imageView)
-
-        contentView.addSubview(selectionView)
 
         contentView.addSubview(typeImageView)
 
@@ -80,11 +70,11 @@ class MediaItemCell: UICollectionViewCell {
         contentView.addGestureRecognizer(longPressGestureRecognizer)
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         imageView.frame = contentView.bounds
-        selectionView.frame = contentView.bounds
+        selectionView?.frame = contentView.bounds
 
         infoView.configureFrame { maker in
             maker.height(18).bottom(inset: 2)
@@ -104,6 +94,7 @@ class MediaItemCell: UICollectionViewCell {
             maker.right(inset: 2)
         }
         infoView.isHidden = (infoLabel.text == nil) && (typeImageView.image == nil)
+        self.cellAppearance.layout(cell: self)
     }
 
     // MARK: - Actions
@@ -121,17 +112,13 @@ class MediaItemCell: UICollectionViewCell {
 
     func update(with viewModel: EmptyItemCellModel, cellAppearance: AssetCellAppearance) {
         self.cellAppearance = cellAppearance
+        if selectionView == nil {
+            let selectionView = cellAppearance.selectionViewInitializer()
+            contentView.addSubview(selectionView)
+            self.selectionView = selectionView
+        }
         imageView.image = viewModel.mediaItem.thumbnail
-        if let selectionIndex = viewModel.selectionIndex {
-            selectionView.alpha = 1.0
-            selectionView.selectionInfoLabel.text = "\(selectionIndex + 1)"
-            imageView.layer.cornerRadius = selectionView.layer.cornerRadius
-        }
-        else {
-            selectionView.alpha = 0.0
-            selectionView.selectionInfoLabel.text = nil
-            imageView.layer.cornerRadius = 0.0
-        }
+        cellAppearance.update(cell: self, viewModel: viewModel)
         setNeedsLayout()
         layoutIfNeeded()
     }
