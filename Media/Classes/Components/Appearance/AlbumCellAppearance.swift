@@ -39,7 +39,6 @@ open class AlbumCellAppearance {
     }
 }
 
-
 open class DefaultAlbumCellAppearance: AlbumCellAppearance {
     public var imageCornerRadius: Double
     public var contentViewCornerRadius: Double

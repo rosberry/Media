@@ -10,9 +10,9 @@ public class EmptyItemCellModel: DiffCompatible {
         UUID().uuidString
     }
 
-    let mediaItem: MediaItem
-    var selectionIndex: Int?
-    let isSelectionInfoLabelHidden: Bool
+    public let mediaItem: MediaItem
+    public var selectionIndex: Int?
+    public let isSelectionInfoLabelHidden: Bool
 
     init(mediaItem: MediaItem, selectionIndex: Int?) {
         self.mediaItem = mediaItem

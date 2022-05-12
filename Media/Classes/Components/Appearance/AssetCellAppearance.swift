@@ -37,7 +37,6 @@ open class AssetCellAppearance {
     }
 
     public func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
-
     }
 }
 
@@ -66,14 +65,15 @@ open class DefaultAssetCellAppearance: AssetCellAppearance {
         self.highlightedColor = highlightedColor
     }
 
-    public override func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    override public func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+        super.update(cell: cell, viewModel: viewModel)
         cell.infoView.backgroundColor = infoViewBackgroundColor
         cell.infoView.layer.cornerRadius = CGFloat(infoViewCornerRadius)
         cell.contentView.backgroundColor = contentViewColor
         cell.contentView.layer.cornerRadius = CGFloat(contentViewCornerRadius)
     }
 
-    public override func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    override public func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
         guard let duration = viewModel.mediaItem.duration else {
             return
         }
