@@ -30,6 +30,7 @@ public final class MediaCoordinator {
 
     public var mediaAppearance: MediaAppearance
     public var filter: MediaItemsFilter
+    public var needCloseBySelect: Bool = true
 
     // MARK: - Modules
 
@@ -106,12 +107,16 @@ extension MediaCoordinator: GalleryModuleOutput {
     }
 
     public func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.selectMediaItemsEventTriggered(mediaItems)
     }
 
     public func photoEventTriggered(_ image: UIImage) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.photoEventTriggered(image)
     }
 }
