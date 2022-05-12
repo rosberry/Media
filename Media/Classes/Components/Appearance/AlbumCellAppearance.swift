@@ -14,10 +14,10 @@ open class AlbumCellAppearance {
         self.subtitleStyle = subtitleStyle
     }
 
-    func highlightChanged(cell: CollectionCell, value: Bool) {
+    open func highlightChanged(cell: CollectionCell, value: Bool) {
     }
 
-    func update(cell: CollectionCell, viewModel: CollectionCellModel) {
+    open func update(cell: CollectionCell, viewModel: CollectionCellModel) {
         cell.imageView.image = viewModel.thumbnail
         cell.titleLabel.attributedText = viewModel.title?.text(with: titleStyle).attributed
 
@@ -61,7 +61,7 @@ open class DefaultAlbumCellAppearance: AlbumCellAppearance {
         super.init(titleStyle: titleStyle, subtitleStyle: subtitleStyle)
     }
 
-    override func highlightChanged(cell: CollectionCell, value: Bool) {
+    open override func highlightChanged(cell: CollectionCell, value: Bool) {
         if value {
             cell.contentView.backgroundColor = self.selectedColor
         }
@@ -70,7 +70,7 @@ open class DefaultAlbumCellAppearance: AlbumCellAppearance {
         }
     }
 
-    override func update(cell: CollectionCell, viewModel: CollectionCellModel) {
+    open override func update(cell: CollectionCell, viewModel: CollectionCellModel) {
         cell.imageView.layer.cornerRadius = imageCornerRadius
         cell.contentView.backgroundColor = contentViewColor
         cell.contentView.layer.cornerRadius = contentViewCornerRadius
