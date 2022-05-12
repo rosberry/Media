@@ -29,6 +29,7 @@ public class MediaItemCell: UICollectionViewCell {
         return imageView
     }()
 
+
     public private(set) lazy var infoView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -44,6 +45,7 @@ public class MediaItemCell: UICollectionViewCell {
     }()
 
     public private(set) var selectionView: UIView?
+    public private(set) var infoViewBackgroundView: UIView?
 
     // MARK: - Lifecycle
 
@@ -79,6 +81,9 @@ public class MediaItemCell: UICollectionViewCell {
         infoView.configureFrame { maker in
             maker.height(18).bottom(inset: 2)
         }
+
+        infoViewBackgroundView?.frame = infoView.bounds
+
         typeImageView.configureFrame { maker in
             maker.left(inset: 4)
             maker.top(inset: 4)
@@ -116,6 +121,12 @@ public class MediaItemCell: UICollectionViewCell {
             let selectionView = cellAppearance.selectionViewInitializer()
             contentView.addSubview(selectionView)
             self.selectionView = selectionView
+        }
+        if infoViewBackgroundView == nil,
+           let infoViewBackgroundView = cellAppearance.infoViewBackgroundViewInitializer() {
+            infoView.addSubview(infoViewBackgroundView)
+            self.infoViewBackgroundView = infoViewBackgroundView
+            infoView.sendSubviewToBack(infoViewBackgroundView)
         }
         imageView.image = viewModel.mediaItem.thumbnail
         cellAppearance.update(cell: self, viewModel: viewModel)

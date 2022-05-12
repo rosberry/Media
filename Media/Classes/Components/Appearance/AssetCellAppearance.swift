@@ -13,6 +13,10 @@ open class AssetCellAppearance {
         return view
     }
 
+    public var infoViewBackgroundViewInitializer: () -> UIView? = {
+        return nil
+    }
+
     public init() {
     }
 
