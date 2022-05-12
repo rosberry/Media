@@ -5,7 +5,7 @@
 import Foundation
 import UIKit
 
-final class AlbumsShevroneView: UIView {
+public final class AlbumsShevroneView: UIView {
 
     enum ShevronePosition {
         case up
@@ -33,7 +33,7 @@ final class AlbumsShevroneView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         imageView.configureFrame { maker in
             maker.sizeToFit()
@@ -47,7 +47,7 @@ final class AlbumsShevroneView: UIView {
         }
     }
 
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
+    public override func sizeThatFits(_ size: CGSize) -> CGSize {
         let imageViewSize = imageView.sizeThatFits(size)
         let titleSize = titleLabel.sizeThatFits(size)
         let width = titleSize.width + innerInset.horizontalSum + betweenInset + imageViewSize.width

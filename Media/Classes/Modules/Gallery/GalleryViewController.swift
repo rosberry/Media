@@ -46,7 +46,7 @@ public final class GalleryViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var titleView: AlbumsShevroneView = {
+    public private(set) lazy var titleView: AlbumsShevroneView = {
         let view = AlbumsShevroneView(titleImage: mediaAppearance.navigation.titleImage)
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
@@ -76,7 +76,7 @@ public final class GalleryViewController: UIViewController {
         return label
     }()
 
-    private(set) lazy var assetsCollectionView: UICollectionView = {
+    public private(set) lazy var assetsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
 
@@ -87,7 +87,7 @@ public final class GalleryViewController: UIViewController {
         return collectionView
     }()
 
-    private(set) lazy var albumsCollectionView: UICollectionView = {
+    public private(set) lazy var albumsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)

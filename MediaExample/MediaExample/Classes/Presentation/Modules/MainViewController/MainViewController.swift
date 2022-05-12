@@ -71,6 +71,10 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController: MediaCoordinatorDelegate {
+    func albumsShownValueChanged(_ value: Bool) {
+
+    }
+
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
         guard let mediaItem = mediaItems.first else {
             return

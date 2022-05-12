@@ -10,6 +10,7 @@ import MediaService
 public protocol MediaCoordinatorDelegate: AnyObject {
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func albumsShownValueChanged(_ value: Bool)
 }
 
 public final class MediaCoordinator {
@@ -118,5 +119,13 @@ extension MediaCoordinator: GalleryModuleOutput {
             navigationViewController.popViewController(animated: true)
         }
         delegate?.photoEventTriggered(image)
+    }
+
+    public func albumsEventTriggered() {
+        delegate?.albumsShownValueChanged(true)
+    }
+
+    public func hideAlbumsEventTriggered() {
+        delegate?.albumsShownValueChanged(false)
     }
 }
