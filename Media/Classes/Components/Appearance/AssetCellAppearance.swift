@@ -5,7 +5,7 @@
 import UIKit
 import Texstyle
 
-public class AssetCellAppearance {
+open class AssetCellAppearance {
 
     public var selectionViewInitializer: () -> UIView = {
         let view = SelectionView(textColor: .white)
@@ -37,11 +37,11 @@ public class AssetCellAppearance {
     }
 
     public func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
-        
+
     }
 }
 
-public class DefaultAssetCellAppearance: AssetCellAppearance {
+open class DefaultAssetCellAppearance: AssetCellAppearance {
     public var contentViewCornerRadius: Double
     public var contentViewColor: UIColor
     public var infoViewCornerRadius: Double

@@ -5,7 +5,7 @@
 import UIKit
 import Texstyle
 
-public class AlbumCellAppearance {
+open class AlbumCellAppearance {
     public var titleStyle: TextStyle
     public var subtitleStyle: TextStyle
 
@@ -40,7 +40,7 @@ public class AlbumCellAppearance {
 }
 
 
-public class DefaultAlbumCellAppearance: AlbumCellAppearance {
+open class DefaultAlbumCellAppearance: AlbumCellAppearance {
     public var imageCornerRadius: Double
     public var contentViewCornerRadius: Double
     public var contentViewColor: UIColor
