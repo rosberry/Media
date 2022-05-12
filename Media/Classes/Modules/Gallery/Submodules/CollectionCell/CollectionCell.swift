@@ -67,6 +67,8 @@ public class CollectionCell: UICollectionViewCell {
             maker.heightToFit()
         }
 
+        cellAppearance.layout(cell: self)
+
         UIView.setAnimationsEnabled(true)
     }
 

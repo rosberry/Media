@@ -37,6 +37,10 @@ open class AlbumCellAppearance {
         }
         cell.itemCountLabel.attributedText = itemCountLabelString?.text(with: subtitleStyle).attributed
     }
+
+    open func layout(cell: CollectionCell) {
+
+    }
 }
 
 open class DefaultAlbumCellAppearance: AlbumCellAppearance {
@@ -74,5 +78,9 @@ open class DefaultAlbumCellAppearance: AlbumCellAppearance {
         cell.imageView.layer.cornerRadius = imageCornerRadius
         cell.contentView.backgroundColor = contentViewColor
         cell.contentView.layer.cornerRadius = contentViewCornerRadius
+    }
+
+    open override func layout(cell: CollectionCell) {
+        
     }
 }
