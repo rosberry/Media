@@ -51,8 +51,8 @@ final class GallerySectionsFactory {
         return complexFactory
     }()
 
-    private(set) lazy var placeholderCellItemsFactory: CellItemsFactory<EmptyItemCellModel, UICollectionViewCell> = {
-        let factory = CellItemsFactory<EmptyItemCellModel, UICollectionViewCell>()
+    private(set) lazy var placeholderCellItemsFactory: CellItemsFactory<EmptyItemCellModel, PlaceholderCell> = {
+        let factory = CellItemsFactory<EmptyItemCellModel, PlaceholderCell>()
         factory.cellItemConfigurationHandler = { [weak self] cellItem in
             cellItem.itemDidSelectHandler = { _ in
                 self?.output?.didSelect(cellItem.object.mediaItem)
@@ -149,8 +149,7 @@ final class GallerySectionsFactory {
 
     private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
         return (0..<count).map { _ in
-            let cellItem = PlaceholderCellItem()
-            cellItem.numberOfItemsInRow = self.assetSectionAppearance.numberOfItemsInRow
+            let cellItem = PlaceholderCellItem(appearance: assetCellAppearance, sectionAppearance: assetSectionAppearance)
             return cellItem
         }
     }

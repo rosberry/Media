@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01799F10282E098000FF2EE0 /* PlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01799F0F282E098000FF2EE0 /* PlaceholderCell.swift */; };
 		0642778D2421E0B30036D878 /* MediaCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0642778C2421E0B30036D878 /* MediaCoordinator.swift */; };
 		06A629F9242113130099B130 /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06A629F8242113130099B130 /* SelectionView.swift */; };
 		1373B00122DC235400F28EF0 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 1373AFFF22DC235400F28EF0 /* Media.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,6 +65,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01799F0F282E098000FF2EE0 /* PlaceholderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderCell.swift; sourceTree = "<group>"; };
 		0642778C2421E0B30036D878 /* MediaCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCoordinator.swift; sourceTree = "<group>"; };
 		06A629F8242113130099B130 /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		1373AFFC22DC235400F28EF0 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -346,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				1373B05522DC237600F28EF0 /* PlaceholderCellItem.swift */,
+				01799F0F282E098000FF2EE0 /* PlaceholderCell.swift */,
 			);
 			path = PlaceholderCell;
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 				1373B0A422DC237700F28EF0 /* GalleryModule.swift in Sources */,
 				1373B0A722DC237700F28EF0 /* MainServiceFactory.swift in Sources */,
 				1373B09D22DC237700F28EF0 /* PhotoMediaItemCell.swift in Sources */,
+				01799F10282E098000FF2EE0 /* PlaceholderCell.swift in Sources */,
 				A9FF44142744BD9E001D7559 /* AssetSectionAppearance.swift in Sources */,
 				1373B07F22DC237700F28EF0 /* CATransaction+Block.swift in Sources */,
 				1373B08222DC237700F28EF0 /* UIColor+Tools.swift in Sources */,

@@ -38,6 +38,14 @@ open class AssetCellAppearance {
         }
     }
 
+    open func update(cell: PlaceholderCell) {
+        cell.contentView.backgroundColor = .main3A
+    }
+
+    open func layout(cell: PlaceholderCell) {
+
+    }
+
     open func layout(cell: MediaItemCell) {
         cell.bringSubviewToFront(cell.infoView)
     }
