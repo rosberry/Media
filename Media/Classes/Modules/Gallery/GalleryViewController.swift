@@ -248,7 +248,7 @@ public final class GalleryViewController: UIViewController {
     func updateTitleView(with title: String? = nil,
                          shevronePosition: AlbumsShevroneView.ShevronePosition) {
         if let title = title {
-            titleView.titleLabel.attributedText = title.text(with: navigationAppearance.titleStyle).attributed
+            titleView.titleLabel.attributedText = navigationAppearance.titleFormatter(title).text(with: navigationAppearance.titleStyle).attributed
             titleView.sizeToFit()
             titleView.setNeedsLayout()
             titleView.layoutIfNeeded()
