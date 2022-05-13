@@ -16,7 +16,8 @@ public final class AlbumsShevroneView: UIView {
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
     private var state: ShevronePosition = .down
-    private let betweenInset: CGFloat = 3
+    public var betweenInset: CGFloat = 3
+    public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
 
     private(set) lazy var titleLabel: UILabel = .init()
@@ -38,7 +39,7 @@ public final class AlbumsShevroneView: UIView {
         imageView.configureFrame { maker in
             maker.sizeToFit()
                  .right(inset: innerInset.right)
-                 .centerY(to: titleLabel.nui_centerY)
+                 .centerY(to: titleLabel.nui_centerY, offset: imageOffset)
         }
 
         titleLabel.configureFrame { maker in
