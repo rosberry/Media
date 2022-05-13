@@ -247,6 +247,7 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
         shevronePosition = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
+        output?.hideAlbumsEventTriggered()
     }
 
     func didSelect(_ item: MediaItem) {
