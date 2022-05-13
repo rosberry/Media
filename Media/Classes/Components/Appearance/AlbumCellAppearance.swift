@@ -9,6 +9,9 @@ open class AlbumCellAppearance {
     public var titleStyle: TextStyle
     public var subtitleStyle: TextStyle
 
+    public var titleFormatter: (String?) -> String? = { $0 }
+    public var subtitleFormatter: (String?) -> String? = { $0 }
+
     init(titleStyle: TextStyle, subtitleStyle: TextStyle) {
         self.titleStyle = titleStyle
         self.subtitleStyle = subtitleStyle
@@ -19,7 +22,7 @@ open class AlbumCellAppearance {
 
     open func update(cell: CollectionCell, viewModel: CollectionCellModel) {
         cell.imageView.image = viewModel.thumbnail
-        cell.titleLabel.attributedText = viewModel.title?.text(with: titleStyle).attributed
+        cell.titleLabel.attributedText = titleFormatter(viewModel.title)?.text(with: titleStyle).attributed
 
         var itemCountLabelString: String?
         switch viewModel.estimatedMediaItemsCount {
@@ -35,7 +38,7 @@ open class AlbumCellAppearance {
            case .some(let count):
               itemCountLabelString = "\(count)"
         }
-        cell.itemCountLabel.attributedText = itemCountLabelString?.text(with: subtitleStyle).attributed
+        cell.itemCountLabel.attributedText = subtitleFormatter(itemCountLabelString)?.text(with: subtitleStyle).attributed
     }
 
     open func layout(cell: CollectionCell) {
@@ -65,7 +68,7 @@ open class DefaultAlbumCellAppearance: AlbumCellAppearance {
         super.init(titleStyle: titleStyle, subtitleStyle: subtitleStyle)
     }
 
-    open override func highlightChanged(cell: CollectionCell, value: Bool) {
+    override open func highlightChanged(cell: CollectionCell, value: Bool) {
         if value {
             cell.contentView.backgroundColor = self.selectedColor
         }
@@ -74,13 +77,14 @@ open class DefaultAlbumCellAppearance: AlbumCellAppearance {
         }
     }
 
-    open override func update(cell: CollectionCell, viewModel: CollectionCellModel) {
+    override open func update(cell: CollectionCell, viewModel: CollectionCellModel) {
+        super.update(cell: cell, viewModel: viewModel)
         cell.imageView.layer.cornerRadius = imageCornerRadius
         cell.contentView.backgroundColor = contentViewColor
         cell.contentView.layer.cornerRadius = contentViewCornerRadius
     }
 
-    open override func layout(cell: CollectionCell) {
-        
+    override open func layout(cell: CollectionCell) {
+
     }
 }

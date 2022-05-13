@@ -75,24 +75,6 @@ public class CollectionCell: UICollectionViewCell {
     func update(with viewModel: CollectionCellModel, cellAppearance: AlbumCellAppearance) {
         self.cellAppearance = cellAppearance
         cellAppearance.update(cell: self, viewModel: viewModel)
-        imageView.image = viewModel.thumbnail
-        titleLabel.attributedText = viewModel.title?.text(with: cellAppearance.titleStyle).attributed
-
-        var itemCountLabelString: String?
-        switch viewModel.estimatedMediaItemsCount {
-           case .none:
-              itemCountLabelString = L10n.MediaLibrary.unknown
-           case .max?:
-              if viewModel.isFavorite {
-                  itemCountLabelString = L10n.MediaLibrary.favoriteItems
-              }
-              else {
-                  itemCountLabelString = L10n.MediaLibrary.allItems
-              }
-           case .some(let count):
-              itemCountLabelString = "\(count)"
-        }
-        itemCountLabel.attributedText = itemCountLabelString?.text(with: cellAppearance.subtitleStyle).attributed
         setNeedsLayout()
         layoutIfNeeded()
     }

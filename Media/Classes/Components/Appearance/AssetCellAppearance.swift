@@ -13,6 +13,8 @@ open class AssetCellAppearance {
         return view
     }
 
+    public var durationFormatter: (Int, Int) -> String = { String(format: "%01d:%02d", $0, $1) }
+
     public var infoViewBackgroundViewInitializer: () -> UIView? = {
         return nil
     }
@@ -69,7 +71,7 @@ open class DefaultAssetCellAppearance: AssetCellAppearance {
         self.highlightedColor = highlightedColor
     }
 
-    open override func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    override open func update(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
         super.update(cell: cell, viewModel: viewModel)
         cell.infoView.backgroundColor = infoViewBackgroundColor
         cell.infoView.layer.cornerRadius = CGFloat(infoViewCornerRadius)
@@ -77,13 +79,13 @@ open class DefaultAssetCellAppearance: AssetCellAppearance {
         cell.contentView.layer.cornerRadius = CGFloat(contentViewCornerRadius)
     }
 
-    open override func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
+    override open func updateInfoLabelForVideoItem(cell: MediaItemCell, viewModel: EmptyItemCellModel) {
         guard let duration = viewModel.mediaItem.duration else {
             return
         }
 
         let minutes = Int(duration / 60)
         let seconds = Int(duration) % 60
-        cell.infoLabel.attributedText = String(format: "%01d:%02d", minutes, seconds).text(with: infoTitleStyle).attributed
+        cell.infoLabel.attributedText = durationFormatter(minutes, seconds).text(with: infoTitleStyle).attributed
     }
 }
