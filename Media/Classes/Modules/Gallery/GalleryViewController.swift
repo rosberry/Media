@@ -268,14 +268,18 @@ public final class GalleryViewController: UIViewController {
         navigationController?.view.backgroundColor = .white
 
         navigationItem.titleView = titleView
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: navigationAppearance.cameraImage?.withRenderingMode(.alwaysOriginal),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(cameraButtonPressed))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: navigationAppearance.backImage?.withRenderingMode(.alwaysOriginal),
-                                                           style: .plain,
-                                                           target: self,
-                                                           action: #selector(closeButtonPressed))
+        if navigationAppearance.shouldShowCameraButton {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: navigationAppearance.cameraImage?.withRenderingMode(.alwaysOriginal),
+                                                                style: .plain,
+                                                                target: self,
+                                                                action: #selector(cameraButtonPressed))
+        }
+        if navigationAppearance.shouldShowBackButton {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: navigationAppearance.backImage?.withRenderingMode(.alwaysOriginal),
+                                                               style: .plain,
+                                                               target: self,
+                                                               action: #selector(closeButtonPressed))
+        }
     }
 
     private func stopScrolling(_ state: AlbumsShevroneView.ShevronePosition) {

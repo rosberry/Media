@@ -10,6 +10,8 @@ public struct NavigationAppearance {
     public var titleImage: UIImage?
     public var backImage: UIImage?
     public var cameraImage: UIImage?
+    public var shouldShowBackButton: Bool = true
+    public var shouldShowCameraButton: Bool = true
 
     public init(titleStyle: TextStyle = .title4A,
                 titleImage: UIImage? = nil,
