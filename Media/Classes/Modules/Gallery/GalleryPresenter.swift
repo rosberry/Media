@@ -151,6 +151,7 @@ public final class GalleryPresenter {
             if self?.collection == nil {
                 self?.collection = collections.first
             }
+            self?.view?.update(with: collections)
         }
     }
 
