@@ -145,9 +145,6 @@ public final class GalleryPresenter {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
         collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
             self?.collections = collections
-            if self?.collection == nil {
-                self?.collection = collections.first
-            }
             self?.view?.update(with: collections)
         }
     }
