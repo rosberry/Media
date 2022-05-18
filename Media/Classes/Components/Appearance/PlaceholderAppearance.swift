@@ -92,10 +92,15 @@ public class DefaultPermissionsAppearance: PlaceholderAppearance {
 }
 
 public class DefaultPlaceholderAppearance: PlaceholderAppearance {
-    public init() {
+
+    public init(subtitle: NSAttributedString?) {
         super.init(title: nil,
-                   subtitle: Text(value: L10n.MediaLibrary.Placeholder.subtitle, style: .body1A).attributed,
-                   buttonTitle: Text(value: L10n.MediaLibrary.Placeholder.subtitle, style: .title4B).attributed)
+                   subtitle: subtitle,
+                   buttonTitle: nil)
+    }
+
+    public convenience init() {
+        self.init(subtitle: Text(value: L10n.MediaLibrary.Placeholder.subtitle, style: .body1A).attributed)
     }
 
     override open func configure(placeholderView: PlaceholderView) {
