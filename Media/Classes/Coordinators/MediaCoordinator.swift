@@ -51,8 +51,8 @@ public final class MediaCoordinator {
         setupPermissionsCollector()
     }
 
-    public func start(bundleName: String) {
-        let module = makeGalleryModule(bundleName: bundleName)
+    public func start() {
+        let module = makeGalleryModule()
         galleryModule = module
         navigationViewController.pushViewController(module.viewController, animated: true)
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
@@ -66,9 +66,8 @@ public final class MediaCoordinator {
         }
     }
 
-    private func makeGalleryModule(bundleName: String) -> GalleryModule {
-        let module = GalleryModule(bundleName: bundleName,
-                                   filter: filter,
+    private func makeGalleryModule() -> GalleryModule {
+        let module = GalleryModule(filter: filter,
                                    maxItemsCount: maxItemsCount,
                                    mediaAppearance: mediaAppearance)
         module.output = self

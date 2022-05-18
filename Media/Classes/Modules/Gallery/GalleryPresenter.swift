@@ -70,18 +70,15 @@ public final class GalleryPresenter {
 
     private let maxItemsCount: Int
     private var shevronePosition: ShevronePosition
-    public var bundleName: String
     public var mediaAppearance: MediaAppearance
 
     // MARK: - Lifecycle
 
-    init(bundleName: String,
-         filter: MediaItemsFilter,
+    init(filter: MediaItemsFilter,
          maxItemsCount: Int,
          dependencies: Dependencies,
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
-        self.bundleName = bundleName
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.filter = filter

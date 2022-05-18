@@ -65,7 +65,7 @@ final class MainViewController: UIViewController {
         }
 
         coordinator = .init(navigationViewController: navigationController)
-        coordinator?.start(bundleName: "Media Example")
+        coordinator?.start()
         coordinator?.delegate = self
     }
 }

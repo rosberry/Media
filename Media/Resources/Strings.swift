@@ -53,6 +53,10 @@ internal enum L10n {
       /// Allow Access to Storage
       internal static let title = L10n.tr("Localizable", "mediaLibrary.permissions.title")
     }
+    internal enum Placeholder {
+      /// No media available
+      internal static let subtitle = L10n.tr("Localizable", "mediaLibrary.placeholder.subtitle")
+    }
   }
 
   internal enum Permissions {
@@ -74,12 +78,6 @@ extension L10n {
 
 // swiftlint:disable convenience_type
 private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle(for: BundleToken.self)
-    #endif
-  }()
+  static let bundle = Bundle(for: BundleToken.self)
 }
 // swiftlint:enable convenience_type

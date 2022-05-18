@@ -56,25 +56,16 @@ public final class GalleryViewController: UIViewController {
         return view
     }()
 
-    private lazy var placeholderView: UIView = {
-        let view = UIView()
+    private lazy var placeholderView: PlaceholderView = {
+        let view = PlaceholderView(placeholderAppearance: mediaAppearance.placeholder)
         view.isHidden = true
         return view
     }()
 
-    private lazy var permissionsPlaceholderView: PermissionsPlaceholderView = {
-        let view = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
-        view.title = L10n.MediaLibrary.Permissions.title
-        view.subtitle = L10n.MediaLibrary.Permissions.subtitle(presenter.bundleName)
+    private lazy var permissionsPlaceholderView: PlaceholderView = {
+        let view = PlaceholderView(placeholderAppearance: mediaAppearance.permission)
         view.isHidden = true
         return view
-    }()
-
-    private lazy var placeholderLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.black
-        label.text = L10n.MediaLibrary.empty
-        return label
     }()
 
     public private(set) lazy var assetsCollectionView: UICollectionView = {
@@ -114,7 +105,6 @@ public final class GalleryViewController: UIViewController {
         view.backgroundColor = mediaAppearance.gallery.backgroundColor
         view.addSubview(albumsCollectionView)
         view.addSubview(assetsCollectionView)
-        placeholderView.addSubview(placeholderLabel)
         view.addSubview(placeholderView)
         view.addSubview(permissionsPlaceholderView)
 
@@ -126,11 +116,8 @@ public final class GalleryViewController: UIViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        permissionsPlaceholderView.configureFrame { maker in
-            maker.top()
-            maker.left().right()
-            maker.bottom(inset: view.safeAreaInsets.bottom)
-        }
+        permissionsPlaceholderView.frame = view.bounds
+        placeholderView.frame = view.bounds
 
         assetsCollectionView.configureFrame { maker in
             let inset = self.assetsIsHidden ? self.view.frame.height : 0
@@ -139,12 +126,6 @@ public final class GalleryViewController: UIViewController {
 
         albumsCollectionView.configureFrame { maker in
             maker.top(to: view.nui_safeArea.top).left().right().bottom()
-        }
-
-        placeholderLabel.configureFrame { maker in
-            maker.left().right()
-            maker.centerY()
-            maker.heightToFit()
         }
     }
 
@@ -171,9 +152,7 @@ public final class GalleryViewController: UIViewController {
         camera.zoomRangeLimits = 1.0...5.0
         let cameraViewController = CameraViewController(cameraService: camera)
 
-        let placeholderPermissionView = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
-        placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
-        placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
+        let placeholderPermissionView = PlaceholderView(placeholderAppearance: mediaAppearance.permission)
 
         cameraViewController.permissionsPlaceholderView = placeholderPermissionView
         cameraViewController.modalPresentationStyle = .overCurrentContext
@@ -199,7 +178,10 @@ public final class GalleryViewController: UIViewController {
             assetsCollectionView.isUserInteractionEnabled = true
             self.assetsCollectionView.reloadData()
         }
-        placeholderView.isHidden = sectionItemsProvider.sectionItemsNumberHandler() != 0
+        let estimatedCellItemsCount = (0..<sectionItemsProvider.sectionItemsNumberHandler()).reduce(0) { res, index in
+            res + sectionItemsProvider.cellItemsNumberHandler(index)
+        }
+        placeholderView.isHidden = estimatedCellItemsCount > 0
     }
 
     public func select(items: [MediaItem]) {
