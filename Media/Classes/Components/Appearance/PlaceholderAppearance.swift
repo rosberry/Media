@@ -91,7 +91,7 @@ public class DefaultPermissionsAppearance: PlaceholderAppearance {
     }
 }
 
-public class DefaultPlaceholderAppearance: PlaceholderAppearance {
+open class DefaultPlaceholderAppearance: PlaceholderAppearance {
 
     public init(subtitle: NSAttributedString?) {
         super.init(title: nil,
