@@ -62,7 +62,7 @@ open class PlaceholderAppearance {
     }
 }
 
-public class DefaultPermissionsAppearance: PlaceholderAppearance {
+open class DefaultPermissionsAppearance: PlaceholderAppearance {
     public convenience init(bundleName: String) {
         self.init(title: Text(value: L10n.MediaLibrary.Permissions.title, style: .title2A).attributed,
                   subtitle: Text(value: L10n.MediaLibrary.Permissions.subtitle(bundleName), style: .body1A).attributed,
