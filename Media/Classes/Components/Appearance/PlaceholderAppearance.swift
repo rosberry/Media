@@ -6,7 +6,7 @@ import Texstyle
 import Framezilla
 import UIKit
 
-public class PlaceholderAppearance {
+open class PlaceholderAppearance {
     public var title: NSAttributedString?
     public var subtitle: NSAttributedString?
     public var buttonTitle: NSAttributedString?
@@ -31,7 +31,7 @@ public class PlaceholderAppearance {
         self.backgroundColor = backgroundColor
     }
 
-    public func configure(placeholderView: PlaceholderView) {
+    open func configure(placeholderView: PlaceholderView) {
         placeholderView.button.setAttributedTitle(buttonTitle, for: .normal)
         placeholderView.button.layer.cornerRadius = buttonCornerRadius
         placeholderView.button.backgroundColor = buttonBackgroundColor
@@ -40,7 +40,7 @@ public class PlaceholderAppearance {
         placeholderView.subtitleLabel.attributedText = subtitle
     }
 
-    public func layout(placeholderView: PlaceholderView) {
+    open func layout(placeholderView: PlaceholderView) {
         placeholderView.subtitleLabel.configureFrame { maker in
             maker.left(inset: 16).right(inset: 16)
             maker.centerY()
@@ -98,7 +98,7 @@ public class DefaultPlaceholderAppearance: PlaceholderAppearance {
                    buttonTitle: Text(value: L10n.MediaLibrary.Placeholder.subtitle, style: .title4B).attributed)
     }
 
-    override public func configure(placeholderView: PlaceholderView) {
+    override open func configure(placeholderView: PlaceholderView) {
         super.configure(placeholderView: placeholderView)
         placeholderView.button.isHidden = true
     }
