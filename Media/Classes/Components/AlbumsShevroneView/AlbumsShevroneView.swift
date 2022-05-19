@@ -36,6 +36,11 @@ public final class AlbumsShevroneView: UIView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
+
+        titleLabel.configureFrame { maker in
+            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom).left(inset: innerInset.left)
+        }
+
         imageView.configureFrame { maker in
             maker.sizeToFit()
                  .right(inset: innerInset.right)
@@ -43,8 +48,7 @@ public final class AlbumsShevroneView: UIView {
         }
 
         titleLabel.configureFrame { maker in
-            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom).left(inset: innerInset.left)
-                 .right(to: imageView.nui_left, inset: betweenInset)
+            maker.right(to: imageView.nui_left, inset: betweenInset)
         }
     }
 
