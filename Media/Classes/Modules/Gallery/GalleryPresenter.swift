@@ -117,6 +117,7 @@ public final class GalleryPresenter {
             output?.albumsEventTriggered()
         }
         view?.updateTitleView(with: shevronePosition)
+        view?.hidePlaceholdersIfNeeded()
     }
 
     func closeEventTriggered() {

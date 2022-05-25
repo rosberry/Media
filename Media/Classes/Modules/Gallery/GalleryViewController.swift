@@ -51,8 +51,6 @@ public final class GalleryViewController: UIViewController {
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
-            self?.permissionsPlaceholderView.isHidden = true
-            self?.placeholderView.isHidden = true
         }
         view.imageView.isHidden = true
         return view
@@ -247,6 +245,11 @@ public final class GalleryViewController: UIViewController {
 
     func updateTitleView(with shevronePosition: AlbumsShevroneView.ShevronePosition) {
         titleView.update(shevronePosition: shevronePosition)
+    }
+
+    func hidePlaceholdersIfNeeded() {
+        permissionsPlaceholderView.isHidden = true
+        placeholderView.isHidden = true
     }
 
     private func setupNavigationBar() {
