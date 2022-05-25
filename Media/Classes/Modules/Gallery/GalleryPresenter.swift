@@ -89,6 +89,7 @@ public final class GalleryPresenter {
         setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
+        setupForegroundObserver()
     }
 
     func scrollEventTriggered(direction: FocusDirection) {
@@ -233,6 +234,19 @@ public final class GalleryPresenter {
             }
         }
     }
+
+    private func setupForegroundObserver() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appEnterForeground),
+                                       name: UIApplication.willEnterForegroundNotification,
+                                       object: nil)
+    }
+
+    @objc private func appEnterForeground() {
+        setupCollections()
+    }
+
 }
 
 // MARK: - MediaItemSectionsFactoryOutput
