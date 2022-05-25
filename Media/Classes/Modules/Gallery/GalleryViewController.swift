@@ -51,6 +51,8 @@ public final class GalleryViewController: UIViewController {
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
+            self?.permissionsPlaceholderView.isHidden = true
+            self?.placeholderView.isHidden = true
         }
         view.imageView.isHidden = true
         return view
