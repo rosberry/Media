@@ -111,6 +111,7 @@ public final class GalleryViewController: UIViewController {
         showMediaItemsPlaceholder()
         setupNavigationBar()
         presenter.viewReadyEventTriggered()
+        setupNotificationCenter()
     }
 
     override public func viewDidLayoutSubviews() {
@@ -268,6 +269,14 @@ public final class GalleryViewController: UIViewController {
         }
     }
 
+    private func setupNotificationCenter() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appMovedFromBackground),
+                                       name: UIApplication.willEnterForegroundNotification,
+                                       object: nil)
+    }
+
     private func stopScrolling(_ state: AlbumsShevroneView.ShevronePosition) {
         state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
@@ -284,6 +293,10 @@ public final class GalleryViewController: UIViewController {
 
     @objc private func closeButtonPressed() {
         presenter.closeEventTriggered()
+    }
+
+    @objc private func appMovedFromBackground() {
+        presenter.viewReadyEventTriggered()
     }
 }
 
