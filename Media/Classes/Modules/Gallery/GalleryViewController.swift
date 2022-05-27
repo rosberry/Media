@@ -238,7 +238,9 @@ public final class GalleryViewController: UIViewController {
             titleView.layoutIfNeeded()
         }
         titleView.imageView.isHidden = false
-        titleView.isHidden = false
+        if shevronePosition == .down {
+            titleView.isHidden = false
+        }
 
         titleView.update(shevronePosition: shevronePosition)
     }
