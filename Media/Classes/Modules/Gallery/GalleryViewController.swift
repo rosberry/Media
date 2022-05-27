@@ -238,15 +238,14 @@ public final class GalleryViewController: UIViewController {
             titleView.layoutIfNeeded()
         }
         titleView.imageView.isHidden = false
-        if shevronePosition == .down {
-            titleView.isHidden = false
-        }
 
-        titleView.update(shevronePosition: shevronePosition)
+        titleView.update(shevronePosition: shevronePosition,
+                         albumsNavigationTitleIsHidden: navigationAppearance.albumsNavigationTitleIsHidden)
     }
 
     func updateTitleView(with shevronePosition: AlbumsShevroneView.ShevronePosition) {
-        titleView.update(shevronePosition: shevronePosition)
+        titleView.update(shevronePosition: shevronePosition,
+                         albumsNavigationTitleIsHidden: navigationAppearance.albumsNavigationTitleIsHidden)
     }
 
     func hidePlaceholdersIfNeeded() {
