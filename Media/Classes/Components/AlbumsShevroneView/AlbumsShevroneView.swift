@@ -74,7 +74,7 @@ public final class AlbumsShevroneView: UIView {
         addGestureRecognizer(tapGesture)
     }
 
-    func update(shevronePosition: ShevronePosition, albumsNavigationTitleIsHidden: Bool) {
+    func update(shevronePosition: ShevronePosition) {
         guard state != shevronePosition else {
             return
         }
@@ -82,10 +82,8 @@ public final class AlbumsShevroneView: UIView {
         switch shevronePosition {
         case .up:
             transform = .init(rotationAngle: CGFloat.pi)
-            isHidden = albumsNavigationTitleIsHidden
         case .down:
             transform = .identity
-            isHidden = false
         }
         state = shevronePosition
         UIView.animate(withDuration: 0.1) {
