@@ -95,5 +95,7 @@ open class DefaultAssetCellAppearance: AssetCellAppearance {
         let minutes = Int(duration / 60)
         let seconds = Int(duration) % 60
         cell.infoLabel.attributedText = durationFormatter(minutes, seconds).text(with: infoTitleStyle).attributed
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
     }
 }
