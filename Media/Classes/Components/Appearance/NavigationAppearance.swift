@@ -4,6 +4,7 @@
 
 import UIKit.UIImage
 import Texstyle
+import UIKit
 
 public struct NavigationAppearance {
     public var titleStyle: TextStyle
@@ -12,6 +13,7 @@ public struct NavigationAppearance {
     public var cameraImage: UIImage?
     public var shouldShowBackButton: Bool = true
     public var shouldShowCameraButton: Bool = true
+    public var titleViewUpdateHandler: (AlbumsShevroneView) -> Void = { _ in }
     public var titleFormatter: (String) -> String = { $0 }
 
     public init(titleStyle: TextStyle = .title4A,

@@ -7,7 +7,7 @@ import UIKit
 
 public final class AlbumsShevroneView: UIView {
 
-    enum ShevronePosition {
+    public enum ShevronePosition {
         case up
         case down
     }
@@ -15,7 +15,7 @@ public final class AlbumsShevroneView: UIView {
     var tapEventHandler: ((ShevronePosition) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    private var state: ShevronePosition = .down
+    public private(set) var state: ShevronePosition = .down
     public var betweenInset: CGFloat = 3
     public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
@@ -80,10 +80,10 @@ public final class AlbumsShevroneView: UIView {
         }
         let transform: CGAffineTransform
         switch shevronePosition {
-           case .up:
-              transform = .init(rotationAngle: CGFloat.pi)
-           case .down:
-              transform = .identity
+        case .up:
+            transform = .init(rotationAngle: CGFloat.pi)
+        case .down:
+            transform = .identity
         }
         state = shevronePosition
         UIView.animate(withDuration: 0.1) {
