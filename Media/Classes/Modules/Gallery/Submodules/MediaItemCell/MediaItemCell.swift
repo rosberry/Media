@@ -132,7 +132,10 @@ class MediaItemCell: UICollectionViewCell {
             selectionView.selectionInfoLabel.text = nil
             imageView.layer.cornerRadius = 0.0
         }
-        setNeedsLayout()
-        layoutIfNeeded()
+        
+        DispatchQueue.main.async {
+            self.setNeedsLayout()
+            self.layoutIfNeeded()
+        }
     }
 }
