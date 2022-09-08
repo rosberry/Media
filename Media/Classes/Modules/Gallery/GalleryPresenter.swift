@@ -93,9 +93,20 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
-        setupMediaItemsCollector()
-        setupMediaLibraryUpdateEventCollector()
-        setupCollections()
+        if #available(iOS 14, *) {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
+                switch status {
+                    case .limited:
+                        self?.view?.showManagerAccessView()
+                    default:
+                        break
+                }
+
+                self?.setupMediaItemsCollector(isHideTitle: status == .limited)
+                self?.setupMediaLibraryUpdateEventCollector()
+                self?.setupCollections()
+            }
+        }
     }
 
     func scrollEventTriggered(direction: FocusDirection) {

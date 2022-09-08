@@ -28,6 +28,10 @@ public final class GalleryViewController: UIViewController {
         presenter.mediaAppearance.navigation
     }
 
+    private var managerAppearance: ManagerAppearance {
+        presenter.mediaAppearance.managerAccess
+    }
+
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(numberOfItemsInRow: presenter.numberOfItemsInRow,
                                              dependencies: Services,
@@ -46,8 +50,18 @@ public final class GalleryViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var titleView: AlbumsShevroneView = {
-        let view = AlbumsShevroneView(titleImage: mediaAppearance.navigation.titleImage)
+    private lazy var managerAccessView: ManagerAccessView = {
+        let view = ManagerAccessView(managerAppearance: managerAppearance)
+        view.isHidden = true
+        view.manageEventHandler = { [weak self] in
+            self?.presenter.showActionSheetEventTriggered()
+        }
+        return view
+    }()
+
+    private lazy var titleView: TitleAlbumView = {
+        let view = TitleAlbumView(titleImage: mediaAppearance.navigation.titleImage)
+        view.isHidden = true
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
@@ -109,8 +123,9 @@ public final class GalleryViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = mediaAppearance.gallery.backgroundColor
+
+        view.addSubview(managerAccessView)
         view.addSubview(albumsCollectionView)
         view.addSubview(assetsCollectionView)
         placeholderView.addSubview(placeholderLabel)
@@ -131,12 +146,29 @@ public final class GalleryViewController: UIViewController {
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
+        managerAccessView.configureFrame { maker in
+            maker.top(to: view.nui_safeArea.top, inset: 16).left(inset: 8).right(inset: 8)
+                .sizeThatFits(size: view.bounds.size)
+        }
+
         assetsCollectionView.configureFrame { maker in
-            maker.top(to: view.nui_safeArea.top).left().right().bottom()
+            maker.left().right().bottom()
+            if managerAccessView.isHidden {
+                maker.top(to: view.nui_safeArea.top)
+            }
+            else {
+                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+            }
         }
 
         albumsCollectionView.configureFrame { maker in
-            maker.top(to: view.nui_safeArea.top).left().right().bottom()
+            maker.left().right().bottom()
+            if managerAccessView.isHidden {
+                maker.top(to: view.nui_safeArea.top)
+            }
+            else {
+                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+            }
         }
 
         placeholderLabel.configureFrame { maker in
@@ -266,8 +298,14 @@ public final class GalleryViewController: UIViewController {
         titleView.update(statePosition: statePosition)
     }
 
-    func updateTitleView(with shevronePosition: AlbumsShevroneView.ShevronePosition) {
-        titleView.update(shevronePosition: shevronePosition)
+    func showManagerAccessView() {
+        DispatchQueue.main.async {
+            self.titleView.isHidden = true
+            self.managerAccessView.isHidden = false
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+        }
+    }
     }
 
     private func setupNavigationBar() {
