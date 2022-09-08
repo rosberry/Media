@@ -61,6 +61,8 @@
 		A9C508E328C8564900EA7596 /* ManagerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E228C8564900EA7596 /* ManagerAppearance.swift */; };
 		A9C508E628C8ACFF00EA7596 /* ActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E528C8ACFE00EA7596 /* ActionSheetViewController.swift */; };
 		A9C508E928C9AAF300EA7596 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E828C9AAF300EA7596 /* ActionButton.swift */; };
+		A9C5090828C9DADD00EA7596 /* ActionSheetAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */; };
+		A9C5090A28C9DB6000EA7596 /* ActionButtonAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C5090928C9DB6000EA7596 /* ActionButtonAppearance.swift */; };
 		A9FF44092743B967001D7559 /* MediaAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FF44082743B967001D7559 /* MediaAppearance.swift */; };
 		A9FF440B2743BAA6001D7559 /* CollectionViewAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FF440A2743BAA6001D7559 /* CollectionViewAppearance.swift */; };
 		A9FF440D2743BC7A001D7559 /* AssetCellAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FF440C2743BC7A001D7559 /* AssetCellAppearance.swift */; };
@@ -135,6 +137,8 @@
 		A9C508E228C8564900EA7596 /* ManagerAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerAppearance.swift; sourceTree = "<group>"; };
 		A9C508E528C8ACFE00EA7596 /* ActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewController.swift; sourceTree = "<group>"; };
 		A9C508E828C9AAF300EA7596 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetAppearance.swift; sourceTree = "<group>"; };
+		A9C5090928C9DB6000EA7596 /* ActionButtonAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonAppearance.swift; sourceTree = "<group>"; };
 		A9FF44082743B967001D7559 /* MediaAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAppearance.swift; sourceTree = "<group>"; };
 		A9FF440A2743BAA6001D7559 /* CollectionViewAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewAppearance.swift; sourceTree = "<group>"; };
 		A9FF440C2743BC7A001D7559 /* AssetCellAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCellAppearance.swift; sourceTree = "<group>"; };
@@ -465,6 +469,8 @@
 				A9573E8527FC192200383B00 /* NavigationAppearance.swift */,
 				A9573E8727FC1AE000383B00 /* PermissionAppearance.swift */,
 				A9C508E228C8564900EA7596 /* ManagerAppearance.swift */,
+				A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */,
+				A9C5090928C9DB6000EA7596 /* ActionButtonAppearance.swift */,
 			);
 			path = Appearance;
 			sourceTree = "<group>";
@@ -577,6 +583,7 @@
 				A93A904F2706CBCE00DB8FC1 /* PHAsset+DiffCompatible.swift in Sources */,
 				1373B08122DC237700F28EF0 /* AVPlayerLayer+ReadyHandler.swift in Sources */,
 				1373B08622DC237700F28EF0 /* AVAssetTrack+Size.swift in Sources */,
+				A9C5090A28C9DB6000EA7596 /* ActionButtonAppearance.swift in Sources */,
 				1373B06822DC237700F28EF0 /* Assets.swift in Sources */,
 				A9573E8627FC192200383B00 /* NavigationAppearance.swift in Sources */,
 				1373B08C22DC237700F28EF0 /* SwitchView.swift in Sources */,
@@ -618,6 +625,7 @@
 				1373B0A022DC237700F28EF0 /* VideoMediaItemCell.swift in Sources */,
 				1373B0A222DC237700F28EF0 /* GalleryPresenter.swift in Sources */,
 				A93A90582706E23000DB8FC1 /* EmptyItemCellModel.swift in Sources */,
+				A9C5090828C9DADD00EA7596 /* ActionSheetAppearance.swift in Sources */,
 				1373B06722DC237700F28EF0 /* Strings.swift in Sources */,
 				A9FF440B2743BAA6001D7559 /* CollectionViewAppearance.swift in Sources */,
 				1373B07E22DC237700F28EF0 /* UIViewController+Child.swift in Sources */,
