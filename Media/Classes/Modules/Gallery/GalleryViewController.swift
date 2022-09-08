@@ -242,9 +242,11 @@ public final class GalleryViewController: UIViewController {
     func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
         if animated {
             UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
-                self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
-                self.assetsCollectionView.isUserInteractionEnabled = true
-                self.assetsCollectionView.reloadData()
+                DispatchQueue.main.async {
+                    self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+                    self.assetsCollectionView.isUserInteractionEnabled = true
+                    self.assetsCollectionView.reloadData()
+                }
             }, completion: nil)
         }
         else {
