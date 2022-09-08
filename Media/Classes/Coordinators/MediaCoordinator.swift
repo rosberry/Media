@@ -30,7 +30,13 @@ public final class MediaCoordinator {
     public var numberOfItemsInRow: Int = 4
 
     public var mediaAppearance: MediaAppearance
+    public var isShowManagerAccess: Bool = false
     public var filter: MediaItemsFilter
+    public var customActionButtonHandler: (() -> Void)?
+
+    private var actionButtonsAppearance: [ActionButtonAppearance] {
+        mediaAppearance.actionSheet.actionButtonsAppearance
+    }
 
     // MARK: - Modules
 
@@ -69,6 +75,7 @@ public final class MediaCoordinator {
 
     private func makeGalleryModule(bundleName: String) -> GalleryModule {
         let module = GalleryModule(bundleName: bundleName,
+                                   isShowManagerAccess: isShowManagerAccess,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
                                    numberOfItemsInRow: numberOfItemsInRow,
@@ -118,17 +125,29 @@ extension MediaCoordinator: GalleryModuleOutput {
 
     public func showActionSheetEventTriggered(moreCompletion: @escaping () -> Void,
                                               settingCompletion: @escaping () -> Void) {
-        let actionSheetViewController = ActionSheetViewController()
-        let actionButtons: [ActionButton] = [
-            ActionButton(title: L10n.ManageAccess.more, textStyle: .button1B) {
-                actionSheetViewController.dismiss(animated: true) {
-                    moreCompletion()
+        let actionSheetViewController = ActionSheetViewController(appearance: mediaAppearance.actionSheet)
+        let actionButtons: [ActionButton] = actionButtonsAppearance.map { appearance in
+            let actionButton = ActionButton(appearance: appearance)
+            switch appearance.type {
+            case .more:
+                actionButton.actionHandler = {
+                    actionSheetViewController.dismiss(animated: true) {
+                        moreCompletion()
+                    }
                 }
-            },
-            ActionButton(title: L10n.ManageAccess.settings, textStyle: .button1B) {
-                settingCompletion()
+            case .setting:
+                actionButton.actionHandler = {
+                    settingCompletion()
+                }
+            case .custom:
+                actionButton.actionHandler = { [weak self] in
+                    self?.customActionButtonHandler?()
+                }
+            default:
+                break
             }
-        ]
+            return actionButton
+        }
         actionSheetViewController.actionButtons = actionButtons
         navigationViewController.present(actionSheetViewController, animated: true)
     }
