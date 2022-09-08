@@ -27,6 +27,10 @@ public protocol GalleryModuleOutput: AnyObject {
     func closeEventTriggered()
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func showActionSheetEventTriggered(moreCompletion: @escaping () -> Void,
+                                       settingCompletion: @escaping () -> Void)
+    func openApplicationSettingEventTriggered()
+    func showLimitedPickerEventTriggered()
 }
 
 public final class GalleryModule {

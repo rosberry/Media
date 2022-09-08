@@ -178,57 +178,7 @@ public final class GalleryViewController: UIViewController {
         }
     }
 
-    // MARK: -
-
-    func changeCollectionView(assetsIsHidden: Bool) {
-        UIView.animate(withDuration: 0.3) {
-            self.assetsCollectionView.frame.origin.y += assetsIsHidden ? self.view.frame.height : -self.view.frame.height
-        }
-    }
-
-    func showMediaItemsPlaceholder(estimatedItemCount: Int = 128) {
-        assetsCollectionView.setContentOffset(.zero, animated: false)
-        assetsCollectionView.isUserInteractionEnabled = false
-        assetsCollectionManager.sectionItems = factory.placeholderSectionItems(placeholderCount: estimatedItemCount)
-
-        placeholderView.isHidden = true
-    }
-
-    private func showCamera() {
-        let camera = CameraImpl()
-        camera.zoomRangeLimits = 1.0...5.0
-        let cameraViewController = CameraViewController(cameraService: camera)
-
-        let placeholderPermissionView = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
-        placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
-        placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
-
-        cameraViewController.permissionsPlaceholderView = placeholderPermissionView
-        cameraViewController.modalPresentationStyle = .overCurrentContext
-        cameraViewController.delegate = self
-        present(cameraViewController, animated: true)
-    }
-
-    func update(with mediaItemCollections: [MediaItemsCollection]) {
-        albumsCollectionManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
-        albumsCollectionView.isUserInteractionEnabled = true
-    }
-
-    func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
-        if animated {
-            UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
-                self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
-                self.assetsCollectionView.isUserInteractionEnabled = true
-                self.assetsCollectionView.reloadData()
-            }, completion: nil)
-        }
-        else {
-            self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
-            assetsCollectionView.isUserInteractionEnabled = true
-            self.assetsCollectionView.reloadData()
-        }
-        placeholderView.isHidden = sectionItemsProvider.sectionItemsNumberHandler() != 0
-    }
+    // MARK: - Public
 
     public func select(items: [MediaItem]) {
         var items = items
@@ -266,6 +216,43 @@ public final class GalleryViewController: UIViewController {
                 }
             }
         }
+    }
+
+    // MARK: - Internal
+
+    func changeCollectionView(assetsIsHidden: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.assetsCollectionView.frame.origin.y += assetsIsHidden ? self.view.frame.height : -self.view.frame.height
+        }
+    }
+
+    func showMediaItemsPlaceholder(estimatedItemCount: Int = 128) {
+        assetsCollectionView.setContentOffset(.zero, animated: false)
+        assetsCollectionView.isUserInteractionEnabled = false
+        assetsCollectionManager.sectionItems = factory.placeholderSectionItems(placeholderCount: estimatedItemCount)
+
+        placeholderView.isHidden = true
+    }
+
+    func update(with mediaItemCollections: [MediaItemsCollection]) {
+        albumsCollectionManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
+        albumsCollectionView.isUserInteractionEnabled = true
+    }
+
+    func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
+        if animated {
+            UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
+                self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+                self.assetsCollectionView.isUserInteractionEnabled = true
+                self.assetsCollectionView.reloadData()
+            }, completion: nil)
+        }
+        else {
+            self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+            assetsCollectionView.isUserInteractionEnabled = true
+            self.assetsCollectionView.reloadData()
+        }
+        placeholderView.isHidden = sectionItemsProvider.sectionItemsNumberHandler() != 0
     }
 
     func showMediaLibraryDeniedPermissionsPlaceholder() {
@@ -306,6 +293,22 @@ public final class GalleryViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
+
+    // MARK: - Private
+
+    private func showCamera() {
+        let camera = CameraImpl()
+        camera.zoomRangeLimits = 1.0...5.0
+        let cameraViewController = CameraViewController(cameraService: camera)
+
+        let placeholderPermissionView = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
+        placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
+        placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
+
+        cameraViewController.permissionsPlaceholderView = placeholderPermissionView
+        cameraViewController.modalPresentationStyle = .overCurrentContext
+        cameraViewController.delegate = self
+        present(cameraViewController, animated: true)
     }
 
     private func setupNavigationBar() {
@@ -334,6 +337,8 @@ public final class GalleryViewController: UIViewController {
             collectionView.scrollToItem(at: .init(row: 0, section: 0), at: .top, animated: false)
         }
     }
+
+    // MARK: - Private Action
 
     @objc private func cameraButtonPressed() {
         showCamera()

@@ -147,6 +147,14 @@ public final class GalleryPresenter {
         output?.photoEventTriggered(image)
     }
 
+    func showActionSheetEventTriggered() {
+        output?.showActionSheetEventTriggered(moreCompletion: { [weak self] in
+            self?.output?.showLimitedPickerEventTriggered()
+        }, settingCompletion: { [weak self] in
+            self?.output?.openApplicationSettingEventTriggered()
+        })
+    }
+
     // MARK: - Helpers
 
     func updateSelection() {
@@ -164,7 +172,7 @@ public final class GalleryPresenter {
         }
     }
 
-    private func setupMediaItemsCollector() {
+    private func setupMediaItemsCollector(isHideTitle: Bool) {
         mediaItemsCollector.subscribe { [weak self] (result: MediaItemsFetchResult) in
             guard let self = self else {
                 return
@@ -172,7 +180,9 @@ public final class GalleryPresenter {
             self.fetchResult = result
             self.view?.update(with: self.sectionItemsProvider(for: result.fetchResult), animated: true)
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
-            self.view?.updateTitleView(with: result.collection.title, shevronePosition: self.shevronePosition)
+            self.view?.updateTitleView(with: result.collection.title,
+                                       isHideTitle: isHideTitle,
+                                       statePosition: self.statePosition)
         }
     }
 

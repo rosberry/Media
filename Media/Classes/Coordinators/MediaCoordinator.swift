@@ -5,6 +5,7 @@
 import UIKit
 import Ion
 import Photos
+import PhotosUI
 import MediaService
 
 public protocol MediaCoordinatorDelegate: AnyObject {
@@ -113,5 +114,35 @@ extension MediaCoordinator: GalleryModuleOutput {
     public func photoEventTriggered(_ image: UIImage) {
         navigationViewController.popViewController(animated: true)
         delegate?.photoEventTriggered(image)
+    }
+
+    public func showActionSheetEventTriggered(moreCompletion: @escaping () -> Void,
+                                              settingCompletion: @escaping () -> Void) {
+        let actionSheetViewController = ActionSheetViewController()
+        let actionButtons: [ActionButton] = [
+            ActionButton(title: L10n.ManageAccess.more, textStyle: .button1B) {
+                actionSheetViewController.dismiss(animated: true) {
+                    moreCompletion()
+                }
+            },
+            ActionButton(title: L10n.ManageAccess.settings, textStyle: .button1B) {
+                settingCompletion()
+            }
+        ]
+        actionSheetViewController.actionButtons = actionButtons
+        navigationViewController.present(actionSheetViewController, animated: true)
+    }
+
+    public func openApplicationSettingEventTriggered() {
+        let settingsUrl = URL(string: UIApplication.openSettingsURLString)
+        if let settingsUrl = settingsUrl, UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl)
+        }
+    }
+
+    public func showLimitedPickerEventTriggered() {
+        if #available(iOS 14, *) {
+            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: navigationViewController)
+        }
     }
 }
