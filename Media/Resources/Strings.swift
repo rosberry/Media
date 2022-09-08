@@ -22,6 +22,19 @@ internal enum L10n {
     }
   }
 
+  internal enum ManageAccess {
+    /// Manager
+    internal static let buttonTitle = L10n.tr("Localizable", "manage_access.button_title")
+    /// Select more photos
+    internal static let more = L10n.tr("Localizable", "manage_access.more")
+    /// Change settings
+    internal static let settings = L10n.tr("Localizable", "manage_access.settings")
+    /// You’ve given %@ access to select number of photos. Tap «%@» to add/change.
+    internal static func title(_ p1: Any, _ p2: Any) -> String {
+      return L10n.tr("Localizable", "manage_access.title", String(describing: p1), String(describing: p2))
+    }
+  }
+
   internal enum MediaLibrary {
     /// Albums
     internal static let albums = L10n.tr("Localizable", "mediaLibrary.albums")
