@@ -48,7 +48,7 @@ public final class ActionSheetViewController: UIViewController {
 
     private(set) lazy var cancelButton: UIButton = {
         let view = UIButton()
-        let text = "Cancel".text(with: .button1B)
+        let text = L10n.ManageAccess.cancel.text(with: .button1B)
         view.backgroundColor = .main2A
         view.setAttributedTitle(text.attributed, for: .normal)
         view.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)

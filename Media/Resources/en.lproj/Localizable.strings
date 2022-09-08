@@ -23,5 +23,6 @@
 "manage_access.button_title" = "Manager";
 "manage_access.more" = "Select more photos";
 "manage_access.settings" = "Change settings";
+"manage_access.cancel" = "Cancel";
 
 "dummy" = "dummy";

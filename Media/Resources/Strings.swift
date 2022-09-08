@@ -25,6 +25,8 @@ internal enum L10n {
   internal enum ManageAccess {
     /// Manager
     internal static let buttonTitle = L10n.tr("Localizable", "manage_access.button_title")
+    /// Cancel
+    internal static let cancel = L10n.tr("Localizable", "manage_access.cancel")
     /// Select more photos
     internal static let more = L10n.tr("Localizable", "manage_access.more")
     /// Change settings
