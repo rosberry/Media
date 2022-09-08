@@ -74,10 +74,12 @@ public final class GalleryPresenter {
     public var numberOfItemsInRow: Int
     public var bundleName: String
     public var mediaAppearance: MediaAppearance
+    public var isShowManagerAccess: Bool
 
     // MARK: - Lifecycle
 
     init(bundleName: String,
+         isShowManagerAccess: Bool,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
          numberOfItemsInRow: Int,
@@ -85,6 +87,7 @@ public final class GalleryPresenter {
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
         self.bundleName = bundleName
+        self.isShowManagerAccess = isShowManagerAccess
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
@@ -93,6 +96,11 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
+        guard isShowManagerAccess else {
+            setupMediaItemsCollection(isHideTitle: false)
+            return
+        }
+
         if #available(iOS 14, *) {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
                 switch status {
@@ -102,9 +110,7 @@ public final class GalleryPresenter {
                         break
                 }
 
-                self?.setupMediaItemsCollector(isHideTitle: status == .limited)
-                self?.setupMediaLibraryUpdateEventCollector()
-                self?.setupCollections()
+                self?.setupMediaItemsCollection(isHideTitle: status == .limited)
             }
         }
     }
@@ -164,6 +170,12 @@ public final class GalleryPresenter {
     }
 
     // MARK: - Private
+
+    private func setupMediaItemsCollection(isHideTitle: Bool) {
+        setupMediaItemsCollector(isHideTitle: isHideTitle)
+        setupMediaLibraryUpdateEventCollector()
+        setupCollections()
+    }
 
     private func setupCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
