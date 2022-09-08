@@ -244,7 +244,13 @@ public final class GalleryViewController: UIViewController {
     }
 
     func updateTitleView(with title: String? = nil,
-                         shevronePosition: AlbumsShevroneView.ShevronePosition) {
+                         isHideTitle: Bool,
+                         statePosition: TitleAlbumView.StatePosition) {
+        guard isHideTitle == false else {
+            titleView.isHidden = true
+            return
+        }
+
         if let title = title {
             titleView.titleLabel.attributedText = title.text(with: navigationAppearance.titleStyle).attributed
             titleView.sizeToFit()
@@ -252,7 +258,12 @@ public final class GalleryViewController: UIViewController {
             titleView.layoutIfNeeded()
         }
 
-        titleView.update(shevronePosition: shevronePosition)
+        titleView.isHidden = false
+        titleView.update(statePosition: statePosition)
+    }
+
+    func updateTitleView(with statePosition: TitleAlbumView.StatePosition) {
+        titleView.update(statePosition: statePosition)
     }
 
     func updateTitleView(with shevronePosition: AlbumsShevroneView.ShevronePosition) {
@@ -276,7 +287,7 @@ public final class GalleryViewController: UIViewController {
                                                            action: #selector(closeButtonPressed))
     }
 
-    private func stopScrolling(_ state: AlbumsShevroneView.ShevronePosition) {
+    private func stopScrolling(_ state: TitleAlbumView.StatePosition) {
         state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
 

@@ -16,7 +16,7 @@ public final class GalleryPresenter {
     }
 
     typealias Dependencies = HasMediaLibraryService
-    typealias ShevronePosition = AlbumsShevroneView.ShevronePosition
+    typealias StatePosition = TitleAlbumView.StatePosition
 
     private let dependencies: Dependencies
     weak var view: GalleryViewController?
@@ -70,7 +70,7 @@ public final class GalleryPresenter {
     }()
 
     private let maxItemsCount: Int
-    private var shevronePosition: ShevronePosition
+    private var statePosition: StatePosition
     public var numberOfItemsInRow: Int
     public var bundleName: String
     public var mediaAppearance: MediaAppearance
@@ -89,7 +89,7 @@ public final class GalleryPresenter {
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.filter = filter
-        self.shevronePosition = .down
+        self.statePosition = .down
     }
 
     func viewReadyEventTriggered() {
@@ -107,20 +107,20 @@ public final class GalleryPresenter {
     }
 
     func albumsEventTriggered() {
-        switch shevronePosition {
+        switch statePosition {
            case .up:
-              shevronePosition = .down
+              statePosition = .down
               dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
               view?.changeCollectionView(assetsIsHidden: false)
            case .down:
-              shevronePosition = .up
+              statePosition = .up
               if collections.isEmpty {
                   setupCollections()
               }
               view?.update(with: collections)
               view?.changeCollectionView(assetsIsHidden: true)
         }
-        view?.updateTitleView(with: shevronePosition)
+        view?.updateTitleView(with: statePosition)
     }
 
     func closeEventTriggered() {
@@ -243,7 +243,7 @@ public final class GalleryPresenter {
 extension GalleryPresenter: GallerySectionsFactoryOutput {
 
     func didSelect(_ collection: MediaItemsCollection) {
-        shevronePosition = .down
+        statePosition = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
     }
