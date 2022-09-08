@@ -9,14 +9,17 @@ public struct MediaAppearance {
     public var navigation: NavigationAppearance
     public var permission: PermissionAppearance
     public var managerAccess: ManagerAppearance
+    public var actionSheet: ActionSheetAppearance
 
     public init(gallery: CollectionViewAppearance = .init(),
                 navigation: NavigationAppearance = .init(),
                 permission: PermissionAppearance = .init(),
-                managerAccess: ManagerAppearance = .init()) {
+                managerAccess: ManagerAppearance = .init(),
+                actionSheet: ActionSheetAppearance = .init()) {
         self.gallery = gallery
         self.navigation = navigation
         self.permission = permission
         self.managerAccess = managerAccess
+        self.actionSheet = actionSheet
     }
 }

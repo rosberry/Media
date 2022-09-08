@@ -26,6 +26,11 @@ public final class ActionSheetViewController: UIViewController {
         }
     }
 
+    private let appearance: ActionSheetAppearance
+    private var cancelAppearance: ActionButtonAppearance {
+        appearance.cancelButtonAppearance
+    }
+
     private lazy var tapRecognizer: UITapGestureRecognizer = .init(target: self,
                                                                    action: #selector(backgroundViewTapped))
 
@@ -35,21 +40,22 @@ public final class ActionSheetViewController: UIViewController {
 
     private(set) lazy var actionButtonsContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .main2A
+        view.backgroundColor = appearance.containerButtonsColor
+        view.clipsToBounds = true
         return view
     }()
 
     private(set) lazy var backgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .main1A
+        view.backgroundColor = appearance.backgroundColor
         view.isUserInteractionEnabled = true
         return view
     }()
 
     private(set) lazy var cancelButton: UIButton = {
         let view = UIButton()
-        let text = L10n.ManageAccess.cancel.text(with: .button1B)
-        view.backgroundColor = .main2A
+        let text = cancelAppearance.title.text(with: cancelAppearance.titleStyle)
+        view.backgroundColor = cancelAppearance.backgroundColor
         view.setAttributedTitle(text.attributed, for: .normal)
         view.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         return view
@@ -59,7 +65,8 @@ public final class ActionSheetViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init() {
+    init(appearance: ActionSheetAppearance) {
+        self.appearance = appearance
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .custom
         modalTransitionStyle = .crossDissolve
