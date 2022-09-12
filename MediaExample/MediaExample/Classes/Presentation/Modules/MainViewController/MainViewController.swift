@@ -65,7 +65,7 @@ final class MainViewController: UIViewController {
         }
 
         coordinator = .init(navigationViewController: navigationController)
-        coordinator?.isShowManagerAccess = true
+        coordinator?.isEnableManagerAccess = true
         coordinator?.start(bundleName: "Media Example")
         coordinator?.delegate = self
     }

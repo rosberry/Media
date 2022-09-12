@@ -30,7 +30,7 @@ public final class MediaCoordinator {
     public var numberOfItemsInRow: Int = 4
 
     public var mediaAppearance: MediaAppearance
-    public var isShowManagerAccess: Bool = false
+    public var isEnableManagerAccess: Bool = false
     public var filter: MediaItemsFilter
     public var customActionButtonHandler: (() -> Void)?
 
@@ -75,7 +75,7 @@ public final class MediaCoordinator {
 
     private func makeGalleryModule(bundleName: String) -> GalleryModule {
         let module = GalleryModule(bundleName: bundleName,
-                                   isShowManagerAccess: isShowManagerAccess,
+                                   isEnableManagerAccess: isEnableManagerAccess,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
                                    numberOfItemsInRow: numberOfItemsInRow,
@@ -129,22 +129,22 @@ extension MediaCoordinator: GalleryModuleOutput {
         let actionButtons: [ActionButton] = actionButtonsAppearance.map { appearance in
             let actionButton = ActionButton(appearance: appearance)
             switch appearance.type {
-            case .more:
-                actionButton.actionHandler = {
-                    actionSheetViewController.dismiss(animated: true) {
-                        moreCompletion()
+                case .more:
+                    actionButton.actionHandler = {
+                        actionSheetViewController.dismiss(animated: true) {
+                            moreCompletion()
+                        }
                     }
-                }
-            case .setting:
-                actionButton.actionHandler = {
-                    settingCompletion()
-                }
-            case .custom:
-                actionButton.actionHandler = { [weak self] in
-                    self?.customActionButtonHandler?()
-                }
-            default:
-                break
+                case .setting:
+                    actionButton.actionHandler = {
+                        settingCompletion()
+                    }
+                case .custom:
+                    actionButton.actionHandler = { [weak self] in
+                        self?.customActionButtonHandler?()
+                    }
+                default:
+                    break
             }
             return actionButton
         }

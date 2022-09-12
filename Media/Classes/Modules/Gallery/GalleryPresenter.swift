@@ -74,12 +74,12 @@ public final class GalleryPresenter {
     public var numberOfItemsInRow: Int
     public var bundleName: String
     public var mediaAppearance: MediaAppearance
-    public var isShowManagerAccess: Bool
+    public var isEnableManagerAccess: Bool
 
     // MARK: - Lifecycle
 
     init(bundleName: String,
-         isShowManagerAccess: Bool,
+         isEnableManagerAccess: Bool,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
          numberOfItemsInRow: Int,
@@ -87,7 +87,7 @@ public final class GalleryPresenter {
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
         self.bundleName = bundleName
-        self.isShowManagerAccess = isShowManagerAccess
+        self.isEnableManagerAccess = isEnableManagerAccess
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
@@ -96,7 +96,7 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
-        guard isShowManagerAccess else {
+        guard isEnableManagerAccess else {
             setupMediaItemsCollection(isHideTitle: false)
             return
         }
