@@ -33,7 +33,7 @@ public struct ActionSheetAppearance {
 
         self.actionButtonsAppearance = [
             ActionButtonAppearance(type: .more, title: L10n.ManageAccess.more),
-            ActionButtonAppearance(type: .setting, title: L10n.ManageAccess.settings),
+            ActionButtonAppearance(type: .setting, title: L10n.ManageAccess.settings)
         ]
     }
 }
