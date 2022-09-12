@@ -11,6 +11,9 @@ import MediaService
 public protocol MediaCoordinatorDelegate: AnyObject {
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func moreEventTriggered()
+    func settingEventTriggered()
+    func customEventTriggered()
 }
 
 public final class MediaCoordinator {
@@ -32,7 +35,6 @@ public final class MediaCoordinator {
     public var mediaAppearance: MediaAppearance
     public var isEnableManagerAccess: Bool = false
     public var filter: MediaItemsFilter
-    public var customActionButtonHandler: (() -> Void)?
 
     private var actionButtonsAppearance: [ActionButtonAppearance] {
         mediaAppearance.actionSheet.actionButtonsAppearance
@@ -131,17 +133,19 @@ extension MediaCoordinator: GalleryModuleOutput {
             switch appearance.type {
                 case .more:
                     actionButton.actionHandler = {
-                        actionSheetViewController.dismiss(animated: true) {
+                        actionSheetViewController.dismiss(animated: true) { [weak self] in
                             moreCompletion()
+                            self?.delegate?.moreEventTriggered()
                         }
                     }
                 case .setting:
-                    actionButton.actionHandler = {
+                    actionButton.actionHandler = { [weak self] in
                         settingCompletion()
+                        self?.delegate?.settingEventTriggered()
                     }
                 case .custom:
                     actionButton.actionHandler = { [weak self] in
-                        self?.customActionButtonHandler?()
+                        self?.delegate?.customEventTriggered()
                     }
                 default:
                     break
