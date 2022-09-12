@@ -16,7 +16,7 @@ public final class GalleryPresenter {
     }
 
     typealias Dependencies = HasMediaLibraryService
-    typealias StatePosition = TitleAlbumView.StatePosition
+    typealias StatePosition = AlbumTitleView.StatePosition
 
     private let dependencies: Dependencies
     weak var view: GalleryViewController?

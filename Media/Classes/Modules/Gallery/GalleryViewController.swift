@@ -59,8 +59,8 @@ public final class GalleryViewController: UIViewController {
         return view
     }()
 
-    private lazy var titleView: TitleAlbumView = {
-        let view = TitleAlbumView(titleImage: mediaAppearance.navigation.titleImage)
+    private lazy var titleView: AlbumTitleView = {
+        let view = AlbumTitleView(titleImage: mediaAppearance.navigation.titleImage)
         view.isHidden = true
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
@@ -266,7 +266,7 @@ public final class GalleryViewController: UIViewController {
 
     func updateTitleView(with title: String? = nil,
                          isHideTitle: Bool,
-                         statePosition: TitleAlbumView.StatePosition) {
+                         statePosition: AlbumTitleView.StatePosition) {
         guard isHideTitle == false else {
             titleView.isHidden = true
             return
@@ -283,7 +283,7 @@ public final class GalleryViewController: UIViewController {
         titleView.update(statePosition: statePosition)
     }
 
-    func updateTitleView(with statePosition: TitleAlbumView.StatePosition) {
+    func updateTitleView(with statePosition: AlbumTitleView.StatePosition) {
         titleView.update(statePosition: statePosition)
     }
 
@@ -330,7 +330,7 @@ public final class GalleryViewController: UIViewController {
                                                            action: #selector(closeButtonPressed))
     }
 
-    private func stopScrolling(_ state: TitleAlbumView.StatePosition) {
+    private func stopScrolling(_ state: AlbumTitleView.StatePosition) {
         state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
 

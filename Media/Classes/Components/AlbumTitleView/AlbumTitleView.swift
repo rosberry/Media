@@ -5,7 +5,7 @@
 import Foundation
 import UIKit
 
-final class TitleAlbumView: UIView {
+final class AlbumTitleView: UIView {
 
     enum StatePosition {
         case up
