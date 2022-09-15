@@ -7,7 +7,7 @@ import Texstyle
 
 open class AssetCellAppearance {
 
-    public var selectionViewInitializer: () -> UIView = {
+    public var selectionViewInitializer: () -> SelectionView = {
         let view = SelectionView(textColor: .white)
         view.alpha = 0.0
         return view

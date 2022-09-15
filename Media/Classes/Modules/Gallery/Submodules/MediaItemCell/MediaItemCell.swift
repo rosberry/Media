@@ -131,16 +131,6 @@ public class MediaItemCell: UICollectionViewCell {
         cellAppearance.update(cell: self, viewModel: viewModel)
         setNeedsLayout()
         layoutIfNeeded()
-        if let selectionIndex = viewModel.selectionIndex {
-            selectionView.alpha = 1.0
-            selectionView.selectionInfoLabel.text = "\(selectionIndex + 1)"
-            imageView.layer.cornerRadius = selectionView.layer.cornerRadius
-        }
-        else {
-            selectionView.alpha = 0.0
-            selectionView.selectionInfoLabel.text = nil
-            imageView.layer.cornerRadius = 0.0
-        }
 
         DispatchQueue.main.async {
             self.setNeedsLayout()

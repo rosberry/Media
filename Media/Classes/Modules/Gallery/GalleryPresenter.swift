@@ -71,7 +71,6 @@ public final class GalleryPresenter {
     private let maxItemsCount: Int
     private var statePosition: StatePosition
     public var numberOfItemsInRow: Int
-    public var bundleName: String
     public var mediaAppearance: MediaAppearance
     public var isEnableManagerAccess: Bool
 
@@ -80,6 +79,7 @@ public final class GalleryPresenter {
     init(isEnableManagerAccess: Bool,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
+         numberOfItemsInRow: Int = 1,
          dependencies: Dependencies,
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
@@ -92,7 +92,6 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
-        setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
         setupForegroundObserver()
@@ -109,8 +108,9 @@ public final class GalleryPresenter {
                     default:
                         break
                 }
-
-                self?.setupMediaItemsCollection(isHideTitle: status == .limited)
+                DispatchQueue.main.async {
+                    self?.setupMediaItemsCollection(isHideTitle: status == .limited)
+                }
             }
         }
     }

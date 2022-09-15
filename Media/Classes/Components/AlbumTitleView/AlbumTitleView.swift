@@ -7,7 +7,7 @@ import UIKit
 
 public final class AlbumTitleView: UIView {
 
-    enum StatePosition {
+    public enum StatePosition {
         case up
         case down
     }
