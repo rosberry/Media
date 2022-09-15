@@ -2,7 +2,6 @@
 //  Copyright © 2022 Rosberry. All rights reserved.
 //
 
-import UIKit.UIImage
 import Texstyle
 import UIKit
 

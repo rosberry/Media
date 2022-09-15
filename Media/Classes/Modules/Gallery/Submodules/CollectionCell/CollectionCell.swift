@@ -10,7 +10,7 @@ public class CollectionCell: UICollectionViewCell {
 
     private var cellAppearance: AlbumCellAppearance = DefaultAlbumCellAppearance()
 
-    public override var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.25) {
                 self.cellAppearance.highlightChanged(cell: self, value: self.isHighlighted)
@@ -42,7 +42,7 @@ public class CollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         UIView.setAnimationsEnabled(false)

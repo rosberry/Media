@@ -14,7 +14,7 @@ public final class PlaceholderCell: UICollectionViewCell {
         return imageView
     }()
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setup()
     }
@@ -24,7 +24,7 @@ public final class PlaceholderCell: UICollectionViewCell {
         setup()
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         imageView.frame = contentView.bounds
         cellAppearance.layout(cell: self)

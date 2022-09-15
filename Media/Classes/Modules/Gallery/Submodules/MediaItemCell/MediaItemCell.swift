@@ -29,7 +29,6 @@ public class MediaItemCell: UICollectionViewCell {
         return imageView
     }()
 
-
     public private(set) lazy var infoView: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -72,7 +71,7 @@ public class MediaItemCell: UICollectionViewCell {
         contentView.addGestureRecognizer(longPressGestureRecognizer)
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         imageView.frame = contentView.bounds

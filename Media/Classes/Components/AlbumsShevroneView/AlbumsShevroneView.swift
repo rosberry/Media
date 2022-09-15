@@ -34,7 +34,7 @@ public final class AlbumsShevroneView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         titleLabel.configureFrame { maker in
@@ -53,7 +53,7 @@ public final class AlbumsShevroneView: UIView {
         }
     }
 
-    public override func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let imageViewSize = imageView.sizeThatFits(size)
         let titleSize = titleLabel.sizeThatFits(size)
         let width = titleSize.width + innerInset.horizontalSum + betweenInset + imageViewSize.width
@@ -80,10 +80,10 @@ public final class AlbumsShevroneView: UIView {
         }
         let transform: CGAffineTransform
         switch shevronePosition {
-        case .up:
-            transform = .init(rotationAngle: CGFloat.pi)
-        case .down:
-            transform = .identity
+            case .up:
+                transform = .init(rotationAngle: CGFloat.pi)
+            case .down:
+                transform = .identity
         }
         state = shevronePosition
         UIView.animate(withDuration: 0.1) {

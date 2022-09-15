@@ -102,19 +102,19 @@ public final class GalleryPresenter {
 
     func albumsEventTriggered() {
         switch shevronePosition {
-        case .up:
-            shevronePosition = .down
-            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
-            view?.changeCollectionView(assetsIsHidden: false)
-            output?.hideAlbumsEventTriggered()
-        case .down:
-            shevronePosition = .up
-            if collections.isEmpty {
-              setupCollections()
-            }
-            view?.update(with: collections)
-            view?.changeCollectionView(assetsIsHidden: true)
-            output?.albumsEventTriggered()
+            case .up:
+                shevronePosition = .down
+                dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+                view?.changeCollectionView(assetsIsHidden: false)
+                output?.hideAlbumsEventTriggered()
+            case .down:
+                shevronePosition = .up
+                if collections.isEmpty {
+                  setupCollections()
+                }
+                view?.update(with: collections)
+                view?.changeCollectionView(assetsIsHidden: true)
+                output?.albumsEventTriggered()
         }
         view?.updateTitleView(with: shevronePosition)
         view?.hidePlaceholdersIfNeeded()
@@ -175,20 +175,20 @@ public final class GalleryPresenter {
         let count = result.count
         let sectionAppearance = mediaAppearance.gallery.assetSectionAppearance
 
-        let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
+        let provider = LazySectionItemsProvider(factory: factory.complexFactory, cellItemsNumberHandler: { _ in
             count
-        } makeSectionItemHandler: { _ in
+        }, makeSectionItemHandler: { _ in
             let sectionItem = GeneralCollectionViewDiffSectionItem()
             sectionItem.minimumLineSpacing = sectionAppearance.minimumLineSpacing
             sectionItem.minimumInteritemSpacing = sectionAppearance.minimumInteritemSpacing
             sectionItem.insets = sectionAppearance.insets
             return sectionItem
-        } sizeHandler: { [weak self] _, collection in
+        }, sizeHandler: { [weak self] _, collection in
             let numberOfItemsInRow = CGFloat(self?.mediaAppearance.gallery.assetSectionAppearance.numberOfItemsInRow ?? 0)
             let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
             let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
-        } objectHandler: { indexPath in
+        }, objectHandler: { indexPath in
             guard indexPath.row < count else {
                 return nil
             }
@@ -209,7 +209,7 @@ public final class GalleryPresenter {
                                           selectionIndex: selectionIndex,
                                           isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
             }
-        }
+        })
         return provider
     }
 

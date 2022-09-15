@@ -22,7 +22,7 @@ public final class SelectionView: UIView {
         setup()
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         selectionInfoLabel.configureFrame { (maker: Maker) in
             maker.right().top()

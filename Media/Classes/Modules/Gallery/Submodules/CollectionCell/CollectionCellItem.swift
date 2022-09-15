@@ -16,7 +16,10 @@ class CollectionCellItem: CollectionViewCellItem {
     private let sectionAppearance: AlbumSectionAppearance
     var reuseType = ReuseType.class(Cell.self)
 
-    init(viewModel: CollectionCellModel, dependencies: Dependencies, cellAppearance: AlbumCellAppearance, sectionAppearance: AlbumSectionAppearance) {
+    init(viewModel: CollectionCellModel,
+         dependencies: Dependencies,
+         cellAppearance: AlbumCellAppearance,
+         sectionAppearance: AlbumSectionAppearance) {
         self.viewModel = viewModel
         self.dependencies = dependencies
         self.cellAppearance = cellAppearance
