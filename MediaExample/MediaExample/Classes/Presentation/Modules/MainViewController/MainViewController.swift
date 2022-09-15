@@ -65,14 +65,26 @@ final class MainViewController: UIViewController {
         }
 
         coordinator = .init(navigationViewController: navigationController)
+        coordinator?.isEnableManagerAccess = true
         coordinator?.start()
         coordinator?.delegate = self
     }
 }
 
 extension MainViewController: MediaCoordinatorDelegate {
-    func albumsShownValueChanged(_ value: Bool) {
+    func moreEventTriggered() {
+        print(#function)
+    }
 
+    func settingEventTriggered() {
+        print(#function)
+    }
+
+    func customEventTriggered() {
+        print(#function)
+    }
+
+    func albumsShownValueChanged(_ value: Bool) {
     }
 
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {

@@ -5,17 +5,17 @@
 import Foundation
 import UIKit
 
-public final class AlbumsShevroneView: UIView {
+public final class AlbumTitleView: UIView {
 
-    public enum ShevronePosition {
+    enum StatePosition {
         case up
         case down
     }
 
-    var tapEventHandler: ((ShevronePosition) -> Void)?
+    var tapEventHandler: ((StatePosition) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    public private(set) var state: ShevronePosition = .down
+    public private(set) var state: StatePosition = .down
     public var betweenInset: CGFloat = 3
     public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
@@ -74,18 +74,18 @@ public final class AlbumsShevroneView: UIView {
         addGestureRecognizer(tapGesture)
     }
 
-    func update(shevronePosition: ShevronePosition) {
-        guard state != shevronePosition else {
+    func update(statePosition: StatePosition) {
+        guard state != statePosition else {
             return
         }
         let transform: CGAffineTransform
-        switch shevronePosition {
-            case .up:
-                transform = .init(rotationAngle: CGFloat.pi)
-            case .down:
-                transform = .identity
+        switch statePosition {
+           case .up:
+              transform = .init(rotationAngle: CGFloat.pi)
+           case .down:
+              transform = .identity
         }
-        state = shevronePosition
+        state = statePosition
         UIView.animate(withDuration: 0.1) {
             self.imageView.transform = transform
         }

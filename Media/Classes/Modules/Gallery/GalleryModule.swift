@@ -25,6 +25,10 @@ public protocol GalleryModuleOutput: AnyObject {
     func closeEventTriggered()
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func showActionSheetEventTriggered(moreCompletion: @escaping () -> Void,
+                                       settingCompletion: @escaping () -> Void)
+    func openApplicationSettingEventTriggered()
+    func showLimitedPickerEventTriggered()
     func albumsEventTriggered()
     func hideAlbumsEventTriggered()
 }
@@ -47,11 +51,13 @@ public final class GalleryModule {
     public let viewController: GalleryViewController
     private let presenter: GalleryPresenter
 
-    public init(filter: MediaItemsFilter,
+    public init(isEnableManagerAccess: Bool,
+                filter: MediaItemsFilter,
                 maxItemsCount: Int,
                 collection: MediaItemsCollection? = nil,
                 mediaAppearance: MediaAppearance) {
-        presenter = GalleryPresenter(filter: filter,
+        presenter = GalleryPresenter(isEnableManagerAccess: isEnableManagerAccess,
+                                     filter: filter,
                                      maxItemsCount: maxItemsCount,
                                      dependencies: Services,
                                      mediaAppearance: mediaAppearance)

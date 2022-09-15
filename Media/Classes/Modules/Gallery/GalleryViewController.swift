@@ -28,6 +28,10 @@ public final class GalleryViewController: UIViewController {
         presenter.mediaAppearance.navigation
     }
 
+    private var managerAppearance: ManagerAppearance {
+        presenter.mediaAppearance.managerAccess
+    }
+
     private lazy var factory: GallerySectionsFactory = {
         let factory = GallerySectionsFactory(dependencies: Services,
                                              mediaAppearance: mediaAppearance)
@@ -46,8 +50,18 @@ public final class GalleryViewController: UIViewController {
     public private(set) var assetsIsHidden: Bool = false
     // MARK: - Subviews
 
-    public private(set) lazy var titleView: AlbumsShevroneView = {
-        let view = AlbumsShevroneView(titleImage: mediaAppearance.navigation.titleImage)
+    public private(set) lazy var managerAccessView: ManagerAccessView = {
+        let view = ManagerAccessView(managerAppearance: managerAppearance)
+        view.isHidden = true
+        view.manageEventHandler = { [weak self] in
+            self?.presenter.showActionSheetEventTriggered()
+        }
+        return view
+    }()
+
+    public private(set) lazy var titleView: AlbumTitleView = {
+        let view = AlbumTitleView(titleImage: mediaAppearance.navigation.titleImage)
+        view.isHidden = true
         view.tapEventHandler = { [weak self] state in
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
@@ -101,8 +115,9 @@ public final class GalleryViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = mediaAppearance.gallery.backgroundColor
+
+        view.addSubview(managerAccessView)
         view.addSubview(albumsCollectionView)
         view.addSubview(assetsCollectionView)
         view.addSubview(placeholderView)
@@ -119,13 +134,30 @@ public final class GalleryViewController: UIViewController {
         permissionsPlaceholderView.frame = view.bounds
         placeholderView.frame = view.bounds
 
+        managerAccessView.configureFrame { maker in
+            maker.top(to: view.nui_safeArea.top, inset: 16).left(inset: 8).right(inset: 8)
+                .sizeThatFits(size: view.bounds.size)
+        }
+
         assetsCollectionView.configureFrame { maker in
             let inset = self.assetsIsHidden ? self.view.frame.height : 0
             maker.top(to: view.nui_safeArea.top, inset: inset).left().right().bottom()
+            if managerAccessView.isHidden {
+                maker.top(to: view.nui_safeArea.top)
+            }
+            else {
+                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+            }
         }
 
         albumsCollectionView.configureFrame { maker in
-            maker.top(to: view.nui_safeArea.top).left().right().bottom()
+            maker.left().right().bottom()
+            if managerAccessView.isHidden {
+                maker.top(to: view.nui_safeArea.top)
+            }
+            else {
+                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+            }
         }
     }
 
@@ -222,6 +254,45 @@ public final class GalleryViewController: UIViewController {
         }
     }
 
+    // MARK: - Internal
+
+    func changeCollectionView(assetsIsHidden: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            self.assetsCollectionView.frame.origin.y += assetsIsHidden ? self.view.frame.height : -self.view.frame.height
+        }
+    }
+
+    func showMediaItemsPlaceholder(estimatedItemCount: Int = 128) {
+        assetsCollectionView.setContentOffset(.zero, animated: false)
+        assetsCollectionView.isUserInteractionEnabled = false
+        assetsCollectionManager.sectionItems = factory.placeholderSectionItems(placeholderCount: estimatedItemCount)
+
+        placeholderView.isHidden = true
+    }
+
+    func update(with mediaItemCollections: [MediaItemsCollection]) {
+        albumsCollectionManager.sectionItems = factory.makeSectionItems(mediaItemCollections: mediaItemCollections)
+        albumsCollectionView.isUserInteractionEnabled = true
+    }
+
+    func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
+        if animated {
+            UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
+                DispatchQueue.main.async {
+                    self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+                    self.assetsCollectionView.isUserInteractionEnabled = true
+                    self.assetsCollectionView.reloadData()
+                }
+            }, completion: nil)
+        }
+        else {
+            self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+            assetsCollectionView.isUserInteractionEnabled = true
+            self.assetsCollectionView.reloadData()
+        }
+        placeholderView.isHidden = sectionItemsProvider.sectionItemsNumberHandler() != 0
+    }
+
     func showMediaLibraryDeniedPermissionsPlaceholder() {
         permissionsPlaceholderView.isHidden = false
         titleView.isHidden = true
@@ -230,7 +301,13 @@ public final class GalleryViewController: UIViewController {
     }
 
     func updateTitleView(with title: String? = nil,
-                         shevronePosition: AlbumsShevroneView.ShevronePosition) {
+                         isHideTitle: Bool,
+                         statePosition: AlbumTitleView.StatePosition) {
+        guard isHideTitle == false else {
+            titleView.isHidden = true
+            return
+        }
+
         if let title = title {
             titleView.titleLabel.attributedText = navigationAppearance
                 .titleFormatter(title)
@@ -243,17 +320,44 @@ public final class GalleryViewController: UIViewController {
         titleView.imageView.isHidden = false
         titleView.isHidden = false
 
-        updateTitleView(with: shevronePosition)
+        titleView.isHidden = false
+        titleView.update(statePosition: statePosition)
     }
 
-    func updateTitleView(with shevronePosition: AlbumsShevroneView.ShevronePosition) {
-        titleView.update(shevronePosition: shevronePosition)
+    func updateTitleView(with statePosition: AlbumTitleView.StatePosition) {
+        titleView.update(statePosition: statePosition)
         navigationAppearance.titleViewUpdateHandler(titleView)
+    }
+
+    func showManagerAccessView() {
+        DispatchQueue.main.async {
+            self.titleView.isHidden = true
+            self.managerAccessView.isHidden = false
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+        }
     }
 
     func hidePlaceholdersIfNeeded() {
         permissionsPlaceholderView.isHidden = true
         placeholderView.isHidden = true
+    }
+
+    // MARK: - Private
+
+    private func showCamera() {
+        let camera = CameraImpl()
+        camera.zoomRangeLimits = 1.0...5.0
+        let cameraViewController = CameraViewController(cameraService: camera)
+
+        let placeholderPermissionView = PermissionsPlaceholderView(permissionAppearance: mediaAppearance.permission)
+        placeholderPermissionView.title = L10n.Camera.PermissionsPlaceholder.title
+        placeholderPermissionView.subtitle = L10n.Camera.PermissionsPlaceholder.body
+
+        cameraViewController.permissionsPlaceholderView = placeholderPermissionView
+        cameraViewController.modalPresentationStyle = .overCurrentContext
+        cameraViewController.delegate = self
+        present(cameraViewController, animated: true)
     }
 
     private func setupNavigationBar() {
@@ -277,7 +381,7 @@ public final class GalleryViewController: UIViewController {
         }
     }
 
-    private func stopScrolling(_ state: AlbumsShevroneView.ShevronePosition) {
+    private func stopScrolling(_ state: AlbumTitleView.StatePosition) {
         state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
 
@@ -286,6 +390,8 @@ public final class GalleryViewController: UIViewController {
             collectionView.scrollToItem(at: .init(row: 0, section: 0), at: .top, animated: false)
         }
     }
+
+    // MARK: - Private Action
 
     @objc private func cameraButtonPressed() {
         showCamera()

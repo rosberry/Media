@@ -20,4 +20,10 @@
 
 "permissions.action" = "Allow Access";
 
+"manage_access.title" = "You’ve given %@ access to select number of photos. Tap «%@» to add/change.";
+"manage_access.button_title" = "Manager";
+"manage_access.more" = "Select more photos";
+"manage_access.settings" = "Change settings";
+"manage_access.cancel" = "Cancel";
+
 "dummy" = "dummy";
