@@ -16,7 +16,7 @@ public final class GalleryPresenter {
     }
 
     typealias Dependencies = HasMediaLibraryService
-    typealias StatePosition = AlbumTitleView.StatePosition
+    typealias StateDirection = AlbumTitleView.StateDirection
 
     private let dependencies: Dependencies
     weak var view: GalleryViewController?
@@ -70,7 +70,7 @@ public final class GalleryPresenter {
     }()
 
     private let maxItemsCount: Int
-    private var statePosition: StatePosition
+    private var stateDirection: StateDirection
     public var numberOfItemsInRow: Int
     public var bundleName: String
     public var mediaAppearance: MediaAppearance
@@ -92,7 +92,7 @@ public final class GalleryPresenter {
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.filter = filter
-        self.statePosition = .down
+        self.stateDirection = .down
     }
 
     func viewReadyEventTriggered() {
@@ -105,7 +105,7 @@ public final class GalleryPresenter {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
                 switch status {
                     case .limited:
-                        self?.view?.showManagerAccessView()
+                        self?.view?.showAccessManagerView()
                     default:
                         break
                 }
@@ -124,20 +124,20 @@ public final class GalleryPresenter {
     }
 
     func albumsEventTriggered() {
-        switch statePosition {
+        switch stateDirection {
            case .up:
-              statePosition = .down
+              stateDirection = .down
               dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
               view?.changeCollectionView(assetsIsHidden: false)
            case .down:
-              statePosition = .up
+              stateDirection = .up
               if collections.isEmpty {
                   setupCollections()
               }
               view?.update(with: collections)
               view?.changeCollectionView(assetsIsHidden: true)
         }
-        view?.updateTitleView(with: statePosition)
+        view?.updateTitleView(with: stateDirection)
     }
 
     func closeEventTriggered() {
@@ -194,7 +194,7 @@ public final class GalleryPresenter {
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
             self.view?.updateTitleView(with: result.collection.title,
                                        isHideTitle: isHideTitle,
-                                       statePosition: self.statePosition)
+                                       stateDirection: self.stateDirection)
         }
     }
 
@@ -276,7 +276,7 @@ public final class GalleryPresenter {
 extension GalleryPresenter: GallerySectionsFactoryOutput {
 
     func didSelect(_ collection: MediaItemsCollection) {
-        statePosition = .down
+        stateDirection = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
     }

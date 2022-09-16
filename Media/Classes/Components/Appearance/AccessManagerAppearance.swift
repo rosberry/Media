@@ -5,7 +5,7 @@
 import Foundation
 import Texstyle
 
-public struct ManagerAppearance {
+public struct AccessManagerAppearance {
     var projectName: String
     var title: String
     var titleStyle: TextStyle

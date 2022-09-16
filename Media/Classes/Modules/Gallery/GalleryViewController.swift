@@ -28,8 +28,8 @@ public final class GalleryViewController: UIViewController {
         presenter.mediaAppearance.navigation
     }
 
-    private var managerAppearance: ManagerAppearance {
-        presenter.mediaAppearance.managerAccess
+    private var accessManagerAppearance: AccessManagerAppearance {
+        presenter.mediaAppearance.accessManager
     }
 
     private lazy var factory: GallerySectionsFactory = {
@@ -50,8 +50,8 @@ public final class GalleryViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var managerAccessView: ManagerAccessView = {
-        let view = ManagerAccessView(managerAppearance: managerAppearance)
+    private lazy var accessManagerView: AccessManagerView = {
+        let view = AccessManagerView(managerAppearance: accessManagerAppearance)
         view.isHidden = true
         view.manageEventHandler = { [weak self] in
             self?.presenter.showActionSheetEventTriggered()
@@ -125,7 +125,7 @@ public final class GalleryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = mediaAppearance.gallery.backgroundColor
 
-        view.addSubview(managerAccessView)
+        view.addSubview(accessManagerView)
         view.addSubview(albumsCollectionView)
         view.addSubview(assetsCollectionView)
         placeholderView.addSubview(placeholderLabel)
@@ -146,28 +146,28 @@ public final class GalleryViewController: UIViewController {
             maker.bottom(inset: view.safeAreaInsets.bottom)
         }
 
-        managerAccessView.configureFrame { maker in
+        accessManagerView.configureFrame { maker in
             maker.top(to: view.nui_safeArea.top, inset: 16).left(inset: 8).right(inset: 8)
                 .sizeThatFits(size: view.bounds.size)
         }
 
         assetsCollectionView.configureFrame { maker in
             maker.left().right().bottom()
-            if managerAccessView.isHidden {
+            if accessManagerView.isHidden {
                 maker.top(to: view.nui_safeArea.top)
             }
             else {
-                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+                maker.top(to: accessManagerView.nui_bottom, inset: 12)
             }
         }
 
         albumsCollectionView.configureFrame { maker in
             maker.left().right().bottom()
-            if managerAccessView.isHidden {
+            if accessManagerView.isHidden {
                 maker.top(to: view.nui_safeArea.top)
             }
             else {
-                maker.top(to: managerAccessView.nui_bottom, inset: 12)
+                maker.top(to: accessManagerView.nui_bottom, inset: 12)
             }
         }
 
@@ -266,7 +266,7 @@ public final class GalleryViewController: UIViewController {
 
     func updateTitleView(with title: String? = nil,
                          isHideTitle: Bool,
-                         statePosition: AlbumTitleView.StatePosition) {
+                         stateDirection: AlbumTitleView.StateDirection) {
         guard isHideTitle == false else {
             titleView.isHidden = true
             return
@@ -280,17 +280,17 @@ public final class GalleryViewController: UIViewController {
         }
 
         titleView.isHidden = false
-        titleView.update(statePosition: statePosition)
+        titleView.update(stateDirection: stateDirection)
     }
 
-    func updateTitleView(with statePosition: AlbumTitleView.StatePosition) {
-        titleView.update(statePosition: statePosition)
+    func updateTitleView(with stateDirection: AlbumTitleView.StateDirection) {
+        titleView.update(stateDirection: stateDirection)
     }
 
-    func showManagerAccessView() {
+    func showAccessManagerView() {
         DispatchQueue.main.async {
             self.titleView.isHidden = true
-            self.managerAccessView.isHidden = false
+            self.accessManagerView.isHidden = false
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
         }
@@ -330,7 +330,7 @@ public final class GalleryViewController: UIViewController {
                                                            action: #selector(closeButtonPressed))
     }
 
-    private func stopScrolling(_ state: AlbumTitleView.StatePosition) {
+    private func stopScrolling(_ state: AlbumTitleView.StateDirection) {
         state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
 

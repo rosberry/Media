@@ -6,10 +6,10 @@ import UIKit
 import Framezilla
 import Texstyle
 
-public final class ManagerAccessView: UIView {
+public final class AccessManagerView: UIView {
     var manageEventHandler: (() -> Void)?
 
-    private let managerAppearance: ManagerAppearance
+    private let managerAppearance: AccessManagerAppearance
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -27,7 +27,7 @@ public final class ManagerAccessView: UIView {
         return button
     }()
 
-    init(managerAppearance: ManagerAppearance) {
+    init(managerAppearance: AccessManagerAppearance) {
         self.managerAppearance = managerAppearance
         super.init(frame: .zero)
         setup()

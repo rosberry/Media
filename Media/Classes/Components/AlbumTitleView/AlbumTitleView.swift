@@ -7,15 +7,15 @@ import UIKit
 
 final class AlbumTitleView: UIView {
 
-    enum StatePosition {
+    enum StateDirection {
         case up
         case down
     }
 
-    var tapEventHandler: ((StatePosition) -> Void)?
+    var tapEventHandler: ((StateDirection) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    private var state: StatePosition = .down
+    private var state: StateDirection = .down
     private let betweenInset: CGFloat = 3
     private let titleImage: UIImage?
 
@@ -68,18 +68,18 @@ final class AlbumTitleView: UIView {
         addGestureRecognizer(tapGesture)
     }
 
-    func update(statePosition: StatePosition) {
-        guard state != statePosition else {
+    func update(stateDirection: StateDirection) {
+        guard state != stateDirection else {
             return
         }
         let transform: CGAffineTransform
-        switch statePosition {
+        switch stateDirection {
            case .up:
               transform = .init(rotationAngle: CGFloat.pi)
            case .down:
               transform = .identity
         }
-        state = statePosition
+        state = stateDirection
         UIView.animate(withDuration: 0.1) {
             self.imageView.transform = transform
         }

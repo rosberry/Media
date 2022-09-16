@@ -57,8 +57,8 @@
 		A98FCDEC27F5BDE500B1854F /* AlbumTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDEB27F5BDE500B1854F /* AlbumTitleView.swift */; };
 		A98FCDF027F5C12B00B1854F /* UIEdgeInsets+Sum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDEF27F5C12B00B1854F /* UIEdgeInsets+Sum.swift */; };
 		A98FCDF927F6B27700B1854F /* ATRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98FCDF827F6B27700B1854F /* ATRButton.swift */; };
-		A9C508E128C8517000EA7596 /* ManagerAccess.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E028C8517000EA7596 /* ManagerAccess.swift */; };
-		A9C508E328C8564900EA7596 /* ManagerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E228C8564900EA7596 /* ManagerAppearance.swift */; };
+		A9C508E128C8517000EA7596 /* AccessManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E028C8517000EA7596 /* AccessManagerView.swift */; };
+		A9C508E328C8564900EA7596 /* AccessManagerAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E228C8564900EA7596 /* AccessManagerAppearance.swift */; };
 		A9C508E628C8ACFF00EA7596 /* ActionSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E528C8ACFE00EA7596 /* ActionSheetViewController.swift */; };
 		A9C508E928C9AAF300EA7596 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C508E828C9AAF300EA7596 /* ActionButton.swift */; };
 		A9C5090828C9DADD00EA7596 /* ActionSheetAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */; };
@@ -133,8 +133,8 @@
 		A98FCDEB27F5BDE500B1854F /* AlbumTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumTitleView.swift; sourceTree = "<group>"; };
 		A98FCDEF27F5C12B00B1854F /* UIEdgeInsets+Sum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Sum.swift"; sourceTree = "<group>"; };
 		A98FCDF827F6B27700B1854F /* ATRButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATRButton.swift; sourceTree = "<group>"; };
-		A9C508E028C8517000EA7596 /* ManagerAccess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerAccess.swift; sourceTree = "<group>"; };
-		A9C508E228C8564900EA7596 /* ManagerAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerAppearance.swift; sourceTree = "<group>"; };
+		A9C508E028C8517000EA7596 /* AccessManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessManagerView.swift; sourceTree = "<group>"; };
+		A9C508E228C8564900EA7596 /* AccessManagerAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessManagerAppearance.swift; sourceTree = "<group>"; };
 		A9C508E528C8ACFE00EA7596 /* ActionSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewController.swift; sourceTree = "<group>"; };
 		A9C508E828C9AAF300EA7596 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetAppearance.swift; sourceTree = "<group>"; };
@@ -241,7 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				A9C508EA28C9AB8E00EA7596 /* ActionButton */,
-				A9C508E428C85E0D00EA7596 /* ManagerAccessView  */,
+				A9C508E428C85E0D00EA7596 /* AccessManagerView */,
 				A98FCDF727F6B26800B1854F /* ATRButton */,
 				A98FCDE827F5BDC100B1854F /* AlbumTitleView */,
 				A9FF44072743B943001D7559 /* Appearance */,
@@ -433,12 +433,12 @@
 			path = ATRButton;
 			sourceTree = "<group>";
 		};
-		A9C508E428C85E0D00EA7596 /* ManagerAccessView  */ = {
+		A9C508E428C85E0D00EA7596 /* AccessManagerView */ = {
 			isa = PBXGroup;
 			children = (
-				A9C508E028C8517000EA7596 /* ManagerAccess.swift */,
+				A9C508E028C8517000EA7596 /* AccessManagerView.swift */,
 			);
-			path = "ManagerAccessView ";
+			path = AccessManagerView;
 			sourceTree = "<group>";
 		};
 		A9C508E728C9AACE00EA7596 /* ActionSheet */ = {
@@ -468,7 +468,7 @@
 				A9573E8927FC238300383B00 /* AlbumSectionAppearance.swift */,
 				A9573E8527FC192200383B00 /* NavigationAppearance.swift */,
 				A9573E8727FC1AE000383B00 /* PermissionAppearance.swift */,
-				A9C508E228C8564900EA7596 /* ManagerAppearance.swift */,
+				A9C508E228C8564900EA7596 /* AccessManagerAppearance.swift */,
 				A9C5090728C9DADD00EA7596 /* ActionSheetAppearance.swift */,
 				A9C5090928C9DB6000EA7596 /* ActionButtonAppearance.swift */,
 			);
@@ -607,7 +607,7 @@
 				06A629F9242113130099B130 /* SelectionView.swift in Sources */,
 				1373B08522DC237700F28EF0 /* UIImage+Orientation.swift in Sources */,
 				A9376A3B270F043F004C1775 /* MediaItemCell.swift in Sources */,
-				A9C508E328C8564900EA7596 /* ManagerAppearance.swift in Sources */,
+				A9C508E328C8564900EA7596 /* AccessManagerAppearance.swift in Sources */,
 				A98FCDF927F6B27700B1854F /* ATRButton.swift in Sources */,
 				A98FCDE627F5AD2900B1854F /* TextStyles.swift in Sources */,
 				A93A905A2706E24E00DB8FC1 /* PhotoItemCellModel.swift in Sources */,
@@ -632,7 +632,7 @@
 				1373B08A22DC237700F28EF0 /* PlayerView.swift in Sources */,
 				1373B07922DC237700F28EF0 /* MediaItemsFilter+title.swift in Sources */,
 				A9FF440D2743BC7A001D7559 /* AssetCellAppearance.swift in Sources */,
-				A9C508E128C8517000EA7596 /* ManagerAccess.swift in Sources */,
+				A9C508E128C8517000EA7596 /* AccessManagerView.swift in Sources */,
 				A9573E8A27FC238300383B00 /* AlbumSectionAppearance.swift in Sources */,
 				1373B08F22DC237700F28EF0 /* MediaItemPreviewViewController.swift in Sources */,
 				1373B09022DC237700F28EF0 /* MediaItemPreviewModule.swift in Sources */,
