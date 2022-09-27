@@ -16,30 +16,42 @@ Media - wrapper on over system gallery. Also support customization UI.
 ## Using
 ### Create MediaCoordinator
 
-First create object `MediaCoordinator`
-
-```Swift
-private var coordinator: MediaCoordinator?
-```
-
-`MediaCoordinator` initialization:
-
-```Swift
-MediaCoordinator(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter)
-```
-
-Let's break it down for you one at a time:
-- `navigationViewController: UINavigationController` need for navigation. 
-- `mediaAppearance: MediaAppearance` object for customization UI on gallery. Argument is optional.
+To start using `Media`, you must use the `MediaCoordinator`.
+Initialization `MediaCoordinator(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter)` where:
+- `navigationViewController: UINavigationController` navigation. 
+- `mediaAppearance: MediaAppearance` argurement for customization UI on gallery and be is a optional.
 - `filter: MediaItemsFilter` enum for filtered item in gallery. Default value `.all`.
 
-Also `MediaCoordinator` is have important variable such as:
-
 ```Swift
-
+   var coordinator = MediaCoordinator(navigationViewController: navigationViewController)
 ```
 
-After init class `MediaCoordinator` and call `func start()` on coordinator
+Also in `MediaCoordinator` is have important public variables such as:
+- `MediaCoordinatorDelegate` delegate handles event:
+```Swift
+    public weak var delegate: MediaCoordinatorDelegate?
+    
+    public protocol MediaCoordinatorDelegate: AnyObject {
+        func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
+        // select photo in list gallery 
+        func photoEventTriggered(_ image: UIImage)
+        // triggered when make photo over camera
+        
+        func moreEventTriggered()
+        // triggered when tap on more in manager access
+        func settingEventTriggered()
+        // triggered when tap in setting in manager access
+        func customEventTriggered()
+        // triggered when tap on custom element in manager access. If added is not custom button event never triggered.
+    }
+```
+-  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. If want to show need setup `true`. Default value `false`.(support available iOS14 and up)
+
+```Swift
+    public var isEnableManagerAccess: Bool = false
+```
+
+After initialization `MediaCoordinator` calling `func start()` on coordinator for present gallery.
 
 ```Swift
     private func start() {
