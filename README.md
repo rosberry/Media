@@ -75,21 +75,21 @@ Also in `MediaCoordinator` is have important public variables such as:
     public var filter: MediaItemsFilter
 ```
 
-Importmant before call `start()` about `MediaCoordinator` necessary added in `Info.plist` project:
+Importmant before call `start()` about `MediaCoordinator` necessary added property in `Info.plist`:
 
-For access photo library.
+For access photo library
 ```
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 ```
 
-For access use camera.
+For access use camera
 ```
 	<key>NSCameraUsageDescription</key>
 	<string></string>
 ```
 
-For showing manager access and off system popup when choosee permission limited photos.
+For showing manager access and off system popup when choosee permission limited photos
 ```
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
