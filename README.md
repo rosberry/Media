@@ -20,7 +20,7 @@ To start using `Media`, you must use the `MediaCoordinator`.
 Initialization `MediaCoordinator(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter)` where:
 - `navigationViewController: UINavigationController` navigation. 
 - `mediaAppearance: MediaAppearance` argurement for customization UI on gallery and be is a optional.
-- `filter: MediaItemsFilter` enum for filtered item in gallery. Default value `.all`.
+- `filter: MediaItemsFilter` filter for elements in gallery. Default value `.all`.
 
 ```Swift
    var coordinator = MediaCoordinator(navigationViewController: navigationViewController)
