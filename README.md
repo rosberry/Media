@@ -45,7 +45,7 @@ Also in `MediaCoordinator` is have important public variables such as:
         // triggered when tap on custom element in manager access. If added is not custom button event never triggered.
     }
 ```
--  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. If want to show need setup `true`. Default value `false`(support available iOS14 and up).
+-  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. Default value `false`(support available iOS14 and up).
 
 ```Swift
     public var isEnableManagerAccess: Bool = false
