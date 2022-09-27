@@ -129,7 +129,7 @@ public final class GalleryPresenter {
               statePosition = .down
               dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
               view?.changeCollectionView(assetsIsHidden: false)
-              output?.hideAlbumsEventTriggered()
+            output?.albumsEventTriggered(isShown: false)
            case .down:
               statePosition = .up
               if collections.isEmpty {
@@ -137,7 +137,7 @@ public final class GalleryPresenter {
                 }
                 view?.update(with: collections)
                 view?.changeCollectionView(assetsIsHidden: true)
-                output?.albumsEventTriggered()
+                output?.albumsEventTriggered(isShown: true)
         }
         view?.updateTitleView(with: statePosition)
         view?.hidePlaceholdersIfNeeded()
@@ -227,8 +227,9 @@ public final class GalleryPresenter {
             let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
             let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
-        }, objectHandler: { indexPath in
-            guard indexPath.row < count else {
+        }, objectHandler: { [weak self] indexPath in
+            guard let self = self,
+                  indexPath.row < count else {
                 return nil
             }
             let asset = result.object(at: count - indexPath.row - 1)
@@ -296,7 +297,7 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
         statePosition = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
-        output?.hideAlbumsEventTriggered()
+        output?.albumsEventTriggered(isShown: false)
     }
 
     func didSelect(_ item: MediaItem) {

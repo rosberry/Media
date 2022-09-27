@@ -86,7 +86,7 @@ open class DefaultPermissionsAppearance: PlaceholderAppearance {
                 return
             }
 
-            UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
+            UIApplication.shared.open(settingsURL)
         }
     }
 }

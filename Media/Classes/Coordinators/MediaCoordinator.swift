@@ -171,11 +171,7 @@ extension MediaCoordinator: GalleryModuleOutput {
         }
     }
 
-    public func albumsEventTriggered() {
-        delegate?.albumsShownValueChanged(true)
-    }
-
-    public func hideAlbumsEventTriggered() {
-        delegate?.albumsShownValueChanged(false)
+    public func albumsEventTriggered(isShown: Bool) {
+        delegate?.albumsShownValueChanged(isShown)
     }
 }

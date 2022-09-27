@@ -8,7 +8,7 @@ import Framezilla
 
 public final class PlaceholderView: UIView {
 
-    private let placehiolderAppearance: PlaceholderAppearance
+    private let placeholderAppearance: PlaceholderAppearance
 
     // MARK: - Subviews
 
@@ -37,7 +37,7 @@ public final class PlaceholderView: UIView {
     // MARK: - Lifecycle
 
     init(placeholderAppearance: PlaceholderAppearance) {
-        self.placehiolderAppearance = placeholderAppearance
+        self.placeholderAppearance = placeholderAppearance
         super.init(frame: .zero)
         setup()
     }
@@ -47,25 +47,25 @@ public final class PlaceholderView: UIView {
     }
 
     private func setup() {
-        backgroundColor = placehiolderAppearance.backgroundColor
+        backgroundColor = placeholderAppearance.backgroundColor
 
         addSubview(titleLabel)
         addSubview(subtitleLabel)
         addSubview(button)
         addSubview(separatorView)
-        placehiolderAppearance.configure(placeholderView: self)
+        placeholderAppearance.configure(placeholderView: self)
     }
 
     // MARK: - Layout
 
     override public func layoutSubviews() {
         super.layoutSubviews()
-        placehiolderAppearance.layout(placeholderView: self)
+        placeholderAppearance.layout(placeholderView: self)
     }
 
     // MARK: - Actions
 
     @objc private func buttonPressed() {
-        placehiolderAppearance.buttonAction?()
+        placeholderAppearance.buttonAction?()
     }
 }

@@ -66,7 +66,6 @@ public final class GalleryViewController: UIViewController {
             self?.stopScrolling(state)
             self?.presenter.albumsEventTriggered()
         }
-        view.imageView.isHidden = true
         return view
     }()
 
@@ -268,8 +267,6 @@ public final class GalleryViewController: UIViewController {
             titleView.layoutIfNeeded()
         }
         titleView.imageView.isHidden = false
-        titleView.isHidden = false
-
         titleView.isHidden = false
         titleView.update(statePosition: statePosition)
     }

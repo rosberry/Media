@@ -6,7 +6,6 @@ import Foundation
 import Texstyle
 
 public struct ManagerAppearance {
-    var projectName: String
     var title: String
     var titleStyle: TextStyle
     var buttonTitle: String
@@ -21,7 +20,6 @@ public struct ManagerAppearance {
                 buttonTitleStyle: TextStyle = .button1A,
                 cornerRadius: Double = 15,
                 backgroundColor: UIColor = .button1A) {
-        self.projectName = projectName
         self.titleStyle = titleStyle
         self.buttonTitleStyle = buttonTitleStyle
         self.cornerRadius = cornerRadius

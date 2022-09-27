@@ -29,8 +29,7 @@ public protocol GalleryModuleOutput: AnyObject {
                                        settingCompletion: @escaping () -> Void)
     func openApplicationSettingEventTriggered()
     func showLimitedPickerEventTriggered()
-    func albumsEventTriggered()
-    func hideAlbumsEventTriggered()
+    func albumsEventTriggered(isShown: Bool)
 }
 
 public final class GalleryModule {
