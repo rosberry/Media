@@ -27,7 +27,7 @@ Initialization `MediaCoordinator(navigationViewController: UINavigationControlle
 ```
 
 Also in `MediaCoordinator` is have important public variables such as:
-- `MediaCoordinatorDelegate` delegate handles event:
+- `MediaCoordinatorDelegate` delegate for handles event:
 ```Swift
     public weak var delegate: MediaCoordinatorDelegate?
     
@@ -45,10 +45,54 @@ Also in `MediaCoordinator` is have important public variables such as:
         // triggered when tap on custom element in manager access. If added is not custom button event never triggered.
     }
 ```
--  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. If want to show need setup `true`. Default value `false`.(support available iOS14 and up)
+-  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. If want to show need setup `true`. Default value `false`(support available iOS14 and up).
 
 ```Swift
     public var isEnableManagerAccess: Bool = false
+```
+
+- `maxItemsCount` maximum value selected photos on album. Default value 2.
+
+```Swift
+    public var maxItemsCount: Int = 2
+```
+
+- `numberOfItemsInRow` count photo items in row. Default value 4
+
+```Swift
+    public var numberOfItemsInRow: Int = 4
+```
+
+- `mediaAppearance` using if need customized UI
+
+```Swift
+    public var mediaAppearance: MediaAppearance
+```
+
+- `filter` filter for elements in gallery. Default value `.all`.
+
+```Swift
+    public var filter: MediaItemsFilter
+```
+
+Importmant before call `start()` about `MediaCoordinator` necessary added in `Info.plist` project:
+
+For access photo library.
+```
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string></string>
+```
+
+For access use camera.
+```
+	<key>NSCameraUsageDescription</key>
+	<string></string>
+```
+
+For showing manager access and off system popup when choosee permission limited photos.
+```
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 ```
 
 After initialization `MediaCoordinator` calling `func start()` on coordinator for present gallery.
@@ -75,6 +119,7 @@ After initialization `MediaCoordinator` calling `func start()` on coordinator fo
 ```ogdl
 github "rosberry/Media"
 ```
+
 ### CocoaPods
 
 [CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate MediaService into your Xcode project using CocoaPods, specify it in your `Podfile`:
