@@ -78,19 +78,14 @@ Default `true`.
 
 Importmant before call `start()` about `MediaCoordinator` necessary added property in `Info.plist`:
 
-For access photo library
 ```
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
-```
-
-For access use camera
-```
 	<key>NSCameraUsageDescription</key>
 	<string></string>
 ```
 
-For showing manager access and off system popup when choosee permission limited photos
+If want to showing manager access and off system popup when choosee permission limited photos
 ```
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
