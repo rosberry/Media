@@ -232,9 +232,9 @@ public final class GalleryViewController: UIViewController {
             }, completion: nil)
         }
         else {
-            self.assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
+            assetsCollectionManager.mode = .lazy(provider: sectionItemsProvider)
             assetsCollectionView.isUserInteractionEnabled = true
-            self.assetsCollectionView.reloadData()
+            assetsCollectionView.reloadData()
         }
         let estimatedCellItemsCount = (0..<sectionItemsProvider.sectionItemsNumberHandler()).reduce(0) { res, index in
             res + sectionItemsProvider.cellItemsNumberHandler(index)
