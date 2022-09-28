@@ -57,10 +57,11 @@ Also in `MediaCoordinator` is have important public variables such as:
     public var maxItemsCount: Int = 2
 ```
 
-- `numberOfItemsInRow` count photo items in row. Default value 4
+- `needCloseBySelect` this value `true` when mediaCoordinator close tap photo. If you need more than one photo select setup `false`.
+Default `true`.
 
 ```Swift
-    public var numberOfItemsInRow: Int = 4
+    public var needCloseBySelect: Bool = true
 ```
 
 - `mediaAppearance` using if need customized UI
