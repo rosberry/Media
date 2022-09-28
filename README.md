@@ -85,7 +85,7 @@ Importmant before call `start()` about `MediaCoordinator` necessary added proper
 	<string></string>
 ```
 
-If want to showing manager access and off system popup when choosee permission limited photos
+If want to showing manager access and off system popup when choose permission limited photos
 ```
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
