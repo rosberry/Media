@@ -33,7 +33,7 @@ public final class MediaCoordinator {
     public var numberOfItemsInRow: Int = 4
 
     public var mediaAppearance: MediaAppearance
-    public var isEnableManagerAccess: Bool = false
+    public var isAccessManagerEnabled: Bool = false
     public var filter: MediaItemsFilter
 
     private var actionButtonsAppearance: [ActionButtonAppearance] {
@@ -77,7 +77,7 @@ public final class MediaCoordinator {
 
     private func makeGalleryModule(bundleName: String) -> GalleryModule {
         let module = GalleryModule(bundleName: bundleName,
-                                   isEnableManagerAccess: isEnableManagerAccess,
+                                   isAccessManagerEnabled: isAccessManagerEnabled,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
                                    numberOfItemsInRow: numberOfItemsInRow,

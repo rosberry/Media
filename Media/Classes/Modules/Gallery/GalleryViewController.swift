@@ -266,7 +266,7 @@ public final class GalleryViewController: UIViewController {
 
     func updateTitleView(with title: String? = nil,
                          isHideTitle: Bool,
-                         stateDirection: AlbumTitleView.StateDirection) {
+                         direction: AlbumTitleView.Direction) {
         guard isHideTitle == false else {
             titleView.isHidden = true
             return
@@ -280,11 +280,11 @@ public final class GalleryViewController: UIViewController {
         }
 
         titleView.isHidden = false
-        titleView.update(stateDirection: stateDirection)
+        titleView.update(direction: direction)
     }
 
-    func updateTitleView(with stateDirection: AlbumTitleView.StateDirection) {
-        titleView.update(stateDirection: stateDirection)
+    func updateTitleView(with direction: AlbumTitleView.Direction) {
+        titleView.update(direction: direction)
     }
 
     func showAccessManagerView() {
@@ -330,8 +330,8 @@ public final class GalleryViewController: UIViewController {
                                                            action: #selector(closeButtonPressed))
     }
 
-    private func stopScrolling(_ state: AlbumTitleView.StateDirection) {
-        state == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
+    private func stopScrolling(_ direction: AlbumTitleView.Direction) {
+        direction == .up ? updateCollectionView(assetsCollectionView) : updateCollectionView(albumsCollectionView)
     }
 
     private func updateCollectionView(_ collectionView: UICollectionView) {

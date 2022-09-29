@@ -52,14 +52,14 @@ public final class GalleryModule {
     private let presenter: GalleryPresenter
 
     public init(bundleName: String,
-                isEnableManagerAccess: Bool,
+                isAccessManagerEnabled: Bool,
                 filter: MediaItemsFilter,
                 maxItemsCount: Int,
                 numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
                 mediaAppearance: MediaAppearance) {
         presenter = GalleryPresenter(bundleName: bundleName,
-                                     isEnableManagerAccess: isEnableManagerAccess,
+                                     isAccessManagerEnabled: isAccessManagerEnabled,
                                      filter: filter,
                                      maxItemsCount: maxItemsCount,
                                      numberOfItemsInRow: numberOfItemsInRow,

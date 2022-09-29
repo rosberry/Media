@@ -8,20 +8,20 @@ import UIKit
 public struct ActionSheetAppearance {
     var backgroundColor: UIColor
 
-    var containerButtonsColor: UIColor
-    var containerButtonsCornerRadius: Double
+    var buttonContainerColor: UIColor
+    var buttonContainerCornerRadius: Double
 
     var cancelButtonAppearance: ActionButtonAppearance
     var actionButtonsAppearance: [ActionButtonAppearance]
 
     public init(backgroundColor: UIColor = .main1A,
-                containerButtonsColor: UIColor = .main2A,
-                containerButtonsCornerRadius: Double = 14,
+                buttonContainerColor: UIColor = .main2A,
+                buttonContainerCornerRadius: Double = 14,
                 cancelButtonAppearance: ActionButtonAppearance? = nil,
                 actionButtonsAppearance: [ActionButtonAppearance] = []) {
         self.backgroundColor = backgroundColor
-        self.containerButtonsColor = containerButtonsColor
-        self.containerButtonsCornerRadius = containerButtonsCornerRadius
+        self.buttonContainerColor = buttonContainerColor
+        self.buttonContainerCornerRadius = buttonContainerCornerRadius
         self.cancelButtonAppearance = cancelButtonAppearance ?? .init(title: L10n.ManageAccess.cancel,
                                                                       lineColor: nil,
                                                                       backgroundColor: .main2A)

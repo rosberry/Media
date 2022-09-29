@@ -40,7 +40,8 @@ public final class ActionSheetViewController: UIViewController {
 
     private(set) lazy var actionButtonsContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = appearance.containerButtonsColor
+        view.backgroundColor = appearance.buttonContainerColor
+        view.layer.cornerRadius = appearance.buttonContainerCornerRadius
         view.clipsToBounds = true
         return view
     }()
