@@ -30,7 +30,7 @@ public final class ActionSheetViewController: UIViewController {
     private var cancelAppearance: ActionButtonAppearance {
         appearance.cancelButtonAppearance
     }
-
+    private var isShowActionSheetView: Bool
     private lazy var tapRecognizer: UITapGestureRecognizer = .init(target: self,
                                                                    action: #selector(backgroundViewTapped))
 
@@ -48,6 +48,8 @@ public final class ActionSheetViewController: UIViewController {
 
     private(set) lazy var backgroundView: UIView = {
         let view = UIView()
+        view.addGestureRecognizer(tapRecognizer)
+        view.alpha = 0
         view.backgroundColor = appearance.backgroundColor
         view.isUserInteractionEnabled = true
         return view
@@ -68,6 +70,7 @@ public final class ActionSheetViewController: UIViewController {
 
     init(appearance: ActionSheetAppearance) {
         self.appearance = appearance
+        self.isShowActionSheetView = false
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .custom
         modalTransitionStyle = .crossDissolve
@@ -79,8 +82,6 @@ public final class ActionSheetViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        contentView.addGestureRecognizer(tapRecognizer)
-
         contentView.addSubview(cancelButton)
         contentView.addSubview(actionButtonsContainerView)
 
@@ -93,38 +94,62 @@ public final class ActionSheetViewController: UIViewController {
 
         backgroundView.frame = view.bounds
 
-        contentView.configureFrame { maker in
-            maker.edges(insets: sideInsets, sides: [.horizontal])
-                .bottom(to: view.nui_safeArea.bottom, inset: sideInsets.bottom)
-                .top()
-        }
-
-        cancelButton.configureFrame { maker in
-            maker.left().right().bottom().cornerRadius(14).height(buttonHeight)
-        }
-
-        actionButtonsContainerView.configureFrame { maker in
-            let height = CGFloat(actionButtons.count) * buttonHeight
-            maker.left().right().bottom(to: cancelButton.nui_top, inset: 8)
-                .height(height).cornerRadius(14)
-        }
-
-        var previousRelation = actionButtonsContainerView.nui_top
-        actionButtons.forEach { actionButton in
-            actionButton.configureFrame { maker in
-                maker.left().right().top(to: previousRelation).height(buttonHeight)
+        [actionButtonsContainerView, cancelButton].configure(container: contentView,
+                                                             relation: .horizontal(left: sideInsets.left,
+                                                                                   right: sideInsets.right)) {
+            actionButtons.configure(container: actionButtonsContainerView, relation: .horizontal(left: 0, right: 0)) {
+                (0..<actionButtons.count).forEach { index in
+                    actionButtons[index].configureFrame { maker in
+                        maker.left().right().top(inset: buttonHeight * CGFloat(index)).height(buttonHeight)
+                    }
+                }
             }
-            previousRelation = actionButton.nui_bottom
+
+            actionButtonsContainerView.configureFrame { maker in
+                maker.left().right().top().centerX().sizeToFit().cornerRadius(14)
+            }
+
+            cancelButton.configureFrame { maker in
+                maker.left().right().height(buttonHeight)
+                    .top(to: actionButtonsContainerView.nui_bottom, inset: 8).cornerRadius(14)
+            }
+        }
+
+        contentView.configureFrame { maker in
+            maker.centerX()
+            if isShowActionSheetView {
+                maker.bottom(to: view.nui_safeArea.bottom, inset: sideInsets.bottom)
+            }
+            else {
+                maker.top(to: view.nui_bottom, inset: sideInsets.bottom)
+            }
+        }
+    }
+
+    func animateActionSheetPreview(_ isShowActionSheetView: Bool, completion: (() -> Void)? = nil) {
+        self.isShowActionSheetView = isShowActionSheetView
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut]) { [weak self] in
+            self?.backgroundView.alpha = isShowActionSheetView ? 1 : 0
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
+        } completion: { _ in
+            completion?()
         }
     }
 
     // MARK: - Private
 
+    private func dismiss() {
+        animateActionSheetPreview(false) { [weak self] in
+            self?.dismiss(animated: false)
+        }
+    }
+
     @objc private func cancelButtonPressed() {
-        dismiss(animated: true)
+        dismiss()
     }
 
     @objc private func backgroundViewTapped() {
-        dismiss(animated: true)
+        dismiss()
     }
 }

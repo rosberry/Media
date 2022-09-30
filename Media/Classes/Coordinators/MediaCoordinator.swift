@@ -153,7 +153,9 @@ extension MediaCoordinator: GalleryModuleOutput {
             return actionButton
         }
         actionSheetViewController.actionButtons = actionButtons
-        navigationViewController.present(actionSheetViewController, animated: true)
+        navigationViewController.present(actionSheetViewController, animated: false) {
+            actionSheetViewController.animateActionSheetPreview(true)
+        }
     }
 
     public func openApplicationSettingEventTriggered() {
