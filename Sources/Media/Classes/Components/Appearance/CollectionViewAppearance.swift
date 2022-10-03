@@ -2,7 +2,7 @@
 //  Copyright © 2018 Rosberry. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public struct CollectionViewAppearance {
     public var backgroundColor: UIColor

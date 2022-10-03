@@ -1,0 +1,68 @@
+{
+  "pins" : [
+    {
+      "identity" : "collectionviewtools",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/CollectionViewTools",
+      "state" : {
+        "revision" : "916345b130c8ac35252e44ffcd1f67a0e9d27702",
+        "version" : "0.1.7"
+      }
+    },
+    {
+      "identity" : "deepdiff",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onmyway133/DeepDiff",
+      "state" : {
+        "revision" : "2639b3a11054d666a4c5ec1b7dd2808e437f3289",
+        "version" : "2.3.3"
+      }
+    },
+    {
+      "identity" : "framezilla",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/Framezilla",
+      "state" : {
+        "branch" : "feature/update-spm-manifest",
+        "revision" : "22394eee07e845df421f663827d236f36a73587c"
+      }
+    },
+    {
+      "identity" : "ion",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/ion",
+      "state" : {
+        "branch" : "master",
+        "revision" : "536a941f1abff714f50ad8a06f2fe1f05f832494"
+      }
+    },
+    {
+      "identity" : "mediaservice",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/MediaService",
+      "state" : {
+        "branch" : "master",
+        "revision" : "ea293038b6934f97763f9f90d40afc002e703055"
+      }
+    },
+    {
+      "identity" : "rcam",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/rcam",
+      "state" : {
+        "branch" : "master",
+        "revision" : "83f7e38f18b1bb2c2ee0029df563941b25c1a6f2"
+      }
+    },
+    {
+      "identity" : "texstyle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rosberry/texstyle",
+      "state" : {
+        "branch" : "master",
+        "revision" : "93f75bf84717753fd0f00fb54181065f4b285849"
+      }
+    }
+  ],
+  "version" : 2
+}

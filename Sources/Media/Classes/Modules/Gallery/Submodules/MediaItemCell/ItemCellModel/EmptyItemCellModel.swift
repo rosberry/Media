@@ -4,6 +4,7 @@
 
 import CollectionViewTools
 import MediaService
+import Foundation
 
 class EmptyItemCellModel: DiffCompatible {
     var diffIdentifier: String {

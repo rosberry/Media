@@ -4,6 +4,7 @@
 
 import Foundation
 import Texstyle
+import UIKit
 
 public struct AccessManagerAppearance {
     var projectName: String

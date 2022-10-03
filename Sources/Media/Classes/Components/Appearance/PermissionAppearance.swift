@@ -3,6 +3,7 @@
 //
 
 import Texstyle
+import UIKit
 
 public struct PermissionAppearance {
     public var titleStyle: TextStyle

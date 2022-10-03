@@ -2,6 +2,8 @@
 //  Copyright © 2022 Rosberry. All rights reserved.
 //
 
+import UIKit
+
 public struct AlbumSectionAppearance {
     public var minimumLineSpacing: CGFloat
     public var minimumInteritemSpacing: CGFloat

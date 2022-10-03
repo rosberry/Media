@@ -6,6 +6,7 @@ import Foundation
 import CollectionViewTools
 import MediaService
 import Photos
+import UIKit
 
 protocol GallerySectionsFactoryOutput: AnyObject {
     func didSelect(_ item: MediaItem)
