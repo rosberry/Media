@@ -7,7 +7,7 @@ import CollectionViewTools
 import Framezilla
 import MediaService
 import AVFoundation
-import Rcam
+import RCam
 
 public final class GalleryViewController: UIViewController {
 

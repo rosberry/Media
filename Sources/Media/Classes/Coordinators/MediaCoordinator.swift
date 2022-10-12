@@ -34,6 +34,7 @@ public final class MediaCoordinator {
 
     public var mediaAppearance: MediaAppearance
     public var isAccessManagerEnabled: Bool = false
+    public var isShowActionSheetWithAnimated: Bool = true
     public var filter: MediaItemsFilter
 
     private var actionButtonsAppearance: [ActionButtonAppearance] {
@@ -154,7 +155,7 @@ extension MediaCoordinator: GalleryModuleOutput {
         }
         actionSheetViewController.actionButtons = actionButtons
         navigationViewController.present(actionSheetViewController, animated: false) {
-            actionSheetViewController.animateActionSheetPreview(true)
+            actionSheetViewController.animateActionSheetPreview(animated: self.isShowActionSheetWithAnimated)
         }
     }
 

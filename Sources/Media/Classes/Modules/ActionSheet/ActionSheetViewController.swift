@@ -31,6 +31,7 @@ public final class ActionSheetViewController: UIViewController {
         appearance.cancelButtonAppearance
     }
     private var isShowActionSheetView: Bool
+    private var isAnimated: Bool = false
     private lazy var tapRecognizer: UITapGestureRecognizer = .init(target: self,
                                                                    action: #selector(backgroundViewTapped))
 
@@ -126,21 +127,34 @@ public final class ActionSheetViewController: UIViewController {
         }
     }
 
-    func animateActionSheetPreview(_ isShowActionSheetView: Bool, completion: (() -> Void)? = nil) {
+    func animateActionSheetPreview(_ isShowActionSheetView: Bool = true,
+                                   animated: Bool = true,
+                                   completion: (() -> Void)? = nil) {
         self.isShowActionSheetView = isShowActionSheetView
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut]) { [weak self] in
-            self?.backgroundView.alpha = isShowActionSheetView ? 1 : 0
-            self?.view.setNeedsLayout()
-            self?.view.layoutIfNeeded()
-        } completion: { _ in
+        self.isAnimated = animated
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut]) { [weak self] in
+                self?.updateViewLayout()
+            } completion: { _ in
+                completion?()
+            }
+        }
+        else {
+            updateViewLayout()
             completion?()
         }
     }
 
     // MARK: - Private
 
+    private func updateViewLayout() {
+        backgroundView.alpha = isShowActionSheetView ? 1 : 0
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+    }
+
     private func dismiss() {
-        animateActionSheetPreview(false) { [weak self] in
+        animateActionSheetPreview(false, animated: isAnimated) { [weak self] in
             self?.dismiss(animated: false)
         }
     }
