@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A943731128EA9C16000282FC /* CollectionViewTools.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A943730028EA9BB6000282FC /* CollectionViewTools.xcframework */; };
-		A943731228EA9C16000282FC /* CollectionViewTools.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A943730028EA9BB6000282FC /* CollectionViewTools.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A93AA77728F6B4420079B575 /* RCam.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FC28EA9BB6000282FC /* RCam.xcframework */; };
+		A93AA77828F6B4420079B575 /* RCam.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FC28EA9BB6000282FC /* RCam.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A93AA77B28F6B5A40079B575 /* MediaService.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FF28EA9BB6000282FC /* MediaService.xcframework */; };
+		A93AA77C28F6B5A40079B575 /* MediaService.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FF28EA9BB6000282FC /* MediaService.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A93AA77D28F6B5A40079B575 /* CollectionViewTools.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A943730028EA9BB6000282FC /* CollectionViewTools.xcframework */; };
+		A93AA77E28F6B5A40079B575 /* CollectionViewTools.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A943730028EA9BB6000282FC /* CollectionViewTools.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A943731328EA9C17000282FC /* DeepDiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FE28EA9BB6000282FC /* DeepDiff.xcframework */; };
 		A943731428EA9C17000282FC /* DeepDiff.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FE28EA9BB6000282FC /* DeepDiff.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A943731528EA9C17000282FC /* Framezilla.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FB28EA9BB6000282FC /* Framezilla.xcframework */; };
@@ -17,10 +21,6 @@
 		A943731828EA9C17000282FC /* Ion.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FD28EA9BB6000282FC /* Ion.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A943731928EA9C17000282FC /* Media.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A96B48C128EA975000CEF821 /* Media.framework */; platformFilter = ios; };
 		A943731A28EA9C17000282FC /* Media.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A96B48C128EA975000CEF821 /* Media.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A943731B28EA9C17000282FC /* MediaService.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FF28EA9BB6000282FC /* MediaService.xcframework */; };
-		A943731C28EA9C17000282FC /* MediaService.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FF28EA9BB6000282FC /* MediaService.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A943731D28EA9C17000282FC /* RCam.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FC28EA9BB6000282FC /* RCam.xcframework */; };
-		A943731E28EA9C17000282FC /* RCam.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FC28EA9BB6000282FC /* RCam.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A943731F28EA9C17000282FC /* Texstyle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FA28EA9BB6000282FC /* Texstyle.xcframework */; };
 		A943732028EA9C17000282FC /* Texstyle.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A94372FA28EA9BB6000282FC /* Texstyle.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A96B481328EA961600CEF821 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B480628EA961600CEF821 /* Coordinator.swift */; };
@@ -48,14 +48,14 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A943731E28EA9C17000282FC /* RCam.xcframework in Embed Frameworks */,
-				A943731C28EA9C17000282FC /* MediaService.xcframework in Embed Frameworks */,
+				A93AA77828F6B4420079B575 /* RCam.xcframework in Embed Frameworks */,
 				A943731828EA9C17000282FC /* Ion.xcframework in Embed Frameworks */,
 				A943731428EA9C17000282FC /* DeepDiff.xcframework in Embed Frameworks */,
 				A943731628EA9C17000282FC /* Framezilla.xcframework in Embed Frameworks */,
 				A943732028EA9C17000282FC /* Texstyle.xcframework in Embed Frameworks */,
+				A93AA77C28F6B5A40079B575 /* MediaService.xcframework in Embed Frameworks */,
+				A93AA77E28F6B5A40079B575 /* CollectionViewTools.xcframework in Embed Frameworks */,
 				A943731A28EA9C17000282FC /* Media.framework in Embed Frameworks */,
-				A943731228EA9C16000282FC /* CollectionViewTools.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,14 +86,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A943731B28EA9C17000282FC /* MediaService.xcframework in Frameworks */,
+				A93AA77728F6B4420079B575 /* RCam.xcframework in Frameworks */,
 				A943731328EA9C17000282FC /* DeepDiff.xcframework in Frameworks */,
-				A943731D28EA9C17000282FC /* RCam.xcframework in Frameworks */,
 				A943731528EA9C17000282FC /* Framezilla.xcframework in Frameworks */,
 				A943731928EA9C17000282FC /* Media.framework in Frameworks */,
 				A943731F28EA9C17000282FC /* Texstyle.xcframework in Frameworks */,
+				A93AA77B28F6B5A40079B575 /* MediaService.xcframework in Frameworks */,
+				A93AA77D28F6B5A40079B575 /* CollectionViewTools.xcframework in Frameworks */,
 				A943731728EA9C17000282FC /* Ion.xcframework in Frameworks */,
-				A943731128EA9C16000282FC /* CollectionViewTools.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
