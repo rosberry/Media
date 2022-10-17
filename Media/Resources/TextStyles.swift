@@ -23,6 +23,14 @@ public extension TextStyle {
         return style
     }
 
+    static var body1C: TextStyle {
+        let style = TextStyle()
+        style.font = .systemFont(ofSize: 15, weight: .regular)
+        style.color = .main2A
+        style.alignment = .left
+        return style
+    }
+
     static var title4B: TextStyle {
         let style = TextStyle()
         style.font = .systemFont(ofSize: 17, weight: .bold)
@@ -63,4 +71,19 @@ public extension TextStyle {
         return style
     }
 
+    static var button1A: TextStyle {
+        let style = TextStyle()
+        style.font = .systemFont(ofSize: 17, weight: .bold)
+        style.color = .main2A
+        style.alignment = .center
+        return style
+    }
+
+    static var button1B: TextStyle {
+        let style = TextStyle()
+        style.font = .systemFont(ofSize: 17, weight: .bold)
+        style.color = .button1A
+        style.alignment = .center
+        return style
+    }
 }

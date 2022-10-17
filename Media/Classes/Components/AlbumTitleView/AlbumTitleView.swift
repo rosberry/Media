@@ -5,18 +5,19 @@
 import Foundation
 import UIKit
 
-final class AlbumsShevroneView: UIView {
+public final class AlbumTitleView: UIView {
 
-    enum ShevronePosition {
+    public enum StatePosition {
         case up
         case down
     }
 
-    var tapEventHandler: ((ShevronePosition) -> Void)?
+    var tapEventHandler: ((StatePosition) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    private var state: ShevronePosition = .down
-    private let betweenInset: CGFloat = 3
+    public private(set) var state: StatePosition = .down
+    public var betweenInset: CGFloat = 3
+    public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
 
     private(set) lazy var titleLabel: UILabel = .init()
@@ -33,21 +34,26 @@ final class AlbumsShevroneView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
+
+        titleLabel.configureFrame { maker in
+            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom)
+        }
+
         imageView.configureFrame { maker in
             maker.sizeToFit()
                  .right(inset: innerInset.right)
-                 .centerY(to: titleLabel.nui_centerY)
+                 .centerY(to: titleLabel.nui_centerY, offset: imageOffset)
         }
 
         titleLabel.configureFrame { maker in
-            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom).left(inset: innerInset.left)
-                 .right(to: imageView.nui_left, inset: betweenInset)
+            maker.right(to: imageView.nui_left, inset: betweenInset)
+                 .left(inset: innerInset.left)
         }
     }
 
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let imageViewSize = imageView.sizeThatFits(size)
         let titleSize = titleLabel.sizeThatFits(size)
         let width = titleSize.width + innerInset.horizontalSum + betweenInset + imageViewSize.width
@@ -68,18 +74,18 @@ final class AlbumsShevroneView: UIView {
         addGestureRecognizer(tapGesture)
     }
 
-    func update(shevronePosition: ShevronePosition) {
-        guard state != shevronePosition else {
+    func update(statePosition: StatePosition) {
+        guard state != statePosition else {
             return
         }
         let transform: CGAffineTransform
-        switch shevronePosition {
+        switch statePosition {
            case .up:
               transform = .init(rotationAngle: CGFloat.pi)
            case .down:
               transform = .identity
         }
-        state = shevronePosition
+        state = statePosition
         UIView.animate(withDuration: 0.1) {
             self.imageView.transform = transform
         }

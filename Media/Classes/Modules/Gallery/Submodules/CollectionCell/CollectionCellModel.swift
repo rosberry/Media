@@ -5,4 +5,4 @@
 import Foundation
 import MediaService
 
-typealias CollectionCellModel = MediaItemsCollection
+public typealias CollectionCellModel = MediaItemsCollection

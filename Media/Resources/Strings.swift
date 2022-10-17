@@ -22,6 +22,21 @@ internal enum L10n {
     }
   }
 
+  internal enum ManageAccess {
+    /// Manager
+    internal static let buttonTitle = L10n.tr("Localizable", "manage_access.button_title")
+    /// Cancel
+    internal static let cancel = L10n.tr("Localizable", "manage_access.cancel")
+    /// Select more photos
+    internal static let more = L10n.tr("Localizable", "manage_access.more")
+    /// Change settings
+    internal static let settings = L10n.tr("Localizable", "manage_access.settings")
+    /// You’ve given %@ access to select number of photos. Tap «%@» to add/change.
+    internal static func title(_ p1: Any, _ p2: Any) -> String {
+      return L10n.tr("Localizable", "manage_access.title", String(describing: p1), String(describing: p2))
+    }
+  }
+
   internal enum MediaLibrary {
     /// Albums
     internal static let albums = L10n.tr("Localizable", "mediaLibrary.albums")
@@ -53,6 +68,10 @@ internal enum L10n {
       /// Allow Access to Storage
       internal static let title = L10n.tr("Localizable", "mediaLibrary.permissions.title")
     }
+    internal enum Placeholder {
+      /// No media available
+      internal static let subtitle = L10n.tr("Localizable", "mediaLibrary.placeholder.subtitle")
+    }
   }
 
   internal enum Permissions {
@@ -74,12 +93,6 @@ extension L10n {
 
 // swiftlint:disable convenience_type
 private final class BundleToken {
-  static let bundle: Bundle = {
-    #if SWIFT_PACKAGE
-    return Bundle.module
-    #else
-    return Bundle(for: BundleToken.self)
-    #endif
-  }()
+  static let bundle = Bundle(for: BundleToken.self)
 }
 // swiftlint:enable convenience_type

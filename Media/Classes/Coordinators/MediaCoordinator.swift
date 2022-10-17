@@ -5,11 +5,16 @@
 import UIKit
 import Ion
 import Photos
+import PhotosUI
 import MediaService
 
 public protocol MediaCoordinatorDelegate: AnyObject {
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func albumsShownValueChanged(_ value: Bool)
+    func moreEventTriggered()
+    func settingEventTriggered()
+    func customEventTriggered()
 }
 
 public final class MediaCoordinator {
@@ -26,14 +31,18 @@ public final class MediaCoordinator {
     }()
 
     public var maxItemsCount: Int = 2
-    public var numberOfItemsInRow: Int = 4
-
     public var mediaAppearance: MediaAppearance
+    public var isEnableManagerAccess: Bool = false
     public var filter: MediaItemsFilter
+    public var needCloseBySelect: Bool = true
+
+    private var actionButtonsAppearance: [ActionButtonAppearance] {
+        mediaAppearance.actionSheet.actionButtonsAppearance
+    }
 
     // MARK: - Modules
 
-    private var galleryModule: GalleryModule?
+    public var galleryModule: GalleryModule?
 
     // MARK: - Lifecycle
 
@@ -51,8 +60,8 @@ public final class MediaCoordinator {
         setupPermissionsCollector()
     }
 
-    public func start(bundleName: String) {
-        let module = makeGalleryModule(bundleName: bundleName)
+    public func start() {
+        let module = makeGalleryModule()
         galleryModule = module
         navigationViewController.pushViewController(module.viewController, animated: true)
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
@@ -66,11 +75,10 @@ public final class MediaCoordinator {
         }
     }
 
-    private func makeGalleryModule(bundleName: String) -> GalleryModule {
-        let module = GalleryModule(bundleName: bundleName,
+    private func makeGalleryModule() -> GalleryModule {
+        let module = GalleryModule(isEnableManagerAccess: isEnableManagerAccess,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
-                                   numberOfItemsInRow: numberOfItemsInRow,
                                    mediaAppearance: mediaAppearance)
         module.output = self
         return module
@@ -106,12 +114,64 @@ extension MediaCoordinator: GalleryModuleOutput {
     }
 
     public func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.selectMediaItemsEventTriggered(mediaItems)
     }
 
     public func photoEventTriggered(_ image: UIImage) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.photoEventTriggered(image)
+    }
+
+    public func showActionSheetEventTriggered(moreCompletion: @escaping () -> Void,
+                                              settingCompletion: @escaping () -> Void) {
+        let actionSheetViewController = ActionSheetViewController(appearance: mediaAppearance.actionSheet)
+        let actionButtons: [ActionButton] = actionButtonsAppearance.map { appearance in
+            let actionButton = ActionButton(appearance: appearance)
+            switch appearance.type {
+                case .more:
+                    actionButton.actionHandler = {
+                        actionSheetViewController.dismiss(animated: true) { [weak self] in
+                            moreCompletion()
+                            self?.delegate?.moreEventTriggered()
+                        }
+                    }
+                case .setting:
+                    actionButton.actionHandler = { [weak self] in
+                        settingCompletion()
+                        self?.delegate?.settingEventTriggered()
+                    }
+                case .custom:
+                    actionButton.actionHandler = { [weak self] in
+                        self?.delegate?.customEventTriggered()
+                    }
+                default:
+                    break
+            }
+            return actionButton
+        }
+        actionSheetViewController.actionButtons = actionButtons
+        navigationViewController.present(actionSheetViewController, animated: true)
+    }
+
+    public func openApplicationSettingEventTriggered() {
+        let settingsUrl = URL(string: UIApplication.openSettingsURLString)
+        if let settingsUrl = settingsUrl, UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl)
+        }
+    }
+
+    public func showLimitedPickerEventTriggered() {
+        if #available(iOS 14, *) {
+            PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: navigationViewController)
+        }
+    }
+
+    public func albumsEventTriggered(isShown: Bool) {
+        delegate?.albumsShownValueChanged(isShown)
     }
 }

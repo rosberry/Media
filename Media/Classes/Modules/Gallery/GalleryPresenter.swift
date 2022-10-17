@@ -16,7 +16,7 @@ public final class GalleryPresenter {
     }
 
     typealias Dependencies = HasMediaLibraryService
-    typealias ShevronePosition = AlbumsShevroneView.ShevronePosition
+    typealias StatePosition = AlbumTitleView.StatePosition
 
     private let dependencies: Dependencies
     weak var view: GalleryViewController?
@@ -62,40 +62,57 @@ public final class GalleryPresenter {
     }()
 
     private lazy var factory: GallerySectionsFactory = {
-        let factory = GallerySectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
-                                             dependencies: Services,
+        let factory = GallerySectionsFactory(dependencies: Services,
                                              mediaAppearance: mediaAppearance)
         factory.output = self
         return factory
     }()
 
     private let maxItemsCount: Int
-    private var shevronePosition: ShevronePosition
+    private var statePosition: StatePosition
     public var numberOfItemsInRow: Int
-    public var bundleName: String
     public var mediaAppearance: MediaAppearance
+    public var isEnableManagerAccess: Bool
 
     // MARK: - Lifecycle
 
-    init(bundleName: String,
+    init(isEnableManagerAccess: Bool,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
-         numberOfItemsInRow: Int,
+         numberOfItemsInRow: Int = 1,
          dependencies: Dependencies,
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
-        self.bundleName = bundleName
+        self.isEnableManagerAccess = isEnableManagerAccess
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.filter = filter
-        self.shevronePosition = .down
+        self.statePosition = .down
     }
 
     func viewReadyEventTriggered() {
-        setupMediaItemsCollector()
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
+        setupForegroundObserver()
+        guard isEnableManagerAccess else {
+            setupMediaItemsCollection(isHideTitle: false)
+            return
+        }
+
+        if #available(iOS 14, *) {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) { [weak self] status in
+                switch status {
+                    case .limited:
+                        self?.view?.showManagerAccessView()
+                    default:
+                        break
+                }
+                DispatchQueue.main.async {
+                    self?.setupMediaItemsCollection(isHideTitle: status == .limited)
+                }
+            }
+        }
     }
 
     func scrollEventTriggered(direction: FocusDirection) {
@@ -107,20 +124,23 @@ public final class GalleryPresenter {
     }
 
     func albumsEventTriggered() {
-        switch shevronePosition {
+        switch statePosition {
            case .up:
-              shevronePosition = .down
+              statePosition = .down
               dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
               view?.changeCollectionView(assetsIsHidden: false)
+            output?.albumsEventTriggered(isShown: false)
            case .down:
-              shevronePosition = .up
+              statePosition = .up
               if collections.isEmpty {
                   setupCollections()
-              }
-              view?.update(with: collections)
-              view?.changeCollectionView(assetsIsHidden: true)
+                }
+                view?.update(with: collections)
+                view?.changeCollectionView(assetsIsHidden: true)
+                output?.albumsEventTriggered(isShown: true)
         }
-        view?.updateTitleView(with: shevronePosition)
+        view?.updateTitleView(with: statePosition)
+        view?.hidePlaceholdersIfNeeded()
     }
 
     func closeEventTriggered() {
@@ -136,6 +156,14 @@ public final class GalleryPresenter {
         output?.photoEventTriggered(image)
     }
 
+    func showActionSheetEventTriggered() {
+        output?.showActionSheetEventTriggered(moreCompletion: { [weak self] in
+            self?.output?.showLimitedPickerEventTriggered()
+        }, settingCompletion: { [weak self] in
+            self?.output?.openApplicationSettingEventTriggered()
+        })
+    }
+
     // MARK: - Helpers
 
     func updateSelection() {
@@ -146,14 +174,21 @@ public final class GalleryPresenter {
 
     // MARK: - Private
 
+    private func setupMediaItemsCollection(isHideTitle: Bool) {
+        setupMediaItemsCollector(isHideTitle: isHideTitle)
+        setupMediaLibraryUpdateEventCollector()
+        setupCollections()
+    }
+
     private func setupCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
-        collectionsCollector.subscribe { (collections: [MediaItemsCollection]) in
-            self.collections = collections
+        collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
+            self?.collections = collections
+            self?.view?.update(with: collections)
         }
     }
 
-    private func setupMediaItemsCollector() {
+    private func setupMediaItemsCollector(isHideTitle: Bool) {
         mediaItemsCollector.subscribe { [weak self] (result: MediaItemsFetchResult) in
             guard let self = self else {
                 return
@@ -161,7 +196,9 @@ public final class GalleryPresenter {
             self.fetchResult = result
             self.view?.update(with: self.sectionItemsProvider(for: result.fetchResult), animated: true)
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
-            self.view?.updateTitleView(with: result.collection.title, shevronePosition: self.shevronePosition)
+            self.view?.updateTitleView(with: result.collection.title,
+                                       isHideTitle: isHideTitle,
+                                       statePosition: self.statePosition)
         }
     }
 
@@ -177,21 +214,22 @@ public final class GalleryPresenter {
         let count = result.count
         let sectionAppearance = mediaAppearance.gallery.assetSectionAppearance
 
-        let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
+        let provider = LazySectionItemsProvider(factory: factory.complexFactory, cellItemsNumberHandler: { _ in
             count
-        } makeSectionItemHandler: { _ in
+        }, makeSectionItemHandler: { _ in
             let sectionItem = GeneralCollectionViewDiffSectionItem()
             sectionItem.minimumLineSpacing = sectionAppearance.minimumLineSpacing
             sectionItem.minimumInteritemSpacing = sectionAppearance.minimumInteritemSpacing
             sectionItem.insets = sectionAppearance.insets
             return sectionItem
-        } sizeHandler: { [weak self] _, collection in
-            let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
+        }, sizeHandler: { [weak self] _, collection in
+            let numberOfItemsInRow = CGFloat(self?.mediaAppearance.gallery.assetSectionAppearance.numberOfItemsInRow ?? 0)
             let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
             let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
-        } objectHandler: { indexPath in
-            guard indexPath.row < count else {
+        }, objectHandler: { [weak self] indexPath in
+            guard let self = self,
+                  indexPath.row < count else {
                 return nil
             }
             let asset = result.object(at: count - indexPath.row - 1)
@@ -211,7 +249,7 @@ public final class GalleryPresenter {
                                           selectionIndex: selectionIndex,
                                           isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
             }
-        }
+        })
         return provider
     }
 
@@ -237,15 +275,29 @@ public final class GalleryPresenter {
             }
         }
     }
+
+    private func setupForegroundObserver() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appEnterForeground),
+                                       name: UIApplication.willEnterForegroundNotification,
+                                       object: nil)
+    }
+
+    @objc private func appEnterForeground() {
+        setupCollections()
+    }
+
 }
 
 // MARK: - MediaItemSectionsFactoryOutput
 extension GalleryPresenter: GallerySectionsFactoryOutput {
 
     func didSelect(_ collection: MediaItemsCollection) {
-        shevronePosition = .down
+        statePosition = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
+        output?.albumsEventTriggered(isShown: false)
     }
 
     func didSelect(_ item: MediaItem) {

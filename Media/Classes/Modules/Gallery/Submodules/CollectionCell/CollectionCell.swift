@@ -6,51 +6,43 @@ import UIKit
 import Framezilla
 import Texstyle
 
-class CollectionCell: UICollectionViewCell {
+public class CollectionCell: UICollectionViewCell {
 
-    private var cellAppearance: AlbumCellAppearance = .init()
+    private var cellAppearance: AlbumCellAppearance = DefaultAlbumCellAppearance()
 
-    override var isHighlighted: Bool {
+    override public var isHighlighted: Bool {
         didSet {
             UIView.animate(withDuration: 0.25) {
-                if self.isHighlighted {
-                    self.contentView.backgroundColor = self.cellAppearance.selectedColor
-                }
-                else {
-                    self.contentView.backgroundColor = self.cellAppearance.highlightedColor
-                }
+                self.cellAppearance.highlightChanged(cell: self, value: self.isHighlighted)
             }
         }
     }
 
     // MARK: - Subviews
 
-    private lazy var imageView: UIImageView = {
+    public private(set) lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = cellAppearance.imageCornerRadius
         return imageView
     }()
 
-    private lazy var titleLabel: UILabel = .init()
+    public private(set) lazy var titleLabel: UILabel = .init()
 
-    private lazy var itemCountLabel: UILabel = .init()
+    public private(set) lazy var itemCountLabel: UILabel = .init()
 
     // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
-        contentView.backgroundColor = cellAppearance.contentViewColor
-        contentView.layer.cornerRadius = cellAppearance.contentViewCornerRadius
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         UIView.setAnimationsEnabled(false)
@@ -75,29 +67,14 @@ class CollectionCell: UICollectionViewCell {
             maker.heightToFit()
         }
 
+        cellAppearance.layout(cell: self)
+
         UIView.setAnimationsEnabled(true)
     }
 
     func update(with viewModel: CollectionCellModel, cellAppearance: AlbumCellAppearance) {
         self.cellAppearance = cellAppearance
-        imageView.image = viewModel.thumbnail
-        titleLabel.attributedText = viewModel.title?.text(with: cellAppearance.titleStyle).attributed
-
-        var itemCountLabelString: String?
-        switch viewModel.estimatedMediaItemsCount {
-           case .none:
-              itemCountLabelString = L10n.MediaLibrary.unknown
-           case .max?:
-              if viewModel.isFavorite {
-                  itemCountLabelString = L10n.MediaLibrary.favoriteItems
-              }
-              else {
-                  itemCountLabelString = L10n.MediaLibrary.allItems
-              }
-           case .some(let count):
-              itemCountLabelString = "\(count)"
-        }
-        itemCountLabel.attributedText = itemCountLabelString?.text(with: cellAppearance.subtitleStyle).attributed
+        cellAppearance.update(cell: self, viewModel: viewModel)
         setNeedsLayout()
         layoutIfNeeded()
     }

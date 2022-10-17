@@ -14,9 +14,16 @@
 "mediaLibrary.filter.all" = "All";
 "mediaLibrary.permissions.title" = "Allow Access to Storage";
 "mediaLibrary.permissions.subtitle" = "To share photos and videos, %@ needs access to storage on your device";
+"mediaLibrary.placeholder.subtitle" = "No media available";
 "camera.permissions_placeholder.title" = "Camera";
 "camera.permissions_placeholder.body" = "Give access to your camera\nto take a shot";
 
 "permissions.action" = "Allow Access";
+
+"manage_access.title" = "You’ve given %@ access to select number of photos. Tap «%@» to add/change.";
+"manage_access.button_title" = "Manager";
+"manage_access.more" = "Select more photos";
+"manage_access.settings" = "Change settings";
+"manage_access.cancel" = "Cancel";
 
 "dummy" = "dummy";

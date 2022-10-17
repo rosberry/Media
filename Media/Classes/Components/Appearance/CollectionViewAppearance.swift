@@ -14,9 +14,9 @@ public struct CollectionViewAppearance {
 
     public init(backgroundColor: UIColor = .white,
                 collectionViewBackgroundColor: UIColor = .white,
-                albumCellAppearance: AlbumCellAppearance = .init(),
+                albumCellAppearance: AlbumCellAppearance = DefaultAlbumCellAppearance(),
                 albumSectionAppearance: AlbumSectionAppearance = .init(),
-                assetCellAppearance: AssetCellAppearance = .init(),
+                assetCellAppearance: AssetCellAppearance = DefaultAssetCellAppearance(),
                 assetSectionAppearance: AssetSectionAppearance = .init()) {
         self.backgroundColor = backgroundColor
         self.collectionViewBackgroundColor = collectionViewBackgroundColor
