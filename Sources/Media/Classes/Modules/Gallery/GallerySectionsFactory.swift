@@ -25,20 +25,17 @@ final class GallerySectionsFactory {
         case photo
     }
 
-    private var albumCellAppearance: AlbumCellAppearance = .init()
+    private var albumCellAppearance: AlbumCellAppearance = DefaultAlbumCellAppearance()
     private var assetCellAppearance: AssetCellAppearance = .init()
     private var albumSectionAppearance: AlbumSectionAppearance = .init()
     private var assetSectionAppearance: AssetSectionAppearance = .init()
 
     weak var output: GallerySectionsFactoryOutput?
-
-    let numberOfItemsInRow: Int
     private let mediaAppearance: MediaAppearance
     private let dependencies: Dependencies
     private let thumbnailSize: CGSize = .init(width: 100.0, height: 100.0)
 
-    init(numberOfItemsInRow: Int, dependencies: Dependencies, mediaAppearance: MediaAppearance) {
-        self.numberOfItemsInRow = numberOfItemsInRow
+    init(dependencies: Dependencies, mediaAppearance: MediaAppearance) {
         self.dependencies = dependencies
         self.mediaAppearance = mediaAppearance
         self.albumCellAppearance = mediaAppearance.gallery.albumCellAppearance
@@ -55,8 +52,8 @@ final class GallerySectionsFactory {
         return complexFactory
     }()
 
-    private(set) lazy var placeholderCellItemsFactory: CellItemsFactory<EmptyItemCellModel, UICollectionViewCell> = {
-        let factory = CellItemsFactory<EmptyItemCellModel, UICollectionViewCell>()
+    private(set) lazy var placeholderCellItemsFactory: CellItemsFactory<EmptyItemCellModel, PlaceholderCell> = {
+        let factory = CellItemsFactory<EmptyItemCellModel, PlaceholderCell>()
         factory.cellItemConfigurationHandler = { [weak self] cellItem in
             cellItem.itemDidSelectHandler = { _ in
                 self?.output?.didSelect(cellItem.object.mediaItem)
@@ -98,7 +95,10 @@ final class GallerySectionsFactory {
     }
 
     private func makeCellItem(mediaItemCollection: MediaItemsCollection) -> CollectionViewCellItem {
-        let cellItem = CollectionCellItem(viewModel: mediaItemCollection, dependencies: Services, cellAppearance: albumCellAppearance)
+        let cellItem = CollectionCellItem(viewModel: mediaItemCollection,
+                                          dependencies: Services,
+                                          cellAppearance: albumCellAppearance,
+                                          sectionAppearance: albumSectionAppearance)
         cellItem.itemDidSelectHandler = { [weak self] _ in
             self?.output?.didSelect(mediaItemCollection)
         }
@@ -123,8 +123,6 @@ final class GallerySectionsFactory {
 
                 cell.update(with: cellItem.object, cellAppearance: self.assetCellAppearance)
             }
-
-            cell.selectionView.selectionInfoLabel.isHidden = cellItem.object.isSelectionInfoLabelHidden
 
             cell.didRequestPreviewStartHandler = { [weak self] sender in
                 self?.output?.didRequestPreviewStart(item: cellItem.object.mediaItem, from: sender.frame)
@@ -152,8 +150,7 @@ final class GallerySectionsFactory {
 
     private func makePlaceholderCellItems(count: Int) -> [CollectionViewCellItem] {
         return (0..<count).map { _ in
-            let cellItem = PlaceholderCellItem()
-            cellItem.numberOfItemsInRow = numberOfItemsInRow
+            let cellItem = PlaceholderCellItem(appearance: assetCellAppearance, sectionAppearance: assetSectionAppearance)
             return cellItem
         }
     }

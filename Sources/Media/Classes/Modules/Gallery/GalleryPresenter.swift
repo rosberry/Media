@@ -62,8 +62,7 @@ public final class GalleryPresenter {
     }()
 
     private lazy var factory: GallerySectionsFactory = {
-        let factory = GallerySectionsFactory(numberOfItemsInRow: numberOfItemsInRow,
-                                             dependencies: Services,
+        let factory = GallerySectionsFactory(dependencies: Services,
                                              mediaAppearance: mediaAppearance)
         factory.output = self
         return factory
@@ -72,21 +71,18 @@ public final class GalleryPresenter {
     private let maxItemsCount: Int
     private var direction: Direction
     public var numberOfItemsInRow: Int
-    public var bundleName: String
     public var mediaAppearance: MediaAppearance
     public var isAccessManagerEnabled: Bool
 
     // MARK: - Lifecycle
 
-    init(bundleName: String,
-         isAccessManagerEnabled: Bool,
+    init(isAccessManagerEnabled: Bool,
          filter: MediaItemsFilter,
          maxItemsCount: Int,
-         numberOfItemsInRow: Int,
+         numberOfItemsInRow: Int = 1,
          dependencies: Dependencies,
          mediaAppearance: MediaAppearance) {
         self.maxItemsCount = maxItemsCount
-        self.bundleName = bundleName
         self.isAccessManagerEnabled = isAccessManagerEnabled
         self.numberOfItemsInRow = numberOfItemsInRow
         self.dependencies = dependencies
@@ -96,6 +92,10 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
+        setupMediaLibraryUpdateEventCollector()
+        setupCollections()
+        setupForegroundObserver()
+
         guard isAccessManagerEnabled else {
             setupMediaItemsCollection(isHideTitle: false)
             return
@@ -109,8 +109,9 @@ public final class GalleryPresenter {
                     default:
                         break
                 }
-
-                self?.setupMediaItemsCollection(isHideTitle: status == .limited)
+                DispatchQueue.main.async {
+                    self?.setupMediaItemsCollection(isHideTitle: status == .limited)
+                }
             }
         }
     }
@@ -129,15 +130,18 @@ public final class GalleryPresenter {
               direction = .down
               dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
               view?.changeCollectionView(assetsIsHidden: false)
+            output?.albumsEventTriggered(isShown: false)
            case .down:
               direction = .up
               if collections.isEmpty {
                   setupCollections()
-              }
-              view?.update(with: collections)
-              view?.changeCollectionView(assetsIsHidden: true)
+                }
+                view?.update(with: collections)
+                view?.changeCollectionView(assetsIsHidden: true)
+                output?.albumsEventTriggered(isShown: true)
         }
         view?.updateTitleView(with: direction)
+        view?.hidePlaceholdersIfNeeded()
     }
 
     func closeEventTriggered() {
@@ -179,8 +183,9 @@ public final class GalleryPresenter {
 
     private func setupCollections() {
         dependencies.mediaLibraryService.fetchMediaItemCollections()
-        collectionsCollector.subscribe { (collections: [MediaItemsCollection]) in
-            self.collections = collections
+        collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
+            self?.collections = collections
+            self?.view?.update(with: collections)
         }
     }
 
@@ -210,21 +215,22 @@ public final class GalleryPresenter {
         let count = result.count
         let sectionAppearance = mediaAppearance.gallery.assetSectionAppearance
 
-        let provider = LazySectionItemsProvider(factory: factory.complexFactory) { _ in
+        let provider = LazySectionItemsProvider(factory: factory.complexFactory, cellItemsNumberHandler: { _ in
             count
-        } makeSectionItemHandler: { _ in
+        }, makeSectionItemHandler: { _ in
             let sectionItem = GeneralCollectionViewDiffSectionItem()
             sectionItem.minimumLineSpacing = sectionAppearance.minimumLineSpacing
             sectionItem.minimumInteritemSpacing = sectionAppearance.minimumInteritemSpacing
             sectionItem.insets = sectionAppearance.insets
             return sectionItem
-        } sizeHandler: { [weak self] _, collection in
-            let numberOfItemsInRow = CGFloat(self?.numberOfItemsInRow ?? 0)
+        }, sizeHandler: { [weak self] _, collection in
+            let numberOfItemsInRow = CGFloat(self?.mediaAppearance.gallery.assetSectionAppearance.numberOfItemsInRow ?? 0)
             let widthWithoutInsets: CGFloat = collection.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
             let width: CGFloat = (widthWithoutInsets - numberOfItemsInRow * sectionAppearance.minimumInteritemSpacing) / numberOfItemsInRow
             return CGSize(width: width, height: width)
-        } objectHandler: { indexPath in
-            guard indexPath.row < count else {
+        }, objectHandler: { [weak self] indexPath in
+            guard let self = self,
+                  indexPath.row < count else {
                 return nil
             }
             let asset = result.object(at: count - indexPath.row - 1)
@@ -244,7 +250,7 @@ public final class GalleryPresenter {
                                           selectionIndex: selectionIndex,
                                           isSelectionInfoLabelHidden: isSelectionInfoLabelHidden)
             }
-        }
+        })
         return provider
     }
 
@@ -270,6 +276,19 @@ public final class GalleryPresenter {
             }
         }
     }
+
+    private func setupForegroundObserver() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self,
+                                       selector: #selector(appEnterForeground),
+                                       name: UIApplication.willEnterForegroundNotification,
+                                       object: nil)
+    }
+
+    @objc private func appEnterForeground() {
+        setupCollections()
+    }
+
 }
 
 // MARK: - MediaItemSectionsFactoryOutput
@@ -279,6 +298,7 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
         direction = .down
         self.collection = collection
         view?.changeCollectionView(assetsIsHidden: false)
+        output?.albumsEventTriggered(isShown: false)
     }
 
     func didSelect(_ item: MediaItem) {

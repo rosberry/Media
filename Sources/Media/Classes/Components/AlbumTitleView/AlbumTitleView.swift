@@ -5,7 +5,7 @@
 import Foundation
 import UIKit
 
-final class AlbumTitleView: UIView {
+public final class AlbumTitleView: UIView {
 
     enum Direction {
         case up
@@ -15,8 +15,9 @@ final class AlbumTitleView: UIView {
     var tapEventHandler: ((Direction) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    private var direction: Direction = .down
-    private let betweenInset: CGFloat = 3
+    private(set) var direction: Direction = .down
+    public var betweenInset: CGFloat = 3
+    public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
 
     private(set) lazy var titleLabel: UILabel = .init()
@@ -33,21 +34,26 @@ final class AlbumTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
+
+        titleLabel.configureFrame { maker in
+            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom)
+        }
+
         imageView.configureFrame { maker in
             maker.sizeToFit()
                  .right(inset: innerInset.right)
-                 .centerY(to: titleLabel.nui_centerY)
+                 .centerY(to: titleLabel.nui_centerY, offset: imageOffset)
         }
 
         titleLabel.configureFrame { maker in
-            maker.top(inset: innerInset.top).bottom(inset: innerInset.bottom).left(inset: innerInset.left)
-                 .right(to: imageView.nui_left, inset: betweenInset)
+            maker.right(to: imageView.nui_left, inset: betweenInset)
+                 .left(inset: innerInset.left)
         }
     }
 
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
         let imageViewSize = imageView.sizeThatFits(size)
         let titleSize = titleLabel.sizeThatFits(size)
         let width = titleSize.width + innerInset.horizontalSum + betweenInset + imageViewSize.width

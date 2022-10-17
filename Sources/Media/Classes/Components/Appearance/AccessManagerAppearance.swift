@@ -6,8 +6,7 @@ import Foundation
 import Texstyle
 import UIKit
 
-public struct AccessManagerAppearance {
-    var projectName: String
+public struct ManagerAppearance {
     var title: String
     var titleStyle: TextStyle
     var buttonTitle: String
@@ -22,7 +21,6 @@ public struct AccessManagerAppearance {
                 buttonTitleStyle: TextStyle = .button1A,
                 cornerRadius: Double = 15,
                 backgroundColor: UIColor = .button1A) {
-        self.projectName = projectName
         self.titleStyle = titleStyle
         self.buttonTitleStyle = buttonTitleStyle
         self.cornerRadius = cornerRadius

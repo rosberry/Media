@@ -14,6 +14,7 @@
 "mediaLibrary.filter.all" = "All";
 "mediaLibrary.permissions.title" = "Allow Access to Storage";
 "mediaLibrary.permissions.subtitle" = "To share photos and videos, %@ needs access to storage on your device";
+"mediaLibrary.placeholder.subtitle" = "No media available";
 "camera.permissions_placeholder.title" = "Camera";
 "camera.permissions_placeholder.body" = "Give access to your camera\nto take a shot";
 

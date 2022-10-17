@@ -9,8 +9,6 @@ public protocol GalleryModuleInput: AnyObject {
 
     var collection: MediaItemsCollection? { get set }
 
-    var numberOfItemsInRow: Int { get set }
-
     var filter: MediaItemsFilter { get set }
 
     var selectedItems: [MediaItem] { get set }
@@ -31,6 +29,7 @@ public protocol GalleryModuleOutput: AnyObject {
                                        settingCompletion: @escaping () -> Void)
     func openApplicationSettingEventTriggered()
     func showLimitedPickerEventTriggered()
+    func albumsEventTriggered(isShown: Bool)
 }
 
 public final class GalleryModule {
@@ -51,18 +50,14 @@ public final class GalleryModule {
     public let viewController: GalleryViewController
     private let presenter: GalleryPresenter
 
-    public init(bundleName: String,
-                isAccessManagerEnabled: Bool,
+    public init(isAccessManagerEnabled: Bool,
                 filter: MediaItemsFilter,
                 maxItemsCount: Int,
-                numberOfItemsInRow: Int,
                 collection: MediaItemsCollection? = nil,
                 mediaAppearance: MediaAppearance) {
-        presenter = GalleryPresenter(bundleName: bundleName,
-                                     isAccessManagerEnabled: isAccessManagerEnabled,
+        presenter = GalleryPresenter(isAccessManagerEnabled: isAccessManagerEnabled,
                                      filter: filter,
                                      maxItemsCount: maxItemsCount,
-                                     numberOfItemsInRow: numberOfItemsInRow,
                                      dependencies: Services,
                                      mediaAppearance: mediaAppearance)
         viewController = GalleryViewController(presenter: presenter)

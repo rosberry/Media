@@ -9,7 +9,7 @@ import Texstyle
 public final class AccessManagerView: UIView {
     var manageEventHandler: (() -> Void)?
 
-    private let managerAppearance: AccessManagerAppearance
+    private let managerAppearance: ManagerAppearance
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -27,7 +27,7 @@ public final class AccessManagerView: UIView {
         return button
     }()
 
-    init(managerAppearance: AccessManagerAppearance) {
+    init(managerAppearance: ManagerAppearance) {
         self.managerAppearance = managerAppearance
         super.init(frame: .zero)
         setup()

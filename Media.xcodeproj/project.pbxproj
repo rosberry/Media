@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A90248BC28FD4CDC0038A4FC /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90248BB28FD4CDC0038A4FC /* PlaceholderView.swift */; };
+		A90248BE28FD4D720038A4FC /* PlaceholderAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90248BD28FD4D720038A4FC /* PlaceholderAppearance.swift */; };
+		A90248C028FD52460038A4FC /* PlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90248BF28FD52460038A4FC /* PlaceholderCell.swift */; };
 		A943732928EA9FB8000282FC /* CollectionViewTools.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A943732228EA9FB8000282FC /* CollectionViewTools.xcframework */; };
 		A943732B28EA9FB8000282FC /* DeepDiff.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A943732328EA9FB8000282FC /* DeepDiff.xcframework */; };
 		A943732D28EA9FB8000282FC /* Framezilla.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A943732428EA9FB8000282FC /* Framezilla.xcframework */; };
@@ -31,10 +34,8 @@
 		A96B488728EA964500CEF821 /* AVPlayer+Stop.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483228EA964500CEF821 /* AVPlayer+Stop.swift */; };
 		A96B488828EA964500CEF821 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483528EA964500CEF821 /* PlayerView.swift */; };
 		A96B488928EA964500CEF821 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483728EA964500CEF821 /* ActionButton.swift */; };
-		A96B488A28EA964500CEF821 /* PermissionsPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483928EA964500CEF821 /* PermissionsPlaceholderView.swift */; };
 		A96B488B28EA964500CEF821 /* AlbumTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483B28EA964500CEF821 /* AlbumTitleView.swift */; };
 		A96B488C28EA964500CEF821 /* SwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483D28EA964500CEF821 /* SwitchView.swift */; };
-		A96B488D28EA964500CEF821 /* PermissionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B483F28EA964500CEF821 /* PermissionAppearance.swift */; };
 		A96B488E28EA964500CEF821 /* AssetSectionAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B484028EA964500CEF821 /* AssetSectionAppearance.swift */; };
 		A96B488F28EA964500CEF821 /* MediaAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B484128EA964500CEF821 /* MediaAppearance.swift */; };
 		A96B489028EA964500CEF821 /* AlbumCellAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A96B484228EA964500CEF821 /* AlbumCellAppearance.swift */; };
@@ -78,6 +79,9 @@
 
 /* Begin PBXFileReference section */
 		1373AFFC22DC235400F28EF0 /* Media.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Media.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A90248BB28FD4CDC0038A4FC /* PlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		A90248BD28FD4D720038A4FC /* PlaceholderAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderAppearance.swift; sourceTree = "<group>"; };
+		A90248BF28FD52460038A4FC /* PlaceholderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceholderCell.swift; sourceTree = "<group>"; };
 		A943732228EA9FB8000282FC /* CollectionViewTools.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CollectionViewTools.xcframework; path = Carthage/Build/CollectionViewTools.xcframework; sourceTree = "<group>"; };
 		A943732328EA9FB8000282FC /* DeepDiff.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DeepDiff.xcframework; path = Carthage/Build/DeepDiff.xcframework; sourceTree = "<group>"; };
 		A943732428EA9FB8000282FC /* Framezilla.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Framezilla.xcframework; path = Carthage/Build/Framezilla.xcframework; sourceTree = "<group>"; };
@@ -102,10 +106,8 @@
 		A96B483228EA964500CEF821 /* AVPlayer+Stop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Stop.swift"; sourceTree = "<group>"; };
 		A96B483528EA964500CEF821 /* PlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		A96B483728EA964500CEF821 /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
-		A96B483928EA964500CEF821 /* PermissionsPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionsPlaceholderView.swift; sourceTree = "<group>"; };
 		A96B483B28EA964500CEF821 /* AlbumTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumTitleView.swift; sourceTree = "<group>"; };
 		A96B483D28EA964500CEF821 /* SwitchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchView.swift; sourceTree = "<group>"; };
-		A96B483F28EA964500CEF821 /* PermissionAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionAppearance.swift; sourceTree = "<group>"; };
 		A96B484028EA964500CEF821 /* AssetSectionAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetSectionAppearance.swift; sourceTree = "<group>"; };
 		A96B484128EA964500CEF821 /* MediaAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAppearance.swift; sourceTree = "<group>"; };
 		A96B484228EA964500CEF821 /* AlbumCellAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCellAppearance.swift; sourceTree = "<group>"; };
@@ -197,6 +199,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		A90248BA28FD4CDC0038A4FC /* PlaceholderView */ = {
+			isa = PBXGroup;
+			children = (
+				A90248BB28FD4CDC0038A4FC /* PlaceholderView.swift */,
+			);
+			path = PlaceholderView;
+			sourceTree = "<group>";
+		};
 		A96B482028EA964500CEF821 /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,9 +262,9 @@
 		A96B483328EA964500CEF821 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A90248BA28FD4CDC0038A4FC /* PlaceholderView */,
 				A96B483428EA964500CEF821 /* PlayerView */,
 				A96B483628EA964500CEF821 /* ActionButton */,
-				A96B483828EA964500CEF821 /* PermissionsPlaceholderView */,
 				A96B483A28EA964500CEF821 /* AlbumTitleView */,
 				A96B483C28EA964500CEF821 /* SwitchView */,
 				A96B483E28EA964500CEF821 /* Appearance */,
@@ -281,14 +291,6 @@
 			path = ActionButton;
 			sourceTree = "<group>";
 		};
-		A96B483828EA964500CEF821 /* PermissionsPlaceholderView */ = {
-			isa = PBXGroup;
-			children = (
-				A96B483928EA964500CEF821 /* PermissionsPlaceholderView.swift */,
-			);
-			path = PermissionsPlaceholderView;
-			sourceTree = "<group>";
-		};
 		A96B483A28EA964500CEF821 /* AlbumTitleView */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,9 +310,9 @@
 		A96B483E28EA964500CEF821 /* Appearance */ = {
 			isa = PBXGroup;
 			children = (
-				A96B483F28EA964500CEF821 /* PermissionAppearance.swift */,
 				A96B484028EA964500CEF821 /* AssetSectionAppearance.swift */,
 				A96B484128EA964500CEF821 /* MediaAppearance.swift */,
+				A90248BD28FD4D720038A4FC /* PlaceholderAppearance.swift */,
 				A96B484228EA964500CEF821 /* AlbumCellAppearance.swift */,
 				A96B484328EA964500CEF821 /* ActionButtonAppearance.swift */,
 				A96B484428EA964500CEF821 /* CollectionViewAppearance.swift */,
@@ -440,6 +442,7 @@
 		A96B486728EA964500CEF821 /* PlaceholderCell */ = {
 			isa = PBXGroup;
 			children = (
+				A90248BF28FD52460038A4FC /* PlaceholderCell.swift */,
 				A96B486828EA964500CEF821 /* PlaceholderCellItem.swift */,
 			);
 			path = PlaceholderCell;
@@ -583,16 +586,17 @@
 				A96B48A428EA964500CEF821 /* SelectionView.swift in Sources */,
 				A96B488028EA964500CEF821 /* AVPlayerLayer+ReadyHandler.swift in Sources */,
 				A96B48A028EA964500CEF821 /* CollectionCell.swift in Sources */,
+				A90248C028FD52460038A4FC /* PlaceholderCell.swift in Sources */,
 				A96B489128EA964500CEF821 /* ActionButtonAppearance.swift in Sources */,
 				A96B488428EA964500CEF821 /* AVAssetTrack+Size.swift in Sources */,
 				A96B489628EA964500CEF821 /* AssetCellAppearance.swift in Sources */,
 				A96B489328EA964500CEF821 /* NavigationAppearance.swift in Sources */,
 				A96B489028EA964500CEF821 /* AlbumCellAppearance.swift in Sources */,
 				A96B48AF28EA964500CEF821 /* Strings.swift in Sources */,
-				A96B488D28EA964500CEF821 /* PermissionAppearance.swift in Sources */,
 				A96B488C28EA964500CEF821 /* SwitchView.swift in Sources */,
 				A96B489428EA964500CEF821 /* AccessManagerAppearance.swift in Sources */,
 				A96B489228EA964500CEF821 /* CollectionViewAppearance.swift in Sources */,
+				A90248BE28FD4D720038A4FC /* PlaceholderAppearance.swift in Sources */,
 				A96B488528EA964500CEF821 /* UIEdgeInsets+Sum.swift in Sources */,
 				A96B488828EA964500CEF821 /* PlayerView.swift in Sources */,
 				A96B487B28EA964500CEF821 /* MediaItemsFilter+title.swift in Sources */,
@@ -630,10 +634,10 @@
 				A96B489D28EA964500CEF821 /* MediaItemPreviewViewController.swift in Sources */,
 				A96B489E28EA964500CEF821 /* MediaItemPreviewModule.swift in Sources */,
 				A96B487D28EA964500CEF821 /* UIViewController+Child.swift in Sources */,
-				A96B488A28EA964500CEF821 /* PermissionsPlaceholderView.swift in Sources */,
 				A96B48B128EA964600CEF821 /* TextStyles.swift in Sources */,
 				A96B488E28EA964500CEF821 /* AssetSectionAppearance.swift in Sources */,
 				A96B48A628EA964500CEF821 /* VideoItemCellModel.swift in Sources */,
+				A90248BC28FD4CDC0038A4FC /* PlaceholderView.swift in Sources */,
 				A96B488128EA964500CEF821 /* UIColor+Tools.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

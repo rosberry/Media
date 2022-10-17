@@ -11,6 +11,7 @@ import MediaService
 public protocol MediaCoordinatorDelegate: AnyObject {
     func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
     func photoEventTriggered(_ image: UIImage)
+    func albumsShownValueChanged(_ value: Bool)
     func moreEventTriggered()
     func settingEventTriggered()
     func customEventTriggered()
@@ -30,12 +31,11 @@ public final class MediaCoordinator {
     }()
 
     public var maxItemsCount: Int = 2
-    public var numberOfItemsInRow: Int = 4
-
     public var mediaAppearance: MediaAppearance
-    public var isAccessManagerEnabled: Bool = false
+    public var isAccessManagerEnabled: Bool = true
     public var isShowActionSheetWithAnimated: Bool = true
     public var filter: MediaItemsFilter
+    public var needCloseBySelect: Bool = true
 
     private var actionButtonsAppearance: [ActionButtonAppearance] {
         mediaAppearance.actionSheet.actionButtonsAppearance
@@ -43,7 +43,7 @@ public final class MediaCoordinator {
 
     // MARK: - Modules
 
-    private var galleryModule: GalleryModule?
+    public var galleryModule: GalleryModule?
 
     // MARK: - Lifecycle
 
@@ -61,8 +61,8 @@ public final class MediaCoordinator {
         setupPermissionsCollector()
     }
 
-    public func start(bundleName: String) {
-        let module = makeGalleryModule(bundleName: bundleName)
+    public func start() {
+        let module = makeGalleryModule()
         galleryModule = module
         navigationViewController.pushViewController(module.viewController, animated: true)
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
@@ -76,12 +76,10 @@ public final class MediaCoordinator {
         }
     }
 
-    private func makeGalleryModule(bundleName: String) -> GalleryModule {
-        let module = GalleryModule(bundleName: bundleName,
-                                   isAccessManagerEnabled: isAccessManagerEnabled,
+    private func makeGalleryModule() -> GalleryModule {
+        let module = GalleryModule(isAccessManagerEnabled: isAccessManagerEnabled,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
-                                   numberOfItemsInRow: numberOfItemsInRow,
                                    mediaAppearance: mediaAppearance)
         module.output = self
         return module
@@ -117,12 +115,16 @@ extension MediaCoordinator: GalleryModuleOutput {
     }
 
     public func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem]) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.selectMediaItemsEventTriggered(mediaItems)
     }
 
     public func photoEventTriggered(_ image: UIImage) {
-        navigationViewController.popViewController(animated: true)
+        if needCloseBySelect {
+            navigationViewController.popViewController(animated: true)
+        }
         delegate?.photoEventTriggered(image)
     }
 
@@ -170,5 +172,9 @@ extension MediaCoordinator: GalleryModuleOutput {
         if #available(iOS 14, *) {
             PHPhotoLibrary.shared().presentLimitedLibraryPicker(from: navigationViewController)
         }
+    }
+
+    public func albumsEventTriggered(isShown: Bool) {
+        delegate?.albumsShownValueChanged(isShown)
     }
 }
