@@ -6,12 +6,20 @@ import Texstyle
 import UIKit
 
 public struct NavigationAppearance {
+
+    public enum Align {
+        case left
+        case center
+        case right
+    }
+
     public var titleStyle: TextStyle
     public var titleImage: UIImage?
     public var backImage: UIImage?
     public var cameraImage: UIImage?
     public var shouldShowBackButton: Bool = true
     public var shouldShowCameraButton: Bool = true
+    public var titleAlign: Align = .center
     public var titleViewUpdateHandler: (AlbumTitleView) -> Void = { _ in }
     public var titleFormatter: (String) -> String = { $0 }
 

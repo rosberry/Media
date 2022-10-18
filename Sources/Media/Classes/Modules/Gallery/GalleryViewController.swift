@@ -311,7 +311,14 @@ public final class GalleryViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.view.backgroundColor = .white
 
-        navigationItem.titleView = titleView
+        switch navigationAppearance.titleAlign {
+        case .left:
+            navigationItem.leftBarButtonItem = .init(customView: titleView)
+        case .right:
+            navigationItem.rightBarButtonItem = .init(customView: titleView)
+        case .center:
+            navigationItem.titleView = titleView
+        }
         if navigationAppearance.shouldShowCameraButton {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: navigationAppearance.cameraImage?.withRenderingMode(.alwaysOriginal),
                                                                 style: .plain,
