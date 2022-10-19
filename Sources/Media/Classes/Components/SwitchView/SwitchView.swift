@@ -51,7 +51,11 @@ public final class SwitchView: UIView {
             selectionLayer.strokeColor = selectionStrokeColor.cgColor
         }
     }
-    public var selectionStrokeWidth: CGFloat = 2
+    public var selectionStrokeWidth: CGFloat = 2 {
+        didSet {
+            selectionLayer.lineWidth = selectionStrokeWidth
+        }
+    }
     public var preferredHeight: CGFloat = 32
     public var itemPadding: CGFloat = 8
     public var cornerRoundHandler: ((CGRect) -> CGFloat) = { $0.height / 2 }
