@@ -319,6 +319,7 @@ public final class GalleryViewController: UIViewController {
                     presenter?.filterEventTriggered(item)
                 }
             }
+            navigationAppearance.filterCustomizationHandler?(filterView)
             switch navigationAppearance.filterAlign {
             case .left:
                 navigationItem.leftBarButtonItem = .init(customView: filterView)

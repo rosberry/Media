@@ -23,7 +23,7 @@ public struct NavigationAppearance {
     public var filterAlign: Align = .right
     public var filter: [MediaItemsFilter] = []
     public var filterFormatter: (MediaItemsFilter) -> String = { $0.title }
-    public var tilterCustomizationHandler: ((SwitchView) -> Void)?
+    public var filterCustomizationHandler: ((SwitchView) -> Void)?
     public var titleAlign: Align = .center
     public var titleViewUpdateHandler: (AlbumTitleView) -> Void = { _ in }
     public var titleFormatter: (String) -> String = { $0 }
