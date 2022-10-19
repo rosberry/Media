@@ -36,9 +36,21 @@ public final class SwitchView: UIView {
 
     public var selectedItemStyle: TextStyle = .toggle1A
     public var deselectedItemStyle: TextStyle = .toggle1B
-    public var fillColor: UIColor = .white
-    public var selectionFillColor: UIColor = .clear
-    public var selectionStrokeColor: UIColor = .black
+    public var fillColor: UIColor = .white {
+        didSet {
+            backgroundLayer.fillColor = fillColor.cgColor
+        }
+    }
+    public var selectionFillColor: UIColor = .clear {
+        didSet {
+            selectionLayer.fillColor = selectionFillColor.cgColor
+        }
+    }
+    public var selectionStrokeColor: UIColor = .black {
+        didSet {
+            selectionLayer.strokeColor = selectionStrokeColor.cgColor
+        }
+    }
     public var selectionStrokeWidth: CGFloat = 2
     public var preferredHeight: CGFloat = 32
     public var itemPadding: CGFloat = 8
@@ -107,9 +119,10 @@ public final class SwitchView: UIView {
     }
 
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        let width = itemViews.reduce(0) { result, view in
-            result + view.sizeThatFits(size).width + 2 * itemPadding
+        var width = itemViews.reduce(0) { result, view in
+            result + view.sizeThatFits(size).width
         }
+        width += CGFloat(itemViews.count - 1) * 2 * itemPadding
         return CGSize(width: width, height: preferredHeight)
     }
 
