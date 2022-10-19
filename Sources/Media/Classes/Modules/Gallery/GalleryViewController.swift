@@ -225,6 +225,10 @@ public final class GalleryViewController: UIViewController {
         albumsCollectionView.isUserInteractionEnabled = true
     }
 
+    func update(with filter: MediaItemsFilter) {
+        filterView.selectedIndex = navigationAppearance.filter.firstIndex(of: filter) ?? 0
+    }
+
     func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
         if animated {
             UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
