@@ -34,15 +34,15 @@ public final class SwitchItemButton: UIButton {
 
 public final class SwitchView: UIView {
 
-    var selectedItemStyle: TextStyle = .toggle1A
-    var deselectedItemStyle: TextStyle = .toggle1B
-    var fillColor: UIColor = .white
-    var selectionFillColor: UIColor = .clear
-    var selectionStrokeColor: UIColor = .black
-    var selectionStrokeWidth: CGFloat = 2
-    var preferredHeight: CGFloat = 32
-    var itemPadding: CGFloat = 8
-    var cornerRoundHandler: ((CGRect) -> CGFloat) = { $0.height / 2 }
+    public var selectedItemStyle: TextStyle = .toggle1A
+    public var deselectedItemStyle: TextStyle = .toggle1B
+    public var fillColor: UIColor = .white
+    public var selectionFillColor: UIColor = .clear
+    public var selectionStrokeColor: UIColor = .black
+    public var selectionStrokeWidth: CGFloat = 2
+    public var preferredHeight: CGFloat = 32
+    public var itemPadding: CGFloat = 8
+    public var cornerRoundHandler: ((CGRect) -> CGFloat) = { $0.height / 2 }
 
     var items: [SwitchItem] = [] {
         didSet {
