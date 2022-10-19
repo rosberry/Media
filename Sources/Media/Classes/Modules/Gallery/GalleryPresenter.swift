@@ -165,6 +165,10 @@ public final class GalleryPresenter {
         })
     }
 
+    func filterEventTriggered(_ filter: MediaItemsFilter) {
+        self.filter = filter
+    }
+
     // MARK: - Helpers
 
     func updateSelection() {
@@ -255,12 +259,9 @@ public final class GalleryPresenter {
     }
 
     private func updateMediaItemList(usingPlaceholderTransition: Bool) {
-        guard let collection = collection else {
-            return
-        }
 
         if usingPlaceholderTransition {
-            view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection.estimatedMediaItemsCount ?? 64, 64))
+            view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection?.estimatedMediaItemsCount ?? 64, 64))
         }
 
         dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)

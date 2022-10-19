@@ -3,8 +3,9 @@
 //
 
 import UIKit
+import Texstyle
 
-final class SwitchItem {
+public final class SwitchItem {
 
     var title: String
     var handler: () -> Void
@@ -15,7 +16,7 @@ final class SwitchItem {
     }
 }
 
-final class SwitchItemButton: UIButton {
+public final class SwitchItemButton: UIButton {
 
     let item: SwitchItem
 
@@ -31,7 +32,17 @@ final class SwitchItemButton: UIButton {
     }
 }
 
-final class SwitchView: UIView {
+public final class SwitchView: UIView {
+
+    var selectedItemStyle: TextStyle = .toggle1A
+    var deselectedItemStyle: TextStyle = .toggle1B
+    var fillColor: UIColor = .white
+    var selectionFillColor: UIColor = .clear
+    var selectionStrokeColor: UIColor = .black
+    var selectionStrokeWidth: CGFloat = 2
+    var preferredHeight: CGFloat = 32
+    var itemPadding: CGFloat = 8
+    var cornerRoundHandler: ((CGRect) -> CGFloat) = { $0.height / 2 }
 
     var items: [SwitchItem] = [] {
         didSet {
@@ -48,53 +59,58 @@ final class SwitchView: UIView {
 
     var inactiveItemAlpha: CGFloat = 1.0
 
-    private var itemViews: [UIView] = []
+    private var itemViews: [SwitchItemButton] = []
 
     // MARK: - Layers
 
     private(set) lazy var backgroundLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        layer.fillColor = UIColor.white.cgColor
+        layer.fillColor = fillColor.cgColor
         return layer
     }()
 
     private lazy var selectionLayer: CAShapeLayer = {
         let layer = CAShapeLayer()
-        layer.fillColor = UIColor.clear.cgColor
-        layer.strokeColor = UIColor.black.cgColor
-        layer.lineWidth = 2.0
+        layer.fillColor = selectionFillColor.cgColor
+        layer.strokeColor = selectionStrokeColor.cgColor
+        layer.lineWidth = selectionStrokeWidth
         return layer
     }()
 
     // MARK: - Lifecycle
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         var offset: CGFloat = 0.0
-        let itemSize = CGSize(width: bounds.width / CGFloat(items.count), height: bounds.height)
 
         backgroundLayer.frame = bounds
-        backgroundLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2).cgPath
+        backgroundLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRoundHandler(bounds)).cgPath
 
         for view in itemViews {
-            view.frame = CGRect(x: offset, y: 0.0, width: itemSize.width, height: itemSize.height)
-            offset += itemSize.width
+            let itemWidth = view.sizeThatFits(bounds.size).width + 2 * itemPadding
+            view.frame =  CGRect(x: offset, y: 0.0, width: itemWidth, height: bounds.height)
+            offset += itemWidth
 
             if view.tag == selectedIndex {
                 view.alpha = 1.0
+                view.setAttributedTitle(Text(value: view.item.title, style: selectedItemStyle).attributed, for: .normal)
                 selectionLayer.frame = view.frame.insetBy(dx: 2, dy: 2)
                 selectionLayer.path = UIBezierPath(roundedRect: selectionLayer.bounds,
-                                                   cornerRadius: selectionLayer.bounds.height / 2).cgPath
+                                                   cornerRadius: cornerRoundHandler(selectionLayer.bounds)).cgPath
             }
             else {
+                view.setAttributedTitle(Text(value: view.item.title, style: deselectedItemStyle).attributed, for: .normal)
                 view.alpha = inactiveItemAlpha
             }
         }
     }
 
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: size.width, height: 32.0)
+    public override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let width = itemViews.reduce(0) { result, view in
+            result + view.sizeThatFits(size).width + 2 * itemPadding
+        }
+        return CGSize(width: width, height: preferredHeight)
     }
 
     // MARK: - Private

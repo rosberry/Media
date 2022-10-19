@@ -86,4 +86,20 @@ public extension TextStyle {
         style.alignment = .center
         return style
     }
+
+    static var toggle1A: TextStyle {
+        let style = TextStyle()
+        style.font = .systemFont(ofSize: 12, weight: .bold)
+        style.color = .main1T
+        style.alignment = .center
+        return style
+    }
+
+    static var toggle1B: TextStyle {
+        let style = TextStyle()
+        style.font = .systemFont(ofSize: 12, weight: .bold)
+        style.color = .main1A
+        style.alignment = .center
+        return style
+    }
 }
