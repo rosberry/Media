@@ -24,19 +24,16 @@ public final class GalleryPresenter {
     weak var output: GalleryModuleOutput?
 
     var collections: [MediaItemsCollection] = []
+    private var isFetching: Bool = false
     public var collection: MediaItemsCollection? {
         didSet {
-            if isFetchingByChange {
-                updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
-            }
+            updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
         }
     }
 
     public var filter: MediaItemsFilter = .all {
         didSet {
-            if isFetchingByChange {
-                updateMediaItemList(usingPlaceholderTransition: true)
-            }
+            updateMediaItemList(usingPlaceholderTransition: true)
             lastUsedMediaFilter = filter
         }
     }
@@ -100,8 +97,6 @@ public final class GalleryPresenter {
     public var mediaAppearance: MediaAppearance
     public var isAccessManagerEnabled: Bool
 
-    private var isFetchingByChange: Bool = false
-
     // MARK: - Lifecycle
 
     init(isAccessManagerEnabled: Bool,
@@ -159,7 +154,7 @@ public final class GalleryPresenter {
         switch direction {
            case .up:
               direction = .down
-              dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+              fetchMediaItems()
               view?.changeCollectionView(assetsIsHidden: false)
             output?.albumsEventTriggered(isShown: false)
            case .down:
@@ -222,7 +217,6 @@ public final class GalleryPresenter {
             let lastUsedCollection = collections.first { collection in
                 collection.identifier == self?.lastUsedCollectionId
             }
-            self?.isFetchingByChange = true
             if let collection = lastUsedCollection ?? collections.first {
                 self?.collection = collection
             }
@@ -236,6 +230,7 @@ public final class GalleryPresenter {
             guard let self = self else {
                 return
             }
+            self.isFetching = false
             self.fetchResult = result
             self.view?.update(with: self.sectionItemsProvider(for: result.fetchResult), animated: true)
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
@@ -247,8 +242,8 @@ public final class GalleryPresenter {
 
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
-            if let filter = self?.filter {
-                self?.dependencies.mediaLibraryService.fetchMediaItems(in: self?.collection, filter: filter)
+            if self?.filter != nil {
+                self?.fetchMediaItems()
             }
         }
     }
@@ -302,7 +297,7 @@ public final class GalleryPresenter {
             view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection?.estimatedMediaItemsCount ?? 64, 64))
         }
 
-        dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        fetchMediaItems()
     }
 
     private func setupPermissionsCollector() {
@@ -322,6 +317,14 @@ public final class GalleryPresenter {
                                        selector: #selector(appEnterForeground),
                                        name: UIApplication.willEnterForegroundNotification,
                                        object: nil)
+    }
+
+    private func fetchMediaItems() {
+        guard isFetching == false else {
+            return
+        }
+        isFetching = true
+        dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
     }
 
     @objc private func appEnterForeground() {
@@ -359,9 +362,7 @@ extension GalleryPresenter: GalleryModuleInput {
 
     public func update(isAuthorized: Bool) {
         if isAuthorized {
-            if isFetchingByChange {
-                dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
-            }
+            fetchMediaItems()
         }
         else {
             view?.showMediaLibraryDeniedPermissionsPlaceholder()

@@ -123,10 +123,9 @@ public final class SwitchView: UIView {
     }
 
     public override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var width = itemViews.reduce(0) { result, view in
-            result + view.sizeThatFits(size).width
+        let width = itemViews.reduce(0) { result, view in
+            result + view.sizeThatFits(size).width + 2 * itemPadding
         }
-        width += CGFloat(itemViews.count - 1) * 2 * itemPadding
         return CGSize(width: width, height: preferredHeight)
     }
 
