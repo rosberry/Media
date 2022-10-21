@@ -25,6 +25,7 @@ public final class GalleryPresenter {
 
     var collections: [MediaItemsCollection] = []
     private var isFetching: Bool = false
+    private var isAuthorized: Bool = false
     public var collection: MediaItemsCollection? {
         didSet {
             // Do not update default collection
@@ -147,7 +148,7 @@ public final class GalleryPresenter {
     }
 
     func viewWillAppear() {
-        fetchMediaItems()
+        fetchMediaItems(withCollections: true)
     }
 
     func scrollEventTriggered(direction: FocusDirection) {
@@ -160,19 +161,19 @@ public final class GalleryPresenter {
 
     func albumsEventTriggered() {
         switch direction {
-           case .up:
-              direction = .down
-              fetchMediaItems()
-              view?.changeCollectionView(assetsIsHidden: false)
+        case .up:
+            direction = .down
+            fetchMediaItems(withCollections: false)
+            view?.changeCollectionView(assetsIsHidden: false)
             output?.albumsEventTriggered(isShown: false)
-           case .down:
-              direction = .up
-              if collections.isEmpty {
-                  setupCollections()
-                }
-                view?.update(with: collections)
-                view?.changeCollectionView(assetsIsHidden: true)
-                output?.albumsEventTriggered(isShown: true)
+        case .down:
+            direction = .up
+            if collections.isEmpty {
+                fetchMediaItems(withCollections: true)
+            }
+            view?.update(with: collections)
+            view?.changeCollectionView(assetsIsHidden: true)
+            output?.albumsEventTriggered(isShown: true)
         }
         view?.updateTitleView(with: direction)
         view?.hidePlaceholdersIfNeeded()
@@ -217,14 +218,16 @@ public final class GalleryPresenter {
         setupMediaItemsCollector(isHideTitle: isHideTitle)
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
+        fetchMediaItems(withCollections: true)
     }
 
     private func setupCollections() {
-        dependencies.mediaLibraryService.fetchMediaItemCollections()
+        collectionsCollector.unsubscribe()
         collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
             let lastUsedCollection = collections.first { collection in
                 collection.identifier == self?.lastUsedCollectionId
             }
+            self?.isFetching = false
             if let collection = lastUsedCollection ?? collections.first {
                 self?.collection = collection
             }
@@ -251,7 +254,7 @@ public final class GalleryPresenter {
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
             if self?.filter != nil {
-                self?.fetchMediaItems()
+                self?.fetchMediaItems(withCollections: false)
             }
         }
     }
@@ -305,7 +308,7 @@ public final class GalleryPresenter {
             view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection?.estimatedMediaItemsCount ?? 64, 64))
         }
 
-        fetchMediaItems()
+        fetchMediaItems(withCollections: false)
     }
 
     private func setupPermissionsCollector() {
@@ -327,16 +330,23 @@ public final class GalleryPresenter {
                                        object: nil)
     }
 
-    private func fetchMediaItems() {
-        guard isFetching == false else {
+    private func fetchMediaItems(withCollections: Bool) {
+        guard isFetching == false, isAuthorized else {
             return
         }
         isFetching = true
-        dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        if withCollections {
+            if collections.isEmpty {
+                setupCollections()
+            }
+            dependencies.mediaLibraryService.fetchMediaItemCollections()
+        } else {
+            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        }
     }
 
     @objc private func appEnterForeground() {
-        setupCollections()
+        fetchMediaItems(withCollections: true)
     }
 
 }
@@ -369,8 +379,9 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
 extension GalleryPresenter: GalleryModuleInput {
 
     public func update(isAuthorized: Bool) {
+        self.isAuthorized = isAuthorized
         if isAuthorized {
-            fetchMediaItems()
+            fetchMediaItems(withCollections: true)
         }
         else {
             view?.showMediaLibraryDeniedPermissionsPlaceholder()
