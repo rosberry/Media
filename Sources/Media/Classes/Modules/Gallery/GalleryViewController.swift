@@ -129,6 +129,11 @@ public final class GalleryViewController: UIViewController {
         presenter.viewReadyEventTriggered()
     }
 
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewWillAppear()
+    }
+
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

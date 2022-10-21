@@ -27,6 +27,10 @@ public final class GalleryPresenter {
     private var isFetching: Bool = false
     public var collection: MediaItemsCollection? {
         didSet {
+            // Do not update default collection
+            if oldValue == nil, collection === collections.first {
+                return
+            }
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
         }
     }
@@ -140,6 +144,10 @@ public final class GalleryPresenter {
                 }
             }
         }
+    }
+
+    func viewWillAppear() {
+        fetchMediaItems()
     }
 
     func scrollEventTriggered(direction: FocusDirection) {
