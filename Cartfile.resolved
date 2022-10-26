@@ -1,6 +1,6 @@
 github "onmyway133/DeepDiff" "2.3.3"
 github "rosberry/CollectionViewTools" "master"
-github "rosberry/Framezilla" "5.1.2"
+github "rosberry/Framezilla" "5.1.1"
 github "rosberry/MediaService" "master"
 github "rosberry/Texstyle" "0.5"
 github "rosberry/ion" "0.1.3"
