@@ -20,7 +20,7 @@ To start using `Media`, you must use the `MediaCoordinator`.
 Initialization `MediaCoordinator(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter)` where:
 - `navigationViewController: UINavigationController` navigation. 
 - `mediaAppearance: MediaAppearance` argurement for customization UI on gallery and be is a optional.
-- `filter: MediaItemsFilter` filter for elements in gallery. Default value `.all`.
+- `filter: MediaItemsFilter` filter for elements in gallery. Default `.all`.
 
 ```Swift
    var coordinator = MediaCoordinator(navigationViewController: navigationViewController)
@@ -47,7 +47,7 @@ Also in `MediaCoordinator` is have important public variables such as:
         // triggered when tap on custom element in manager access. If added is not custom button event never triggered.
     }
 ```
--  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. Default value `false`. available(iOS 14, * )
+-  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. Default `false`. available(iOS 14, * )
 
 ```Swift
     public var isEnableManagerAccess: Bool
@@ -78,7 +78,7 @@ Default `true`.
     public var filter: MediaItemsFilter
 ```
 
-- `mediaAppearance` using if need customized UI
+- `mediaAppearance` using if need customized UI.
 
 ```Swift
     public var mediaAppearance: MediaAppearance
