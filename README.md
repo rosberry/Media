@@ -72,16 +72,16 @@ Default `true`.
    public var isShowActionSheetWithAnimated: Bool
 ```
 
+- `filter` filter for elements in gallery. Default `.all`.
+
+```Swift
+    public var filter: MediaItemsFilter
+```
+
 - `mediaAppearance` using if need customized UI
 
 ```Swift
     public var mediaAppearance: MediaAppearance
-```
-
-- `filter` filter for elements in gallery. Default value `.all`.
-
-```Swift
-    public var filter: MediaItemsFilter
 ```
 
 Importmant before call `start()` about `MediaCoordinator` necessary added property in `Info.plist`:
