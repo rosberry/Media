@@ -53,7 +53,7 @@ Also in `MediaCoordinator` is have important public variables such as:
     public var isEnableManagerAccess: Bool
 ```
 
-- `maxItemsCount` maximum value selected photos on album. Default value 2.
+- `maxItemsCount` maximum value selected photos on album. Default `2`.
 
 ```Swift
     public var maxItemsCount: Int
