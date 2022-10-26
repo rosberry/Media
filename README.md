@@ -50,26 +50,26 @@ Also in `MediaCoordinator` is have important public variables such as:
 -  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. Default value `false`. available(iOS 14, * )
 
 ```Swift
-    public var isEnableManagerAccess: Bool = false
+    public var isEnableManagerAccess: Bool
 ```
 
 - `maxItemsCount` maximum value selected photos on album. Default value 2.
 
 ```Swift
-    public var maxItemsCount: Int = 2
+    public var maxItemsCount: Int
 ```
 
 - `needCloseBySelect` this value `true` when mediaCoordinator close tap photo. If you need more than one photo select setup `false`.
 Default `true`.
 
 ```Swift
-    public var needCloseBySelect: Bool = true
+    public var needCloseBySelect: Bool
 ```
 
 - `isShowActionSheetWithAnimated` boolean variable for show animated action sheet popup. Default `true`.
 
 ```Swift
-   public var isShowActionSheetWithAnimated: Bool = true
+   public var isShowActionSheetWithAnimated: Bool
 ```
 
 - `mediaAppearance` using if need customized UI
