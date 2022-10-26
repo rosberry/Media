@@ -35,7 +35,7 @@ Also in `MediaCoordinator` is have important public variables such as:
         func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
         // select photo in list gallery 
 	// mediaItems: [MediaItems] - list selected resource
-	// Public class `MediaItem` description selected object on gallery
+	// use framework `MediaService`. Public class `MediaItem` description selected object on gallery 
         func photoEventTriggered(_ image: UIImage)
         // triggered when make photo over camera
         
