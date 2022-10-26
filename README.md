@@ -34,7 +34,8 @@ Also in `MediaCoordinator` is have important public variables such as:
     public protocol MediaCoordinatorDelegate: AnyObject {
         func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
         // select photo in list gallery 
-	// mediaItems: [MediaItems] - list selected resource. `MediaItem` public class description selected object on gallery.
+	// mediaItems: [MediaItems] - list selected resource
+	// Public class `MediaItem` description selected object on gallery
         func photoEventTriggered(_ image: UIImage)
         // triggered when make photo over camera
         
@@ -65,7 +66,7 @@ Default `true`.
     public var needCloseBySelect: Bool = true
 ```
 
-- `isShowActionSheetWithAnimated` boolean variable for show animated action sheet popup.
+- `isShowActionSheetWithAnimated` boolean variable for show animated action sheet popup. Default `true`.
 
 ```Swift
    public var isShowActionSheetWithAnimated: Bool = true
