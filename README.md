@@ -18,49 +18,51 @@ Media - wrapper on over system gallery. Also support customization UI.
 
 To start using `Media`, you must use the `MediaCoordinator`.
 Initialization `MediaCoordinator(navigationViewController: UINavigationController, mediaAppearance: MediaAppearance, filter: MediaItemsFilter)` where:
-- `navigationViewController: UINavigationController` navigation. 
-- `mediaAppearance: MediaAppearance` argurement for customization UI on gallery and be is a optional.
-- `filter: MediaItemsFilter` filter for elements in gallery. Default `.all`.
+- `navigationViewController: UINavigationController` - navigation controller.
+- `mediaAppearance: MediaAppearance` - describes UI customization of the media picker.
+- `filter: MediaItemsFilter` - filter for elements in gallery. Default `.all`.
 
 ```Swift
    var coordinator = MediaCoordinator(navigationViewController: navigationViewController)
 ```
 
-Also in `MediaCoordinator` is have important public variables such as:
-- `MediaCoordinatorDelegate` delegate for handles event:
+Also in `MediaCoordinator` has important public variables such as:
+- `MediaCoordinatorDelegate` delegate which handles events from the picker:
 ```Swift
     public weak var delegate: MediaCoordinatorDelegate?
     
     public protocol MediaCoordinatorDelegate: AnyObject {
-        func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
         // select photo in list gallery 
 	// mediaItems: [MediaItems] - list selected resource
 	// use framework `MediaService`. Public class `MediaItem` description selected object on gallery 
+        func selectMediaItemsEventTriggered(_ mediaItems: [MediaItem])
+	
+	// triggered when make photo over camera
         func photoEventTriggered(_ image: UIImage)
-        // triggered when make photo over camera
         
+	// triggered when tap on more in manager access
         func moreEventTriggered()
-        // triggered when tap on more in manager access
+	
+	// triggered when tap in setting in manager access
         func settingEventTriggered()
-        // triggered when tap in setting in manager access
+	
+	// triggered when tap on custom element in manager access. If added is not custom button event never triggered.
         func customEventTriggered()
-        // triggered when tap on custom element in manager access. If added is not custom button event never triggered.
     }
 ```
--  `isEnableManagerAccess` need when user setup permission in limited count photos for show manager access. Default `false`. available(iOS 14, * )
+-  `isAccessManagerEnabled` responsible for displaying the manager's access when the number of photos is limited. If you set it to false, the manager's display logic will be ignored. The default value is true.. available(iOS 14, * )
 
 ```Swift
-    public var isEnableManagerAccess: Bool
+    public var isAccessManagerEnabled: Bool
 ```
 
-- `maxItemsCount` maximum value selected photos on album. Default `2`.
+- `maxItemsCount` variable is responsible for the allowed number of selected photos. Default `2`.
 
 ```Swift
     public var maxItemsCount: Int
 ```
 
-- `needCloseBySelect` this value `true` when mediaCoordinator close tap photo. If you need more than one photo select setup `false`.
-Default `true`.
+- `needCloseBySelect` determines if picker will be automatically closed on media item selection.
 
 ```Swift
     public var needCloseBySelect: Bool
@@ -78,32 +80,32 @@ Default `true`.
     public var filter: MediaItemsFilter
 ```
 
-- `mediaAppearance` using if need customized UI.
+- `mediaAppearance` determines UI customization parameters.
 
 ```Swift
     public var mediaAppearance: MediaAppearance
 ```
 
-Importmant before call `start()` about `MediaCoordinator` necessary added property in `Info.plist`:
+Since Media needs access to system photos and camera, make sure to add `NSPhotoLibraryUsageDescription` and `NSCameraUsageDescription` in your app's info.plist:
 
 ```
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Describe how photos / videos will be used by your app</string>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Describe how camera will be used by your app</string>
 ```
 
-If want to showing manager access and off system popup when choose permission limited photos
+If you want to avoid limited photo selection alert to be shown on each app launch, add `PHPhotoLibraryPreventAutomaticLimitedAccessAlert` key to the app's plist:
 ```
 	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
 	<true/>
 ```
 
-After initialization `MediaCoordinator` calling `func start()` on coordinator for present gallery.
+After initializing `MediaCoordinator`, call `start` to present gallery picker.
 
 ```Swift
     private func start() {
-        coordinator = .init(navigationViewController: navigationController)
+        coordinator = MediaCoordinator(navigationViewController: navigationController)
         coordinator?.delegate = self
         coordinator?.start()
     }
