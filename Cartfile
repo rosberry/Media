@@ -1,6 +1,6 @@
 github "rosberry/ion"
 github "rosberry/Texstyle"
-github "rosberry/CollectionViewTools"
-github "rosberry/Framezilla"
+github "rosberry/CollectionViewTools" "master"
+github "rosberry/Framezilla" "master"
 github "rosberry/MediaService"
 github "rosberry/rcam"

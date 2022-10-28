@@ -24,8 +24,14 @@ public final class GalleryPresenter {
     weak var output: GalleryModuleOutput?
 
     var collections: [MediaItemsCollection] = []
+    private var isFetching: Bool = false
+    private var isAuthorized: Bool = false
     public var collection: MediaItemsCollection? {
         didSet {
+            // Do not update default collection
+            if oldValue == nil, collection === collections.first {
+                return
+            }
             updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
         }
     }
@@ -33,6 +39,28 @@ public final class GalleryPresenter {
     public var filter: MediaItemsFilter = .all {
         didSet {
             updateMediaItemList(usingPlaceholderTransition: true)
+            lastUsedMediaFilter = filter
+        }
+    }
+
+    private var lastUsedMediaFilter: MediaItemsFilter? {
+        get {
+            guard let value = UserDefaults.standard.value(forKey: #function) as? Int else {
+                return .all
+            }
+            return .init(rawValue: value)
+        }
+        set {
+            UserDefaults.standard.set(newValue?.rawValue, forKey: #function)
+        }
+    }
+
+    private var lastUsedCollectionId: String? {
+        get {
+            UserDefaults.standard.string(forKey: #function)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: #function)
         }
     }
 
@@ -92,8 +120,11 @@ public final class GalleryPresenter {
     }
 
     func viewReadyEventTriggered() {
+        if let filter = lastUsedMediaFilter {
+            self.filter = filter
+            view?.update(with: filter)
+        }
         setupMediaLibraryUpdateEventCollector()
-        setupCollections()
         setupForegroundObserver()
 
         guard isAccessManagerEnabled else {
@@ -116,6 +147,10 @@ public final class GalleryPresenter {
         }
     }
 
+    func viewWillAppear() {
+        fetchMediaItems(withCollections: true)
+    }
+
     func scrollEventTriggered(direction: FocusDirection) {
         guard focusDirection != direction else {
             return
@@ -126,19 +161,19 @@ public final class GalleryPresenter {
 
     func albumsEventTriggered() {
         switch direction {
-           case .up:
-              direction = .down
-              dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
-              view?.changeCollectionView(assetsIsHidden: false)
+        case .up:
+            direction = .down
+            fetchMediaItems(withCollections: false)
+            view?.changeCollectionView(assetsIsHidden: false)
             output?.albumsEventTriggered(isShown: false)
-           case .down:
-              direction = .up
-              if collections.isEmpty {
-                  setupCollections()
-                }
-                view?.update(with: collections)
-                view?.changeCollectionView(assetsIsHidden: true)
-                output?.albumsEventTriggered(isShown: true)
+        case .down:
+            direction = .up
+            if collections.isEmpty {
+                fetchMediaItems(withCollections: true)
+            }
+            view?.update(with: collections)
+            view?.changeCollectionView(assetsIsHidden: true)
+            output?.albumsEventTriggered(isShown: true)
         }
         view?.updateTitleView(with: direction)
         view?.hidePlaceholdersIfNeeded()
@@ -165,6 +200,10 @@ public final class GalleryPresenter {
         })
     }
 
+    func filterEventTriggered(_ filter: MediaItemsFilter) {
+        self.filter = filter
+    }
+
     // MARK: - Helpers
 
     func updateSelection() {
@@ -179,11 +218,19 @@ public final class GalleryPresenter {
         setupMediaItemsCollector(isHideTitle: isHideTitle)
         setupMediaLibraryUpdateEventCollector()
         setupCollections()
+        fetchMediaItems(withCollections: true)
     }
 
     private func setupCollections() {
-        dependencies.mediaLibraryService.fetchMediaItemCollections()
+        collectionsCollector.unsubscribe()
         collectionsCollector.subscribe { [weak self] (collections: [MediaItemsCollection]) in
+            let lastUsedCollection = collections.first { collection in
+                collection.identifier == self?.lastUsedCollectionId
+            }
+            self?.isFetching = false
+            if let collection = lastUsedCollection ?? collections.first {
+                self?.collection = collection
+            }
             self?.collections = collections
             self?.view?.update(with: collections)
         }
@@ -194,6 +241,7 @@ public final class GalleryPresenter {
             guard let self = self else {
                 return
             }
+            self.isFetching = false
             self.fetchResult = result
             self.view?.update(with: self.sectionItemsProvider(for: result.fetchResult), animated: true)
             self.output?.didFinishLoading(result.collection, isMixedContentCollection: result.filter == .all)
@@ -205,8 +253,8 @@ public final class GalleryPresenter {
 
     private func setupMediaLibraryUpdateEventCollector() {
         mediaLibraryUpdateEventCollector.subscribe { [weak self] _ in
-            if let filter = self?.filter {
-                self?.dependencies.mediaLibraryService.fetchMediaItems(in: self?.collection, filter: filter)
+            if self?.filter != nil {
+                self?.fetchMediaItems(withCollections: false)
             }
         }
     }
@@ -255,15 +303,12 @@ public final class GalleryPresenter {
     }
 
     private func updateMediaItemList(usingPlaceholderTransition: Bool) {
-        guard let collection = collection else {
-            return
-        }
 
         if usingPlaceholderTransition {
-            view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection.estimatedMediaItemsCount ?? 64, 64))
+            view?.showMediaItemsPlaceholder(estimatedItemCount: min(collection?.estimatedMediaItemsCount ?? 64, 64))
         }
 
-        dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        fetchMediaItems(withCollections: false)
     }
 
     private func setupPermissionsCollector() {
@@ -285,8 +330,23 @@ public final class GalleryPresenter {
                                        object: nil)
     }
 
+    private func fetchMediaItems(withCollections: Bool) {
+        guard isFetching == false, isAuthorized else {
+            return
+        }
+        isFetching = true
+        if withCollections {
+            if collections.isEmpty {
+                setupCollections()
+            }
+            dependencies.mediaLibraryService.fetchMediaItemCollections()
+        } else {
+            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+        }
+    }
+
     @objc private func appEnterForeground() {
-        setupCollections()
+        fetchMediaItems(withCollections: true)
     }
 
 }
@@ -297,6 +357,7 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
     func didSelect(_ collection: MediaItemsCollection) {
         direction = .down
         self.collection = collection
+        lastUsedCollectionId = collection.identifier
         view?.changeCollectionView(assetsIsHidden: false)
         output?.albumsEventTriggered(isShown: false)
     }
@@ -318,8 +379,9 @@ extension GalleryPresenter: GallerySectionsFactoryOutput {
 extension GalleryPresenter: GalleryModuleInput {
 
     public func update(isAuthorized: Bool) {
+        self.isAuthorized = isAuthorized
         if isAuthorized {
-            dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
+            fetchMediaItems(withCollections: true)
         }
         else {
             view?.showMediaLibraryDeniedPermissionsPlaceholder()

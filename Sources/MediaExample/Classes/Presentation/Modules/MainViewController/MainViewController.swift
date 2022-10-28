@@ -64,7 +64,11 @@ final class MainViewController: UIViewController {
             return
         }
 
-        coordinator = .init(navigationViewController: navigationController)
+        var navigationAppearance = NavigationAppearance()
+        navigationAppearance.filter = [.all, .video]
+        navigationAppearance.shouldShowCameraButton = false
+        var mediaAppearance = MediaAppearance(navigation: navigationAppearance)
+        coordinator = .init(navigationViewController: navigationController, mediaAppearance: mediaAppearance)
         coordinator?.start()
         coordinator?.isAccessManagerEnabled = true
         coordinator?.delegate = self

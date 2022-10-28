@@ -69,6 +69,8 @@ public final class GalleryViewController: UIViewController {
         return view
     }()
 
+    private lazy var filterView: SwitchView = .init()
+
     private lazy var placeholderView: PlaceholderView = {
         let view = PlaceholderView(placeholderAppearance: mediaAppearance.placeholder)
         view.isHidden = true
@@ -125,6 +127,11 @@ public final class GalleryViewController: UIViewController {
         showMediaItemsPlaceholder()
         setupNavigationBar()
         presenter.viewReadyEventTriggered()
+    }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter.viewWillAppear()
     }
 
     override public func viewDidLayoutSubviews() {
@@ -223,6 +230,10 @@ public final class GalleryViewController: UIViewController {
         albumsCollectionView.isUserInteractionEnabled = true
     }
 
+    func update(with filter: MediaItemsFilter) {
+        filterView.selectedIndex = navigationAppearance.filter.firstIndex(of: filter) ?? 0
+    }
+
     func update(with sectionItemsProvider: LazySectionItemsProvider, animated: Bool) {
         if animated {
             UIView.transition(with: assetsCollectionView, duration: 0.15, options: .transitionCrossDissolve, animations: {
@@ -311,7 +322,32 @@ public final class GalleryViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.view.backgroundColor = .white
 
-        navigationItem.titleView = titleView
+        if navigationAppearance.filter.isEmpty == false {
+            filterView.items = navigationAppearance.filter.map { item in
+                .init(title: navigationAppearance.filterFormatter(item)) { [weak presenter] in
+                    presenter?.filterEventTriggered(item)
+                }
+            }
+            navigationAppearance.filterCustomizationHandler?(filterView)
+            switch navigationAppearance.filterAlign {
+            case .left:
+                navigationItem.leftBarButtonItem = .init(customView: filterView)
+            case .right:
+                navigationItem.rightBarButtonItem = .init(customView: filterView)
+            case .center:
+                navigationItem.titleView = filterView
+            }
+        }
+
+        switch navigationAppearance.titleAlign {
+        case .left:
+            navigationItem.leftBarButtonItem = .init(customView: titleView)
+        case .right:
+            navigationItem.rightBarButtonItem = .init(customView: titleView)
+        case .center:
+            navigationItem.titleView = titleView
+        }
+
         if navigationAppearance.shouldShowCameraButton {
             navigationItem.rightBarButtonItem = UIBarButtonItem(image: navigationAppearance.cameraImage?.withRenderingMode(.alwaysOriginal),
                                                                 style: .plain,

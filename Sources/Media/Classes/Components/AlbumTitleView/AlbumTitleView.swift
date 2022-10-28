@@ -7,7 +7,7 @@ import UIKit
 
 public final class AlbumTitleView: UIView {
 
-    enum Direction {
+    public enum Direction {
         case up
         case down
     }
@@ -15,7 +15,7 @@ public final class AlbumTitleView: UIView {
     var tapEventHandler: ((Direction) -> Void)?
     var innerInset: UIEdgeInsets = .init(top: 7, left: 10, bottom: 6, right: 6)
 
-    private(set) var direction: Direction = .down
+    public private(set) var direction: Direction = .down
     public var betweenInset: CGFloat = 3
     public var imageOffset: CGFloat = 0
     private let titleImage: UIImage?
