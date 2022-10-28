@@ -26,7 +26,7 @@ Initialization `MediaCoordinator(navigationViewController: UINavigationControlle
    var coordinator = MediaCoordinator(navigationViewController: navigationViewController)
 ```
 
-Also in `MediaCoordinator` has important public variables such as:
+Also in `MediaCoordinator` there is important public variables such as:
 - `MediaCoordinatorDelegate` delegate which handles events from the picker:
 ```Swift
     public weak var delegate: MediaCoordinatorDelegate?
