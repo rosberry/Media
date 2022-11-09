@@ -28,17 +28,12 @@ public final class GalleryPresenter {
     private var isAuthorized: Bool = false
     public var collection: MediaItemsCollection? {
         didSet {
-            // Do not update default collection
-            if oldValue == nil, collection === collections.first {
-                return
-            }
-            updateMediaItemList(usingPlaceholderTransition: collection !== oldValue)
+            updateMediaItemList(usingPlaceholderTransition: collection?.identifier != oldValue?.identifier)
         }
     }
 
     public var filter: MediaItemsFilter = .all {
         didSet {
-            updateMediaItemList(usingPlaceholderTransition: true)
             lastUsedMediaFilter = filter
         }
     }
@@ -202,6 +197,7 @@ public final class GalleryPresenter {
 
     func filterEventTriggered(_ filter: MediaItemsFilter) {
         self.filter = filter
+        updateMediaItemList(usingPlaceholderTransition: true)
     }
 
     // MARK: - Helpers
@@ -228,15 +224,16 @@ public final class GalleryPresenter {
                 collection.identifier == self?.lastUsedCollectionId
             }
             self?.isFetching = false
+            self?.collections = collections
             if let collection = lastUsedCollection ?? collections.first {
                 self?.collection = collection
             }
-            self?.collections = collections
             self?.view?.update(with: collections)
         }
     }
 
     private func setupMediaItemsCollector(isHideTitle: Bool) {
+        mediaItemsCollector.unsubscribe()
         mediaItemsCollector.subscribe { [weak self] (result: MediaItemsFetchResult) in
             guard let self = self else {
                 return
@@ -336,9 +333,6 @@ public final class GalleryPresenter {
         }
         isFetching = true
         if withCollections {
-            if collections.isEmpty {
-                setupCollections()
-            }
             dependencies.mediaLibraryService.fetchMediaItemCollections()
         } else {
             dependencies.mediaLibraryService.fetchMediaItems(in: collection, filter: filter)
