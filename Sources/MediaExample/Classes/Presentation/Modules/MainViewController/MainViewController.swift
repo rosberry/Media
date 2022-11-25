@@ -41,6 +41,15 @@ final class MainViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(stackView)
         view.addSubview(imageView)
+
+        var navigationAppearance = NavigationAppearance()
+        navigationAppearance.filter = [.all, .video]
+        navigationAppearance.shouldShowCameraButton = false
+        var mediaAppearance = MediaAppearance(navigation: navigationAppearance)
+        coordinator = .init(navigationViewController: navigationController!, mediaAppearance: mediaAppearance)
+        coordinator?.isAccessManagerEnabled = true
+        coordinator?.delegate = self
+        coordinator?.preload()
     }
 
     override func viewDidLayoutSubviews() {
@@ -60,18 +69,7 @@ final class MainViewController: UIViewController {
     }
 
     private func start() {
-        guard let navigationController = navigationController else {
-            return
-        }
-
-        var navigationAppearance = NavigationAppearance()
-        navigationAppearance.filter = [.all, .video]
-        navigationAppearance.shouldShowCameraButton = false
-        var mediaAppearance = MediaAppearance(navigation: navigationAppearance)
-        coordinator = .init(navigationViewController: navigationController, mediaAppearance: mediaAppearance)
         coordinator?.start()
-        coordinator?.isAccessManagerEnabled = true
-        coordinator?.delegate = self
     }
 }
 

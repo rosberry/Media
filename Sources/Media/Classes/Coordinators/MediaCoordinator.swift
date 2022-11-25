@@ -68,6 +68,14 @@ public final class MediaCoordinator {
         dependencies.mediaLibraryService.requestMediaLibraryPermissions()
     }
 
+    public func preload() {
+        guard PHPhotoLibrary.authorizationStatus() != .notDetermined else {
+            return
+        }
+
+        dependencies.mediaLibraryService.fetchMediaItemCollections()
+    }
+
     // MARK: - Private
 
     private func setupPermissionsCollector() {
@@ -80,7 +88,8 @@ public final class MediaCoordinator {
         let module = GalleryModule(isAccessManagerEnabled: isAccessManagerEnabled,
                                    filter: filter,
                                    maxItemsCount: maxItemsCount,
-                                   mediaAppearance: mediaAppearance)
+                                   mediaAppearance: mediaAppearance,
+                                   dependencies: dependencies)
         module.output = self
         return module
     }

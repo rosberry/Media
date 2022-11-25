@@ -54,11 +54,12 @@ public final class GalleryModule {
                 filter: MediaItemsFilter,
                 maxItemsCount: Int,
                 collection: MediaItemsCollection? = nil,
-                mediaAppearance: MediaAppearance) {
+                mediaAppearance: MediaAppearance,
+                dependencies: GalleryPresenter.Dependencies) {
         presenter = GalleryPresenter(isAccessManagerEnabled: isAccessManagerEnabled,
                                      filter: filter,
                                      maxItemsCount: maxItemsCount,
-                                     dependencies: Services,
+                                     dependencies: dependencies,
                                      mediaAppearance: mediaAppearance)
         viewController = GalleryViewController(presenter: presenter)
         presenter.view = viewController

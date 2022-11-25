@@ -15,7 +15,7 @@ public final class GalleryPresenter {
         case down
     }
 
-    typealias Dependencies = HasMediaLibraryService
+    public typealias Dependencies = HasMediaLibraryService
     typealias Direction = AlbumTitleView.Direction
 
     private let dependencies: Dependencies
