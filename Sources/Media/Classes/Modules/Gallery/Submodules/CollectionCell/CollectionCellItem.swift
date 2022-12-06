@@ -33,7 +33,7 @@ class CollectionCellItem: CollectionViewCellItem {
         let count = sectionAppearance.numberOfItemsInRow
         let cellInset = sectionAppearance.minimumInteritemSpacing
         let containerWidth = collectionView.bounds.width - sectionAppearance.insets.left - sectionAppearance.insets.right
-        let width = (containerWidth - CGFloat(count - 1) * cellInset) / CGFloat(count)
+        let width = floor((containerWidth - CGFloat(count - 1) * cellInset) / CGFloat(count))
         return .init(width: width, height: sectionAppearance.cellHeight)
     }
 
@@ -47,7 +47,8 @@ class CollectionCellItem: CollectionViewCellItem {
             return
         }
 
-        let size = CGSize(width: 100.0, height: 100.0)
+        let size = CGSize(width: cell.bounds.width * UIScreen.main.scale,
+                          height: cell.bounds.height * UIScreen.main.scale)
         dependencies.mediaLibraryService.fetchThumbnail(for: viewModel, size: size, contentMode: .aspectFill) { [weak self] (_: UIImage?) in
             guard let self = self else {
                 return

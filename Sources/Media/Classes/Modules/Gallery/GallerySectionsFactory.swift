@@ -113,8 +113,10 @@ final class GallerySectionsFactory {
 
             cell.modelIdentifier = cellItem.object.diffIdentifier
 
+            let size = CGSize(width: cell.bounds.width * UIScreen.main.scale,
+                              height: cell.bounds.height * UIScreen.main.scale)
             self.dependencies.mediaLibraryService.fetchThumbnail(for: cellItem.object.mediaItem,
-                                                                 size: self.thumbnailSize,
+                                                                 size: size,
                                                                  contentMode: .aspectFill) { [weak self] _ in
                 guard let self = self,
                     cell.modelIdentifier == cellItem.object.diffIdentifier else {
